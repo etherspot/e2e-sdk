@@ -18,7 +18,7 @@ describe("The SDK, when sending a NFT Transaction on the TestNet", () => {
     });
 
     expect(sdkTestnet.state.accountAddress).to.equal(
-      "0x522E11D4F5DaC0d115Ab9792AE6b18e2C7b7B388"
+      "0xd55Ccf51D4F478231Fdb34C1F3EC675FC4318851"
     );
 
     // Compute the smart wallet address
