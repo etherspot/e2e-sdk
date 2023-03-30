@@ -2,9 +2,9 @@ import * as dotenv from "dotenv";
 dotenv.config(); // init dotenv
 
 import { expect } from "chai";
-import { EnvNames, NetworkNames, Sdk } from "etherspot";
-import abi from "../../data/NFTabi.json";
 import { ethers } from "ethers";
+import { EnvNames, NetworkNames, Sdk } from "etherspot";
+import { abi } from "../../data/NFTabi.json";
 
 let sdkTestnet;
 let smartWalletAddress;
