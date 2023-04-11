@@ -18,7 +18,7 @@ describe("The SDK, when sending a Smart Contract interaction on the TestNet", ()
     });
 
     expect(sdkTestnet.state.accountAddress).to.equal(
-      "0x522E11D4F5DaC0d115Ab9792AE6b18e2C7b7B388"
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f"
     );
 
     // Compute the smart wallet address
@@ -29,13 +29,13 @@ describe("The SDK, when sending a Smart Contract interaction on the TestNet", ()
     console.log("Smart wallet address: ", smartWalletAddress);
 
     // Create Contract Interface using Etherspot SDK
-    const StakingContract =
-      sdkTestnet.registerContract <
-      { encodeStake: (amount: BigNumberish) => stakeTransactionRequest } >
-      ("stakingContract", contractAbi, contractAddress);
-    const stakeTransactionRequest = StakingContract.encodeStake(
-      AmountToBeStakedInWei
-    );
+    // const StakingContract =
+    //   sdkTestnet.registerContract <
+    //   { encodeStake: (amount: BigNumberish) => stakeTransactionRequest } >
+    //   ("stakingContract", contractAbi, contractAddress);
+    // const stakeTransactionRequest = StakingContract.encodeStake(
+    //   AmountToBeStakedInWei
+    // );
 
     // Adding your transaction to a batch
     await etherspotSdk.batchExecuteAccountTransaction({
