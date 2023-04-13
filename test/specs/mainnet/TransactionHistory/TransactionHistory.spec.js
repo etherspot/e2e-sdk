@@ -4,7 +4,7 @@ dotenv.config(); // init dotenv
 import { expect } from "chai";
 import { EnvNames, NetworkNames, Sdk } from "etherspot";
 import { BigNumber } from "ethers";
-import Helper from "../../utils/Helper.js";
+import Helper from "../../../utils/Helper.js";
 
 let sdkMainNet;
 let smartWalletAddress;

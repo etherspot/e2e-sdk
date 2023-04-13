@@ -38,6 +38,10 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
+
     // GET NFT LIST
     const output = await sdkMainNet.getNftList({
       account: "0x22c1f6050e56d2876009903609a2cc3fef83b415",

@@ -29,9 +29,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -60,9 +64,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -91,9 +99,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -122,9 +134,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -153,9 +169,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -184,9 +204,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -215,9 +239,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -246,9 +274,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -277,9 +309,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -308,9 +344,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -339,9 +379,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -370,9 +414,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -401,9 +449,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
@@ -432,9 +484,13 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction details to a batch
     const response = await sdkTestNet.batchExecuteAccountTransaction({
