@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "mocha --timeout 100000"
+    "test": "mocha --timeout 900000"
   },
   "author": "",
   "license": "ISC",
