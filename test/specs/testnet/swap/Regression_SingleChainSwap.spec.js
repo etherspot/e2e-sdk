@@ -7,11 +7,11 @@ import { assert } from "chai";
 
 let sdkTestNet;
 let smartWalletAddress;
-let transactionDetails;
 
-describe("The SDK, when single chain swap on the TestNet", () => {
-  // SWAP ON XDAI NETWORK
-  it.only("Setup the SDK for xDai network and perform the single chain swap action", async () => {
+describe("The regression suite for the single chain swap on the TestNet", () => {
+  // SWAP ON XDAI NETWORK FROM ERC20 TOKEN TO NATIVE TOKEN
+  it("Setup the SDK for xDai network and perform the single chain swap action from ERC20 token to Native Token.", async () => {
+    let transactionDetails;
     let TransactionData_count = 0;
 
     // Initialize the SDK and define network
@@ -39,11 +39,12 @@ describe("The SDK, when single chain swap on the TestNet", () => {
 
     // GET EXCHANGE OFFERS
     const offers = await sdkTestNet.getExchangeOffers({
-      fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
-      toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6",
+      fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC Token
+      // toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6", // USDT Token
+      toTokenAddress: ethers.constants.AddressZero,
       fromAmount: ethers.utils.parseUnits("0.0001", 6),
     });
-    // console.log("Offers : ", offers);
+    console.log("Offers : ", offers);
 
     for (let j = 0; j < offers.length; j++) {
       transactionDetails = offers[j].transactions;
@@ -129,7 +130,7 @@ describe("The SDK, when single chain swap on the TestNet", () => {
     let EstimatedGasPrice_Estimate;
 
     const estimationResponse = await sdkTestNet.estimateGatewayBatch();
-    // console.log("Gas estimated at: ", estimationResponse);
+    console.log("Gas estimated at: ", estimationResponse);
 
     for (let k = 0; k < estimationResponse.requests.length; k++) {
       try {
@@ -220,7 +221,7 @@ describe("The SDK, when single chain swap on the TestNet", () => {
     const submissionResponse = await sdkTestNet.submitGatewayBatch({
       guarded: false,
     });
-    // console.log("Status of the batch submition: ", submissionResponse);
+    console.log("Status of the batch submition: ", submissionResponse);
 
     try {
       assert.isNull(
@@ -402,6 +403,139 @@ describe("The SDK, when single chain swap on the TestNet", () => {
       );
     } catch (e) {
       console.log(e);
+    }
+  });
+
+  // SWAP ON XDAI NETWORK FROM NATIVE TOKEN TO ERC20 TOKEN
+  it("Setup the SDK for xDai network and perform the single chain swap action from Native Token to ERC20 token.", async () => {
+    let transactionDetails;
+
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    let offers = await sdkTestNet.getExchangeOffers({
+      fromTokenAddress: ethers.constants.AddressZero,
+      toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6", // USDT Token
+      fromAmount: ethers.utils.parseUnits("0.0001", 6),
+    });
+
+    try {
+      assert.strictEqual(offers.length, 0, "The offers are displayed.");
+    } catch (e) {
+      console.log(
+        e,
+        "The offers are displayed, Even if the fromTokenAddress is set as a Native Token."
+      );
+    }
+
+    // BATCH EXECUTE ACCOUNT TRANSACTION
+    try {
+      await sdkTestNet.batchExecuteAccountTransaction(transactionDetails[0]);
+
+      assert.fail(
+        "The batch execution account transaction is performed, Even if the fromTokenAddress is set as a Native Token."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "Cannot read properties of undefined, Because fromTokenAddress is set as a Native Token and not displayed the any offers in the list."
+      );
+    }
+
+    // Estimating the batch
+    try {
+      await sdkTestNet.estimateGatewayBatch();
+
+      assert.fail(
+        "The estimation of the batch is performed, Even if the fromTokenAddress is set as a Native Token."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "Can not estimate empty batch, Because fromTokenAddress is set as a Native Token and not batch execute account transaction."
+      );
+    }
+  });
+
+  // SWAP ON XDAI NETWORK WITHOUT ESTIMATION OF THE BATCH
+  it.only("Setup the SDK for xDai network and perform the single chain swap action without estimation of the batch.", async () => {
+    let transactionDetails;
+    let TransactionData_count = 0;
+
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    const offers = await sdkTestNet.getExchangeOffers({
+      fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC Token
+      toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6", // USDT Token
+      fromAmount: ethers.utils.parseUnits("0.0001", 6),
+    });
+    console.log("Offers : ", offers);
+
+    for (let j = 0; j < offers.length; j++) {
+      transactionDetails = offers[j].transactions;
+
+      for (let i = 0; i < transactionDetails.length; i++) {
+        // BATCH EXECUTE ACCOUNT TRANSACTION
+        await sdkTestNet.batchExecuteAccountTransaction(transactionDetails[i]);
+      }
+    }
+
+    // Submitting the batch
+    try {
+      await sdkTestNet.submitGatewayBatch({
+        guarded: false,
+      });
+      assert.isFalse(
+        "Status of the batch is submitted without Estimation of batch."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "Status of the batch is not submitted, Because Estimation of batch is remaining."
+      );
     }
   });
 });
