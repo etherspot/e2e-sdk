@@ -7182,12 +7182,12 @@ describe("Get the transaction history on the TestNet", () => {
     }
   });
 
-  // GET TRANSACTION HISTORY FROM TestNET NETWORK
-  it("Setup the SDK for Testnet network and get the transaction history", async () => {
+  // GET TRANSACTION HISTORY FROM MAINNET NETWORK
+  it("Setup the SDK for Mainnet network and get the transaction history", async () => {
     // initialize the sdk
     sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
       env: EnvNames.TestNets,
-      networkName: NetworkNames.Testnet,
+      networkName: NetworkNames.Mainnet,
     });
 
     expect(sdkTestNet.state.accountAddress).to.equal(

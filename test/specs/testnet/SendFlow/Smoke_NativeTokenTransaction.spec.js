@@ -1874,12 +1874,12 @@ describe("The SDK, when sending a native asset on the TestNet", () => {
     }
   });
 
-  // SEND NATIVE TOKEN FOR TestNET
-  it("Setup the SDK for Testnet network and perform the send native asset action", async () => {
+  // SEND NATIVE TOKEN FOR MAINNET
+  it("Setup the SDK for Mainnet network and perform the send native asset action", async () => {
     // initialize the sdk
     sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
       env: EnvNames.TestNets,
-      networkName: NetworkNames.Testnet,
+      networkName: NetworkNames.Mainnet,
     });
 
     assert.strictEqual(

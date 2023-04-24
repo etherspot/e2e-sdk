@@ -19,7 +19,7 @@ const encodedData = contract.encodeFunctionData("transferFrom", [
   tokenId,
 ]);
 
-describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
+describe("The SDK, when sending a NFT Transaction on the TestNet", () => {
   // SEND NFT ON ARBITRUM NETWORK
   it("Setup the SDK for Arbitrum network and perform the send NFT Transaction action", async () => {
     // Initialize the SDK and define network
@@ -29,7 +29,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -64,7 +64,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -99,7 +99,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -134,7 +134,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -169,7 +169,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -204,7 +204,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -239,7 +239,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -274,7 +274,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -309,7 +309,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -344,7 +344,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -379,7 +379,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -414,7 +414,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -449,7 +449,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
@@ -484,7 +484,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
     });
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkMainNet.computeContractAccount();
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
 
