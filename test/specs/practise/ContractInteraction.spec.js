@@ -22,11 +22,13 @@ describe("The SDK, when sending a Smart Contract interaction on the TestNet", ()
     );
 
     // Compute the smart wallet address
-    const smartWalletOutput = await sdkTestnet.computeContractAccount();
-    console.log(smartWalletOutput);
-
+    const smartWalletOutput = await sdkMainNet.computeContractAccount();
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Create Contract Interface using Etherspot SDK
     // const StakingContract =

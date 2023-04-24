@@ -26,10 +26,12 @@ describe("Get the transaction history on the MainNet", () => {
 
     // Compute the smart wallet address
     const smartWalletOutput = await sdkMainNet.computeContractAccount();
-    console.log(smartWalletOutput);
-
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction to a batch
     const addTransactionToBatchOutput =
@@ -125,10 +127,12 @@ describe("Get the transaction history on the MainNet", () => {
 
     // Compute the smart wallet address
     const smartWalletOutput = await sdkMainNet.computeContractAccount();
-    console.log(smartWalletOutput);
-
     smartWalletAddress = smartWalletOutput.address;
     console.log("Smart wallet address: ", smartWalletAddress);
+
+    expect(smartWalletAddress).to.equal(
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe"
+    );
 
     // Adding transaction to a batch
     const addTransactionToBatchOutput =
