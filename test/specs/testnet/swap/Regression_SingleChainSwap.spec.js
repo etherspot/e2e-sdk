@@ -538,4 +538,355 @@ describe("The regression suite for the single chain swap on the TestNet", () => 
       );
     }
   });
+
+  // SWAP ON XDAI NETWORK FROM ERC20 TOKEN TO ERC20 TOKEN WITH EXCEED TOKEN BALANCE
+  it("Setup the SDK for xDai network and perform the single chain swap action from ERC20 token to ERC20 Token with exceed token balance.", async () => {
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    const offers = await sdkTestNet.getExchangeOffers({
+      fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC Token
+      toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6", // USDT Token
+      // toTokenAddress: ethers.constants.AddressZero,
+      fromAmount: ethers.utils.parseUnits("100000000", 6),
+    });
+
+    // Estimating the batch
+    try {
+      await sdkTestNet.estimateGatewayBatch();
+
+      assert.isFalse(
+        "The Estimation is performed even if exceed the token account."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "The Estimation is not happened due to exceed token account."
+      );
+    }
+  });
+
+  // SWAP ON XDAI NETWORK FROM ERC20 TOKEN TO NATIVE TOKEN WITH EXCEED TOKEN BALANCE
+  it("Setup the SDK for xDai network and perform the single chain swap action from ERC20 token to native token with exceed token balance.", async () => {
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    const offers = await sdkTestNet.getExchangeOffers({
+      fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC Token
+      // fromTokenAddress: ethers.constants.AddressZero,
+      // toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6", // USDT Token
+      toTokenAddress: ethers.constants.AddressZero,
+      fromAmount: ethers.utils.parseUnits("100000000", 6),
+    });
+
+    // Estimating the batch
+    try {
+      await sdkTestNet.estimateGatewayBatch();
+
+      assert.isFalse(
+        "The Estimation is performed even if exceed the token account."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "The Estimation is not happened due to exceed token account."
+      );
+    }
+  });
+
+  // SWAP ON XDAI NETWORK FROM ERC20 TOKEN TO THE SAME ERC20 TOKEN
+  it("Setup the SDK for xDai network and perform the single chain swap action from ERC20 token to the same ERC20 token.", async () => {
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    try {
+      await sdkTestNet.getExchangeOffers({
+        fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC Token
+        // fromTokenAddress: ethers.constants.AddressZero,
+        toTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC Token
+        // toTokenAddress: ethers.constants.AddressZero,
+        fromAmount: ethers.utils.parseUnits("0.0001", 6),
+      });
+      assert.isFalse(
+        "The Swap is performed, Even if the ERC20 Token addresses are equal."
+      );
+    } catch (e) {
+      console.log(e, "The ERC20 Token addresses are not equal.");
+    }
+  });
+
+  // SWAP ON XDAI NETWORK WITHOUT toTokenAddress VALUE WHILE GET THE EXCHANGE OFFERS
+  it("Setup the SDK for xDai network and perform the single chain swap action without toTokenAddress value while get the exchange offers.", async () => {
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    try {
+      await sdkTestNet.getExchangeOffers({
+        fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC Token
+        fromAmount: ethers.utils.parseUnits("0.0001", 6),
+      });
+      assert.isFalse(
+        "The Swap is performed, Even if the To Token Address is not added in the Get Exchange Offers."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "The Get Exchange Offers is not performed due to The To Token Address is not added."
+      );
+    }
+  });
+
+  // SWAP ON XDAI NETWORK WITHOUT fromTokenAddress VALUE WHILE GET THE EXCHANGE OFFERS
+  it("Setup the SDK for xDai network and perform the single chain swap action without fromTokenAddress value while get the exchange offers.", async () => {
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    try {
+      await sdkTestNet.getExchangeOffers({
+        toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6", // USDT Token
+        fromAmount: ethers.utils.parseUnits("0.0001", 6),
+      });
+      assert.isFalse(
+        "The Swap is performed, Even if the From Token Address is not added in the Get Exchange Offers."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "The Get Exchange Offers is not performed due to The From Token Address is not added."
+      );
+    }
+  });
+
+  // SWAP ON XDAI NETWORK WITHOUT fromAmount VALUE WHILE GET THE EXCHANGE OFFERS
+  it("Setup the SDK for xDai network and perform the single chain swap action without fromAmount value while get the exchange offers.", async () => {
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    try {
+      await sdkTestNet.getExchangeOffers({
+        fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC Token
+        toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6", // USDT Token
+      });
+      assert.isFalse(
+        "The Swap is performed, Even if the From Amount is not added in the Get Exchange Offers."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "The Get Exchange Offers is not performed due to The From Amount is not added."
+      );
+    }
+  });
+
+  // SWAP ON XDAI NETWORK WITH INVALID toTokenAddress VALUE WHILE GET THE EXCHANGE OFFERS
+  it("Setup the SDK for xDai network and perform the single chain swap action with invalid toTokenAddress value while get the exchange offers.", async () => {
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    try {
+      await sdkTestNet.getExchangeOffers({
+        fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC Token
+        toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605CC", // USDT Token
+        fromAmount: ethers.utils.parseUnits("0.0001", 6),
+      });
+      assert.isFalse(
+        "The Swap is performed, Even if the To Token Address is not added in the Get Exchange Offers."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "The Get Exchange Offers is not performed due to The To Token Address is not added."
+      );
+    }
+  });
+
+  // SWAP ON XDAI NETWORK WITH INVALID fromTokenAddress VALUE WHILE GET THE EXCHANGE OFFERS
+  it("Setup the SDK for xDai network and perform the single chain swap action with invalid fromTokenAddress value while get the exchange offers.", async () => {
+    // Initialize the SDK and define network
+    sdkTestNet = new Sdk(process.env.PRIVATE_KEY, {
+      env: EnvNames.TestNets,
+      networkName: NetworkNames.Xdai,
+    });
+
+    assert.strictEqual(
+      sdkTestNet.state.accountAddress,
+      "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+      "The EOA Address is not displayed correctly."
+    );
+
+    // Compute the smart wallet address
+    const smartWalletOutput = await sdkTestNet.computeContractAccount();
+    smartWalletAddress = smartWalletOutput.address;
+    console.log("Smart wallet address: ", smartWalletAddress);
+
+    assert.strictEqual(
+      smartWalletAddress,
+      "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+      "The smart address is not displayed correctly."
+    );
+
+    // GET EXCHANGE OFFERS
+    try {
+      await sdkTestNet.getExchangeOffers({
+        fromTokenAddress: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A88", // USDC Token
+        toTokenAddress: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6", // USDT Token
+        fromAmount: ethers.utils.parseUnits("0.0001", 6),
+      });
+      assert.isFalse(
+        "The Swap is performed, Even if the From Token Address is not added in the Get Exchange Offers."
+      );
+    } catch (e) {
+      console.log(
+        e,
+        "The Get Exchange Offers is not performed due to The From Token Address is not added."
+      );
+    }
+  });
 });
