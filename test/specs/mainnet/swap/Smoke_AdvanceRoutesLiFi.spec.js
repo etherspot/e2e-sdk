@@ -10,26 +10,25 @@ import {
   Sdk,
 } from "etherspot";
 import { ethers } from "ethers";
-import pkg from "@etherspot/contracts";
 
 let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
-let testNetSdk;
+let mainNetSdk;
 
-describe("The SDK, when cross chain quote flow on the testNet", () => {
-  for (let i = 0; i < network.length; i++) {
-    // CROSS CHAIN QUOTES ON RESPECTIVE NETWORK
+describe("The SDK, when advance routes lifi flow on the MainNet", () => {
+  for (let l = 0; l < network.length; l++) {
+    // ADVANCE ROUTES LIFI ON RESPECTIVE NETWORK
     it(
-      "Perform the cross chain quote action " + network[i] + " network",
+      "Perform the advance routes lifi action " + network[i] + " network",
       async () => {
         // initialize the sdk
         try {
-          testNetSdk = new Sdk(process.env.PRIVATE_KEY, {
-            env: EnvNames.TestNets,
-            networkName: network[i],
+          mainNetSdk = new Sdk(process.env.PRIVATE_KEY, {
+            env: EnvNames.MainNets,
+            networkName: network[l],
           });
 
           assert.strictEqual(
-            testNetSdk.state.accountAddress,
+            mainNetSdk.state.accountAddress,
             "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
             "The EOA Address is not calculated correctly."
           );
@@ -39,7 +38,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
         // Compute the smart wallet address
         try {
-          let smartWalletOutput = await testNetSdk.computeContractAccount();
+          let smartWalletOutput = await mainNetSdk.computeContractAccount();
           let smartWalletAddress = smartWalletOutput.address;
 
           assert.strictEqual(
@@ -55,7 +54,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
           let ArbitrumUSDC = "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8"; // Arbitrum - USDC
           let BscUSDC = "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"; // Bsc - USDC
           let MaticUSDC = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // Matic - USDC
-          let testnetUSDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // testnet - USDC
+          let MainnetUSDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // Mainnet - USDC
           let XdaiUSDC = "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83"; // Xdai - USDC
           let OptimismUSDC = "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"; // Optimism - USDC
 
@@ -65,12 +64,12 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
           let toTokenAddress;
           let fromAmount;
 
-          switch (network[i]) {
+          switch (network[l]) {
             case "arbitrum":
               fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Arbitrum];
               toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
               fromTokenAddress = ArbitrumUSDC;
-              toTokenAddress = XdaiUSDC;
+              toTokenAddress = MaticUSDC;
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
 
@@ -82,10 +81,10 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
 
-            case "testnet":
-              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.testnet];
+            case "mainnet":
+              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Mainnet];
               toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-              fromTokenAddress = testnetUSDC;
+              fromTokenAddress = MainnetUSDC;
               toTokenAddress = XdaiUSDC;
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
@@ -125,7 +124,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
             fromTokenAddress: fromTokenAddress,
             toTokenAddress: toTokenAddress,
             fromAmount: fromAmount,
-            serviceProvider: CrossChainServiceProvider.SocketV2, // Optional parameter
+            serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
           };
 
           try {
@@ -159,7 +158,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
           try {
             assert.strictEqual(
               quoteRequestPayload.toTokenAddress,
-              "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+              "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
               "The toTokenAddress value is not displayed correct in the quoteRequest Payload."
             );
           } catch (e) {
@@ -168,7 +167,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
           try {
             assert.isNotEmpty(
-              quoteRequestPayload.fromAmount,
+              quoteRequestPayload.fromAmount._hex,
               "The fromAmount value is empty in the quoteRequest Payload."
             );
           } catch (e) {
@@ -178,7 +177,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
           try {
             assert.strictEqual(
               quoteRequestPayload.serviceProvider,
-              "SocketV2",
+              "LiFi",
               "The serviceProvider value is not displayed correct in the quoteRequest Payload."
             );
           } catch (e) {
@@ -189,115 +188,15 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
         }
 
         // Get the cross chain quotes
-        let batchCrossChainTransaction;
         let quotes;
         try {
-          quotes = await testNetSdk.getCrossChainQuotes(quoteRequestPayload);
+          quotes = await mainNetSdk.getAdvanceRoutesLiFi(quoteRequestPayload);
 
-          try {
-            assert.strictEqual(
-              quotes.items[0].provider,
-              "socketv2",
-              "The provider value is not displayed correct in the quotes response."
-            );
-          } catch (e) {
-            console.log(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quotes.items[0].approvalData,
-              "The approvalData value is empty in the quotes response."
-            );
-          } catch (e) {
-            console.log(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quotes.items[0].transaction,
-              "The transaction value is empty in the quotes response."
-            );
-          } catch (e) {
-            console.log(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quotes.items[0].estimate,
-              "The estimate value is empty in the quotes response."
-            );
-          } catch (e) {
-            console.log(e);
-          }
-
-          if (quotes.items.length > 0) {
-            // Select the first quote
-            let quote = quotes.items[0];
-
-            try {
-              assert.strictEqual(
-                quote.provider,
-                "socketv2",
-                "The provider value is not displayed correct in the quotes response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
-            try {
-              assert.strictEqual(
-                quote.approvalData.approvalAddress,
-                "0xd7E23c91d00daF2017BdB96F57B69c56dc82C317",
-                "The approvalAddress value of the approvalData is not displayed correct in the single quote response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
-            try {
-              assert.strictEqual(
-                quote.approvalData.amount,
-                "500000",
-                "The amount value of the approvalData is not displayed correct in the single quote response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
+          for (let i; i < quotes.items.length; i++) {
             try {
               assert.isNotEmpty(
-                quote.transaction.data,
-                "The data value of the transaction is empty in the single quote response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
-            try {
-              assert.strictEqual(
-                quote.transaction.to,
-                "0xc30141B657f4216252dc59Af2e7CdB9D8792e1B0",
-                "The To Address value of the transaction is not displayed correct in the single quote response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                quote.transaction.value,
-                "The value's value of the transaction is empty in the single quote response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
-            try {
-              assert.strictEqual(
-                quote.transaction.from,
-                "0xc30141B657f4216252dc59Af2e7CdB9D8792e1B0",
-                "The From Address value of the transaction is not displayed correct in the single quote response."
+                quotes.items[i].id,
+                "The id value is empty in the quotes response."
               );
             } catch (e) {
               console.log(e);
@@ -305,8 +204,35 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
             try {
               assert.isNumber(
-                quote.transaction.chainId,
-                "The chainId value of the transaction is not number in the single quote response."
+                quotes.items[i].fromChainId,
+                "The fromChainId value is not number in the quotes response."
+              );
+            } catch (e) {
+              console.log(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                quotes.items[i].fromAmountUSD,
+                "The fromAmountUSD value is empty in the quotes response."
+              );
+            } catch (e) {
+              console.log(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                quotes.items[i].fromAmount,
+                "The fromAmount value is empty in the quotes response."
+              );
+            } catch (e) {
+              console.log(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                quotes.items[i].fromToken,
+                "The fromToken value is empty in the quotes response."
               );
             } catch (e) {
               console.log(e);
@@ -314,9 +240,54 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
             try {
               assert.strictEqual(
-                quote.estimate.approvalAddress,
-                "0xd7E23c91d00daF2017BdB96F57B69c56dc82C317",
-                "The approvalAddress value of the estimate is not displayed correct in the single quote response."
+                quotes.items[i].fromAddress,
+                "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+                "The fromAmount value is empty in the quotes response."
+              );
+            } catch (e) {
+              console.log(e);
+            }
+
+            try {
+              assert.isNumber(
+                quotes.items[i].toChainId,
+                "The toChainId value is not number in the quotes response."
+              );
+            } catch (e) {
+              console.log(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                quotes.items[i].toAmountUSD,
+                "The toAmountUSD value is empty in the quotes response."
+              );
+            } catch (e) {
+              console.log(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                quotes.items[i].toAmount,
+                "The toAmount value is empty in the quotes response."
+              );
+            } catch (e) {
+              console.log(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                quotes.items[i].toAmountMin,
+                "The toAmountMin value is empty in the quotes response."
+              );
+            } catch (e) {
+              console.log(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                quotes.items[i].toToken,
+                "The toToken value is empty in the quotes response."
               );
             } catch (e) {
               console.log(e);
@@ -324,9 +295,9 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
             try {
               assert.strictEqual(
-                quote.estimate.fromAmount,
-                "500000",
-                "The fromAmount value of the estimate is not displayed correct in the single quote response."
+                quotes.items[i].toAddress,
+                "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+                "The toAddress value is not displayed correct in the quotes response."
               );
             } catch (e) {
               console.log(e);
@@ -334,27 +305,17 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quote.estimate.toAmount,
-                "The toAmount value of the estimate is empty in the single quote response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-            let toAmount_estimate_quote = quote.estimate.toAmount;
-
-            try {
-              assert.isNotEmpty(
-                quote.estimate.gasCosts.limit,
-                "The limit value of the gas cost of the estimate is empty in the single quote response."
+                quotes.items[i].gasCostUSD,
+                "The gasCostUSD value is empty in the quotes response."
               );
             } catch (e) {
               console.log(e);
             }
 
             try {
-              assert.isNotEmpty(
-                quote.estimate.gasCosts.amountUSD,
-                "The amountUSD value of the gas cost of the estimate is empty in the single quote response."
+              assert.isFalse(
+                quotes.items[i].containsSwitchChain,
+                "The containsSwitchChain value is not false in the quotes response."
               );
             } catch (e) {
               console.log(e);
@@ -362,8 +323,8 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quote.estimate.gasCosts.token,
-                "The token value of the gas cost of the estimate is empty in the single quote response."
+                quotes.items[i].steps,
+                "The steps value is empty in the quotes response."
               );
             } catch (e) {
               console.log(e);
@@ -371,8 +332,8 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quote.estimate.data.fromToken,
-                "The fromToken value of the data of the estimate is empty in the single quote response."
+                quotes.items[i].insurance,
+                "The insurance value is empty in the quotes response."
               );
             } catch (e) {
               console.log(e);
@@ -380,88 +341,26 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quote.estimate.data.toToken,
-                "The toToken value of the data of the estimate is empty in the single quote response."
+                quotes.items[i].tags,
+                "The tags value is enpty in the quotes response."
               );
             } catch (e) {
               console.log(e);
             }
+          }
 
-            try {
-              assert.isNotEmpty(
-                quote.estimate.data.toTokenAmount,
-                "The toTokenAmount value of the data of the estimate is empty in the single quote response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-            let toTokenAmount_data_estimate_quote =
-              quote.estimate.data.toTokenAmount;
+          if (quotes.items.length > 0) {
+            // Select the first quote
+            let quote = quotes.items[0];
+            let transactions = await mainNetSdk.getStepTransaction({
+              route: quote,
+            });
 
-            try {
-              assert.strictEqual(
-                toAmount_estimate_quote,
-                toTokenAmount_data_estimate_quote,
-                "The To Amount Gas value is not displayed correctly."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                quote.estimate.data.estimatedGas,
-                "The estimatedGas value of the data of the estimate is empty in the single quote response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
-            try {
-              assert.isNull(
-                quote.LiFiBridgeUsed,
-                "The LiFiBridgeUsed value is not null in the single quote response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
-            let tokenAddres = quote.estimate.data.fromToken.address;
-            let approvalAddress = quote.approvalData.approvalAddress;
-            let amount = quote.approvalData.amount;
-
-            // Build the approval transaction request
-            let { ContractNames, getContractAbi } = pkg;
-            let abi = getContractAbi(ContractNames.ERC20Token);
-            let erc20Contract = testNetSdk.registerContract(
-              "erc20Contract",
-              abi,
-              tokenAddres
-            );
-            let approvalTransactionRequest = erc20Contract.encodeApprove(
-              approvalAddress,
-              amount
-            );
-
-            // Batch the approval transaction
-            let batchexecutionaccounttransaction;
-
-            batchexecutionaccounttransaction =
-              await testNetSdk.batchExecuteAccountTransaction({
-                to: approvalTransactionRequest.to,
-                data: approvalTransactionRequest.data,
-                value: approvalTransactionRequest.value,
-              });
-
-            for (
-              let w = 0;
-              w < batchexecutionaccounttransaction.requests.length;
-              w++
-            ) {
+            for (let j = 0; j < transactions.items.length; j++) {
               try {
                 assert.isNotEmpty(
-                  batchexecutionaccounttransaction.requests[w].to,
-                  "The To Address value is empty in the Batch Execution Account Transaction response."
+                  transactions.items[j].to,
+                  "The To Address value is empty in the transactions response."
                 );
               } catch (e) {
                 console.log(e);
@@ -469,60 +368,67 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
 
               try {
                 assert.isNotEmpty(
-                  batchexecutionaccounttransaction.requests[w].data,
-                  "The Data value is empty in the Execution Batch Rccount Transaction response."
+                  transactions.items[j].gasLimit,
+                  "The gasLimit value is empty in the transactions response."
+                );
+              } catch (e) {
+                console.log(e);
+              }
+
+              try {
+                assert.isNotEmpty(
+                  transactions.items[j].gasPrice,
+                  "The gasPrice value is empty in the transactions response."
+                );
+              } catch (e) {
+                console.log(e);
+              }
+
+              try {
+                assert.isNotEmpty(
+                  transactions.items[j].data,
+                  "The data value is empty in the transactions response."
+                );
+              } catch (e) {
+                console.log(e);
+              }
+
+              try {
+                assert.isNotEmpty(
+                  transactions.items[j].value,
+                  "The value's value is empty in the transactions response."
+                );
+              } catch (e) {
+                console.log(e);
+              }
+
+              try {
+                assert.isNumber(
+                  transactions.items[j].chainId,
+                  "The chainId value is not number in the transactions response."
+                );
+              } catch (e) {
+                console.log(e);
+              }
+
+              try {
+                assert.isNull(
+                  transactions.items[j].type,
+                  "The type value is not null in the transactions response."
                 );
               } catch (e) {
                 console.log(e);
               }
             }
 
-            try {
-              assert.isNull(
-                batchexecutionaccounttransaction.estimation,
-                "The estimatation value is empty in the Batch Execution Account Transaction response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-
-            // Batch the cross chain transaction
-            let { to, value, data } = quote.transaction;
-            batchCrossChainTransaction =
-              await testNetSdk.batchExecuteAccountTransaction({
-                to,
-                data: data,
-                value,
+            for (let transaction of transactions.items) {
+              // Batch the approval transaction
+              await mainNetSdk.batchExecuteAccountTransaction({
+                to: transaction.to,
+                data: transaction.data,
+                value: transaction.value,
               });
-          }
-
-          for (let j = 0; j < batchCrossChainTransaction.requests.length; j++) {
-            try {
-              assert.isNotEmpty(
-                batchCrossChainTransaction.requests[j].to,
-                "The To Address value is empty in the Batch Cross Chain Transaction response."
-              );
-            } catch (e) {
-              console.log(e);
             }
-
-            try {
-              assert.isNotEmpty(
-                batchCrossChainTransaction.requests[j].data,
-                "The Data value is empty in the Batch Cross Chain Transaction response."
-              );
-            } catch (e) {
-              console.log(e);
-            }
-          }
-
-          try {
-            assert.isNull(
-              batchCrossChainTransaction.estimation,
-              "The estimation value is not null in the Batch Cross Chain Transaction response."
-            );
-          } catch (e) {
-            console.log(e);
           }
         } catch (e) {
           console.log(e);
@@ -535,13 +441,13 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
         let EstimatedGasPrice_Estimate;
 
         try {
-          estimationResponse = await testNetSdk.estimateGatewayBatch();
+          estimationResponse = await mainNetSdk.estimateGatewayBatch();
 
           for (let k = 0; k < estimationResponse.requests.length; k++) {
             try {
               assert.isNotEmpty(
                 estimationResponse.requests[k].to,
-                "The To Address value is empty in the Estimation Batch response."
+                "The To Address value is empty in the Batch Execution Account Transaction response."
               );
             } catch (e) {
               console.log(e);
@@ -550,7 +456,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
             try {
               assert.isNotEmpty(
                 estimationResponse.requests[k].data,
-                "The Data value is empty in the Estimation Batch Response."
+                "The data value is empty in the Batch Execution Account Transaction response."
               );
             } catch (e) {
               console.log(e);
@@ -560,7 +466,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
           try {
             assert.isNotEmpty(
               estimationResponse.estimation.feeAmount,
-              "The feeAmount value is empty in the Estimation Batch Response."
+              "The feeAmount value is empty in the Estimation Response."
             );
             FeeAmount_Estimate = estimationResponse.estimation.feeAmount._hex;
           } catch (e) {
@@ -590,7 +496,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
           try {
             assert.isNotEmpty(
               estimationResponse.estimation.estimatedGasPrice,
-              "The estimatedGasPrice value is empty in the Estimation Batch Response."
+              "The estimatedGasPrice value is empty in the Estimation Response."
             );
             EstimatedGasPrice_Estimate =
               estimationResponse.estimation.estimatedGasPrice._hex;
@@ -601,7 +507,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
           try {
             assert.isNotEmpty(
               estimationResponse.estimation.signature,
-              "The signature value is empty in the Estimation Batch Response."
+              "The signature value is empty in the Estimation Response."
             );
           } catch (e) {
             console.log(e);
@@ -617,14 +523,14 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
         let EstimatedGasPrice_Submit;
 
         try {
-          submissionResponse = await testNetSdk.submitGatewayBatch({
+          submissionResponse = await mainNetSdk.submitGatewayBatch({
             guarded: false,
           });
 
           try {
             assert.isNull(
               submissionResponse.transaction,
-              "The transaction is no null in the Submit Batch Response."
+              "The transaction value is not null in the Submit Batch Response."
             );
           } catch (e) {
             console.log(e);
