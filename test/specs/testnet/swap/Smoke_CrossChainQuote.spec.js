@@ -12,10 +12,10 @@ import {
 import { ethers } from "ethers";
 import pkg from "@etherspot/contracts";
 
-let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
+let network = ["arbitrum", "bsc", "xdai", "mumbai", "optimism"];
 let testNetSdk;
 
-describe("The SDK, when cross chain quote flow on the testNet", () => {
+describe("The SDK, when cross chain quote flow on the TestNet", () => {
   for (let i = 0; i < network.length; i++) {
     // CROSS CHAIN QUOTES ON RESPECTIVE NETWORK
     it(
@@ -34,7 +34,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail("The SDK is not initialled successfully.");
         }
 
         // Compute the smart wallet address
@@ -48,14 +48,16 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The smart wallet address is not calculated successfully."
+          );
         }
 
         try {
           let ArbitrumUSDC = "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8"; // Arbitrum - USDC
           let BscUSDC = "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"; // Bsc - USDC
-          let MaticUSDC = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // Matic - USDC
-          let testnetUSDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // testnet - USDC
+          let MumbaiUSDC = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // Mumbai - USDC
+          let TestnetUSDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // Testnet - USDC
           let XdaiUSDC = "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83"; // Xdai - USDC
           let OptimismUSDC = "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"; // Optimism - USDC
 
@@ -82,26 +84,26 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
 
-            case "testnet":
-              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.testnet];
+            case "Testnet":
+              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Testnet];
               toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-              fromTokenAddress = testnetUSDC;
+              fromTokenAddress = TestnetUSDC;
               toTokenAddress = XdaiUSDC;
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
 
             case "xdai":
               fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-              toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
+              toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Mumbai];
               fromTokenAddress = XdaiUSDC;
-              toTokenAddress = MaticUSDC;
+              toTokenAddress = MumbaiUSDC;
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
 
-            case "matic":
-              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
+            case "mumbai":
+              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Mumbai];
               toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-              fromTokenAddress = MaticUSDC;
+              fromTokenAddress = MumbaiUSDC;
               toTokenAddress = XdaiUSDC;
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
@@ -185,7 +187,7 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail("An error is displayed in the quote Request Payload.");
         }
 
         // Get the cross chain quotes
@@ -525,7 +527,9 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "An error is displated while performing the action on the cross chain quotes."
+          );
         }
 
         // Estimating the batch
@@ -607,7 +611,9 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The estimation of the batch is not performed successfully."
+          );
         }
 
         // Submitting the batch
@@ -788,7 +794,9 @@ describe("The SDK, when cross chain quote flow on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The submittion of the batch is not performed successfully."
+          );
         }
       }
     );

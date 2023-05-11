@@ -33,7 +33,7 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail("The SDK is not initialled successfully.");
         }
 
         // Compute the smart wallet address
@@ -47,7 +47,9 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The smart wallet address is not calculated successfully."
+          );
         }
 
         try {
@@ -184,19 +186,21 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail("An error is displayed in the quote Request Payload.");
         }
 
-        // Get the cross chain quotes
-        let quotes;
+        // Get the advance routes lifi
+        let advanceRoutesLiFi;
         try {
-          quotes = await mainNetSdk.getAdvanceRoutesLiFi(quoteRequestPayload);
+          advanceRoutesLiFi = await mainNetSdk.getAdvanceRoutesLiFi(
+            quoteRequestPayload
+          );
 
-          for (let i; i < quotes.items.length; i++) {
+          for (let i; i < advanceRoutesLiFi.items.length; i++) {
             try {
               assert.isNotEmpty(
-                quotes.items[i].id,
-                "The id value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].id,
+                "The id value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -204,8 +208,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNumber(
-                quotes.items[i].fromChainId,
-                "The fromChainId value is not number in the quotes response."
+                advanceRoutesLiFi.items[i].fromChainId,
+                "The fromChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -213,8 +217,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].fromAmountUSD,
-                "The fromAmountUSD value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].fromAmountUSD,
+                "The fromAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -222,8 +226,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].fromAmount,
-                "The fromAmount value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].fromAmount,
+                "The fromAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -231,8 +235,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].fromToken,
-                "The fromToken value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].fromToken,
+                "The fromToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -240,9 +244,9 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.strictEqual(
-                quotes.items[i].fromAddress,
+                advanceRoutesLiFi.items[i].fromAddress,
                 "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
-                "The fromAmount value is empty in the quotes response."
+                "The fromAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -250,8 +254,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNumber(
-                quotes.items[i].toChainId,
-                "The toChainId value is not number in the quotes response."
+                advanceRoutesLiFi.items[i].toChainId,
+                "The toChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -259,8 +263,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].toAmountUSD,
-                "The toAmountUSD value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].toAmountUSD,
+                "The toAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -268,8 +272,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].toAmount,
-                "The toAmount value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].toAmount,
+                "The toAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -277,8 +281,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].toAmountMin,
-                "The toAmountMin value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].toAmountMin,
+                "The toAmountMin value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -286,8 +290,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].toToken,
-                "The toToken value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].toToken,
+                "The toToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -295,9 +299,9 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.strictEqual(
-                quotes.items[i].toAddress,
+                advanceRoutesLiFi.items[i].toAddress,
                 "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
-                "The toAddress value is not displayed correct in the quotes response."
+                "The toAddress value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -305,8 +309,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].gasCostUSD,
-                "The gasCostUSD value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].gasCostUSD,
+                "The gasCostUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -314,8 +318,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isFalse(
-                quotes.items[i].containsSwitchChain,
-                "The containsSwitchChain value is not false in the quotes response."
+                advanceRoutesLiFi.items[i].containsSwitchChain,
+                "The containsSwitchChain value is not false in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -323,8 +327,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].steps,
-                "The steps value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].steps,
+                "The steps value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -332,8 +336,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].insurance,
-                "The insurance value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].insurance,
+                "The insurance value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -341,19 +345,19 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].tags,
-                "The tags value is enpty in the quotes response."
+                advanceRoutesLiFi.items[i].tags,
+                "The tags value is enpty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
             }
           }
 
-          if (quotes.items.length > 0) {
-            // Select the first quote
-            let quote = quotes.items[0];
+          if (advanceRoutesLiFi.items.length > 0) {
+            // Select the first advance route lifi
+            let advanceRouteLiFi = advanceRoutesLiFi.items[0];
             let transactions = await mainNetSdk.getStepTransaction({
-              route: quote,
+              route: advanceRouteLiFi,
             });
 
             for (let j = 0; j < transactions.items.length; j++) {
@@ -431,7 +435,9 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
             }
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "An error is displated while performing the action on the advance routes lifi."
+          );
         }
 
         // Estimating the batch
@@ -513,7 +519,9 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The estimation of the batch is not performed successfully."
+          );
         }
 
         // Submitting the batch
@@ -694,7 +702,9 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The submittion of the batch is not performed successfully."
+          );
         }
       }
     );

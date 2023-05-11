@@ -26,7 +26,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail("The SDK is not initialled successfully.");
         }
 
         // Compute the smart wallet address
@@ -40,7 +40,9 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The smart wallet address is not calculated successfully."
+          );
         }
 
         // Adding transaction to a batch
@@ -52,7 +54,9 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
               value: "1000000000000",
             });
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The addition of transaction in the batch is not performed successfully."
+          );
         }
 
         try {
@@ -92,7 +96,9 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         try {
           estimationResponse = await mainNetSdk.estimateGatewayBatch();
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The estimation of the batch is not performed successfully."
+          );
         }
 
         try {
@@ -175,7 +181,9 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             guarded: false,
           });
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The submittion of the batch is not performed successfully."
+          );
         }
 
         try {

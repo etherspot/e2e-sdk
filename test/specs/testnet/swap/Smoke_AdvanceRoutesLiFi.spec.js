@@ -11,10 +11,10 @@ import {
 } from "etherspot";
 import { ethers } from "ethers";
 
-let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
+let network = ["arbitrum", "bsc", "xdai", "mumbai", "optimism"];
 let testNetSdk;
 
-describe("The SDK, when advance routes lifi flow on the testNet", () => {
+describe("The SDK, when advance routes lifi flow on the TestNet", () => {
   for (let l = 0; l < network.length; l++) {
     // ADVANCE ROUTES LIFI ON RESPECTIVE NETWORK
     it(
@@ -33,7 +33,7 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail("The SDK is not initialled successfully.");
         }
 
         // Compute the smart wallet address
@@ -47,14 +47,16 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The smart wallet address is not calculated successfully."
+          );
         }
 
         try {
           let ArbitrumUSDC = "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8"; // Arbitrum - USDC
           let BscUSDC = "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"; // Bsc - USDC
-          let MaticUSDC = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // Matic - USDC
-          let testnetUSDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // testnet - USDC
+          let MumbaiUSDC = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // Mumbai - USDC
+          let TestnetUSDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // Testnet - USDC
           let XdaiUSDC = "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83"; // Xdai - USDC
           let OptimismUSDC = "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"; // Optimism - USDC
 
@@ -69,7 +71,7 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
               fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Arbitrum];
               toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
               fromTokenAddress = ArbitrumUSDC;
-              toTokenAddress = MaticUSDC;
+              toTokenAddress = MumbaiUSDC;
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
 
@@ -81,26 +83,26 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
 
-            case "testnet":
-              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.testnet];
+            case "Testnet":
+              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Testnet];
               toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-              fromTokenAddress = testnetUSDC;
+              fromTokenAddress = TestnetUSDC;
               toTokenAddress = XdaiUSDC;
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
 
             case "xdai":
               fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-              toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
+              toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Mumbai];
               fromTokenAddress = XdaiUSDC;
-              toTokenAddress = MaticUSDC;
+              toTokenAddress = MumbaiUSDC;
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
 
-            case "matic":
-              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
+            case "mumbai":
+              fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Mumbai];
               toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-              fromTokenAddress = MaticUSDC;
+              fromTokenAddress = MumbaiUSDC;
               toTokenAddress = XdaiUSDC;
               fromAmount = ethers.utils.parseUnits("0.5", 6);
               break;
@@ -184,19 +186,21 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail("An error is displayed in the quote Request Payload.");
         }
 
-        // Get the cross chain quotes
-        let quotes;
+        // Get the advance routes lifi
+        let advanceRoutesLiFi;
         try {
-          quotes = await testNetSdk.getAdvanceRoutesLiFi(quoteRequestPayload);
+          advanceRoutesLiFi = await testNetSdk.getAdvanceRoutesLiFi(
+            quoteRequestPayload
+          );
 
-          for (let i; i < quotes.items.length; i++) {
+          for (let i; i < advanceRoutesLiFi.items.length; i++) {
             try {
               assert.isNotEmpty(
-                quotes.items[i].id,
-                "The id value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].id,
+                "The id value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -204,8 +208,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNumber(
-                quotes.items[i].fromChainId,
-                "The fromChainId value is not number in the quotes response."
+                advanceRoutesLiFi.items[i].fromChainId,
+                "The fromChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -213,8 +217,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].fromAmountUSD,
-                "The fromAmountUSD value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].fromAmountUSD,
+                "The fromAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -222,8 +226,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].fromAmount,
-                "The fromAmount value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].fromAmount,
+                "The fromAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -231,8 +235,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].fromToken,
-                "The fromToken value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].fromToken,
+                "The fromToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -240,9 +244,9 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.strictEqual(
-                quotes.items[i].fromAddress,
+                advanceRoutesLiFi.items[i].fromAddress,
                 "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
-                "The fromAmount value is empty in the quotes response."
+                "The fromAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -250,8 +254,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNumber(
-                quotes.items[i].toChainId,
-                "The toChainId value is not number in the quotes response."
+                advanceRoutesLiFi.items[i].toChainId,
+                "The toChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -259,8 +263,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].toAmountUSD,
-                "The toAmountUSD value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].toAmountUSD,
+                "The toAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -268,8 +272,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].toAmount,
-                "The toAmount value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].toAmount,
+                "The toAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -277,8 +281,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].toAmountMin,
-                "The toAmountMin value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].toAmountMin,
+                "The toAmountMin value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -286,8 +290,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].toToken,
-                "The toToken value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].toToken,
+                "The toToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -295,9 +299,9 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.strictEqual(
-                quotes.items[i].toAddress,
+                advanceRoutesLiFi.items[i].toAddress,
                 "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
-                "The toAddress value is not displayed correct in the quotes response."
+                "The toAddress value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -305,8 +309,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].gasCostUSD,
-                "The gasCostUSD value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].gasCostUSD,
+                "The gasCostUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -314,8 +318,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isFalse(
-                quotes.items[i].containsSwitchChain,
-                "The containsSwitchChain value is not false in the quotes response."
+                advanceRoutesLiFi.items[i].containsSwitchChain,
+                "The containsSwitchChain value is not false in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -323,8 +327,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].steps,
-                "The steps value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].steps,
+                "The steps value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -332,8 +336,8 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].insurance,
-                "The insurance value is empty in the quotes response."
+                advanceRoutesLiFi.items[i].insurance,
+                "The insurance value is empty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -341,19 +345,19 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
 
             try {
               assert.isNotEmpty(
-                quotes.items[i].tags,
-                "The tags value is enpty in the quotes response."
+                advanceRoutesLiFi.items[i].tags,
+                "The tags value is enpty in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
             }
           }
 
-          if (quotes.items.length > 0) {
-            // Select the first quote
-            let quote = quotes.items[0];
+          if (advanceRoutesLiFi.items.length > 0) {
+            // Select the first advance route lifi
+            let advanceRouteLiFi = advanceRoutesLiFi.items[0];
             let transactions = await testNetSdk.getStepTransaction({
-              route: quote,
+              route: advanceRouteLiFi,
             });
 
             for (let j = 0; j < transactions.items.length; j++) {
@@ -431,7 +435,9 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
             }
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "An error is displated while performing the action on the advance routes lifi."
+          );
         }
 
         // Estimating the batch
@@ -513,7 +519,9 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The estimation of the batch is not performed successfully."
+          );
         }
 
         // Submitting the batch
@@ -694,7 +702,9 @@ describe("The SDK, when advance routes lifi flow on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The submittion of the batch is not performed successfully."
+          );
         }
       }
     );

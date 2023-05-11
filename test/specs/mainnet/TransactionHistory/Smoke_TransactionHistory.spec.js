@@ -33,7 +33,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail("The SDK is not initialled successfully.");
         }
 
         // Compute the smart wallet address
@@ -47,7 +47,9 @@ describe("Get the transaction history on the MainNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The smart wallet address is not calculated successfully."
+          );
         }
 
         // Adding transaction to a batch
@@ -168,7 +170,9 @@ describe("Get the transaction history on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The estimation of the batch is not performed successfully."
+          );
         }
 
         // Submitting the batch
@@ -347,7 +351,9 @@ describe("Get the transaction history on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The submittion of the batch is not performed successfully."
+          );
         }
 
         // get the submitted batch and wait till the status become sent
@@ -669,7 +675,9 @@ describe("Get the transaction history on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "An error is displayed while getting the submmited batch with sent status."
+          );
         }
 
         // Fetching a single transaction
@@ -902,7 +910,9 @@ describe("Get the transaction history on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "An error is displayed while Fetching single transaction."
+          );
         }
 
         // Fetching historical transactions
@@ -1254,7 +1264,9 @@ describe("Get the transaction history on the MainNet", () => {
             }
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "An error is displayed while Fetching historical transactions."
+          );
         }
       }
     );

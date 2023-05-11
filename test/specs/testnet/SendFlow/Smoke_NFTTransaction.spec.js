@@ -17,10 +17,10 @@ let encodedData = contract.encodeFunctionData("transferFrom", [
   tokenId,
 ]);
 
-let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
+let network = ["arbitrum", "bsc", "xdai", "mumbai", "optimism"];
 let testNetSdk;
 
-describe("The SDK, when sending a NFT Transaction on the testNet", () => {
+describe("The SDK, when sending a NFT Transaction on the TestNet", () => {
   for (let i = 0; i < network.length; i++) {
     // SEND NFT ON ON RESPECTIVE NETWORK
     it("Perform the send NFT token on " + network[i] + " network", async () => {
@@ -37,7 +37,7 @@ describe("The SDK, when sending a NFT Transaction on the testNet", () => {
           "The EOA Address is not calculated correctly."
         );
       } catch (e) {
-        console.log(e);
+        assert.fail("The SDK is not initialled successfully.");
       }
 
       // Compute the smart wallet address
@@ -51,7 +51,7 @@ describe("The SDK, when sending a NFT Transaction on the testNet", () => {
           "The smart wallet address is not calculated correctly."
         );
       } catch (e) {
-        console.log(e);
+        assert.fail("The smart wallet address is not calculated successfully.");
       }
 
       // Adding transaction details to a batch
@@ -63,7 +63,9 @@ describe("The SDK, when sending a NFT Transaction on the testNet", () => {
         });
         console.log("Batch Reponse: ", response);
       } catch (e) {
-        console.log(e);
+        assert.fail(
+          "The addition of transaction in the batch is not performed successfully."
+        );
       }
 
       // Estimating the batch
@@ -72,7 +74,9 @@ describe("The SDK, when sending a NFT Transaction on the testNet", () => {
         estimationResponse = await testNetSdk.estimateGatewayBatch();
         console.log("Gas estimated at:", estimationResponse);
       } catch (e) {
-        console.log(e);
+        assert.fail(
+          "The estimation of the batch is not performed successfully."
+        );
       }
 
       // Submitting the batch
@@ -83,7 +87,9 @@ describe("The SDK, when sending a NFT Transaction on the testNet", () => {
         });
         console.log("Status of the batch submition: ", submissionResponse);
       } catch (e) {
-        console.log(e);
+        assert.fail(
+          "The submittion of the batch is not performed successfully."
+        );
       }
     });
   }

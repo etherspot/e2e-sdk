@@ -5,10 +5,10 @@ import { EnvNames, Sdk } from "etherspot";
 import { ethers } from "ethers";
 import { assert } from "chai";
 
-let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
+let network = ["arbitrum", "bsc", "xdai", "mumbai", "optimism"];
 let testNetSdk;
 
-describe("The SDK, when single chain swap on the testNet", () => {
+describe("The SDK, when single chain swap on the TestNet", () => {
   for (let i = 0; i < network.length; i++) {
     // SINGLE CHAIN SWAP ON RESPECTIVE NETWORK
     it(
@@ -31,7 +31,7 @@ describe("The SDK, when single chain swap on the testNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail("The SDK is not initialled successfully.");
         }
 
         // Compute the smart wallet address
@@ -45,7 +45,9 @@ describe("The SDK, when single chain swap on the testNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The smart wallet address is not calculated successfully."
+          );
         }
 
         // Get exchange offers
@@ -67,7 +69,7 @@ describe("The SDK, when single chain swap on the testNet", () => {
               });
               break;
 
-            case "testnet":
+            case "Testnet":
               offers = await testNetSdk.getExchangeOffers({
                 fromTokenAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC Token
                 toTokenAddress: "0xdAC17F958D2ee523a2206206994597C13D831ec7", // USDT Token
@@ -83,7 +85,7 @@ describe("The SDK, when single chain swap on the testNet", () => {
               });
               break;
 
-            case "matic":
+            case "mumbai":
               offers = await testNetSdk.getExchangeOffers({
                 fromTokenAddress: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", // USDC Token
                 toTokenAddress: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F", // USDT Token
@@ -183,7 +185,7 @@ describe("The SDK, when single chain swap on the testNet", () => {
             }
           }
         } catch (e) {
-          console.log(e);
+          assert.fail("An error is displayed while fetching the offers list.");
         }
 
         // Estimating the batch
@@ -276,7 +278,9 @@ describe("The SDK, when single chain swap on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The estimation of the batch is not performed successfully."
+          );
         }
 
         // Submitting the batch
@@ -473,7 +477,9 @@ describe("The SDK, when single chain swap on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The submittion of the batch is not performed successfully."
+          );
         }
       }
     );

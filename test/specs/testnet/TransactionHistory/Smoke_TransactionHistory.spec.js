@@ -6,10 +6,10 @@ import { EnvNames, Sdk } from "etherspot";
 import { BigNumber } from "ethers";
 import Helper from "../../../utils/Helper.js";
 
-let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
+let network = ["arbitrum", "bsc", "xdai", "mumbai", "optimism"];
 let testNetSdk;
 
-describe("Get the transaction history on the testNet", () => {
+describe("Get the transaction history on the TestNet", () => {
   for (let l = 0; l < network.length; l++) {
     // GET TRANSACTION HISTORY FROM RESPECTIVE NETWORK
     it(
@@ -33,7 +33,7 @@ describe("Get the transaction history on the testNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail("The SDK is not initialled successfully.");
         }
 
         // Compute the smart wallet address
@@ -47,7 +47,9 @@ describe("Get the transaction history on the testNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The smart wallet address is not calculated successfully."
+          );
         }
 
         // Adding transaction to a batch
@@ -168,7 +170,9 @@ describe("Get the transaction history on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The estimation of the batch is not performed successfully."
+          );
         }
 
         // Submitting the batch
@@ -347,7 +351,9 @@ describe("Get the transaction history on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The submittion of the batch is not performed successfully."
+          );
         }
 
         // get the submitted batch and wait till the status become sent
@@ -669,7 +675,9 @@ describe("Get the transaction history on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "An error is displayed while getting the submmited batch with sent status."
+          );
         }
 
         // Fetching a single transaction
@@ -902,7 +910,9 @@ describe("Get the transaction history on the testNet", () => {
             console.log(e);
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "An error is displayed while Fetching single transaction."
+          );
         }
 
         // Fetching historical transactions
@@ -1254,7 +1264,9 @@ describe("Get the transaction history on the testNet", () => {
             }
           }
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "An error is displayed while Fetching historical transactions."
+          );
         }
       }
     );

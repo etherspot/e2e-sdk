@@ -4,10 +4,10 @@ dotenv.config(); // init dotenv
 import { assert } from "chai";
 import { EnvNames, Sdk } from "etherspot";
 
-let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
+let network = ["arbitrum", "bsc", "xdai", "mumbai", "optimism"];
 let testNetSdk;
 
-describe("The SDK, when sending a native asset on the testNet", () => {
+describe("The SDK, when sending a native asset on the TestNet", () => {
   for (let i = 0; i < network.length; i++) {
     // SEND NATIVE TOKEN ON RESPECTIVE NETWORK
     it(
@@ -26,7 +26,7 @@ describe("The SDK, when sending a native asset on the testNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail("The SDK is not initialled successfully.");
         }
 
         // Compute the smart wallet address
@@ -40,7 +40,9 @@ describe("The SDK, when sending a native asset on the testNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The smart wallet address is not calculated successfully."
+          );
         }
 
         // Adding transaction to a batch
@@ -52,7 +54,9 @@ describe("The SDK, when sending a native asset on the testNet", () => {
               value: "1000000000000",
             });
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The addition of transaction in the batch is not performed successfully."
+          );
         }
 
         try {
@@ -92,7 +96,9 @@ describe("The SDK, when sending a native asset on the testNet", () => {
         try {
           estimationResponse = await testNetSdk.estimateGatewayBatch();
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The estimation of the batch is not performed successfully."
+          );
         }
 
         try {
@@ -175,7 +181,9 @@ describe("The SDK, when sending a native asset on the testNet", () => {
             guarded: false,
           });
         } catch (e) {
-          console.log(e);
+          assert.fail(
+            "The submittion of the batch is not performed successfully."
+          );
         }
 
         try {

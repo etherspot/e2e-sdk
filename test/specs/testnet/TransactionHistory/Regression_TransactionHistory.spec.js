@@ -8,8 +8,9 @@ describe("The regression suite for the Get the transaction history on the TestNe
   // GET TRANSACTION HISTORY FROM THE RANDOM HASH FROM XDAI NETWORK
   it("Setup the SDK for xDai network and get the transaction history from the random hash", async () => {
     // initialize the sdk
+    let xdaiTestNetSdk;
     try {
-      let xdaiTestNetSdk = new Sdk(process.env.PRIVATE_KEY, {
+      xdaiTestNetSdk = new Sdk(process.env.PRIVATE_KEY, {
         env: EnvNames.TestNets,
         networkName: NetworkNames.Xdai,
       });
@@ -20,7 +21,7 @@ describe("The regression suite for the Get the transaction history on the TestNe
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      assert.fail("The SDK is not initialled successfully.");
     }
 
     // Compute the smart wallet address
@@ -34,7 +35,7 @@ describe("The regression suite for the Get the transaction history on the TestNe
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      assert.fail("The smart wallet address is not calculated successfully.");
     }
 
     // Fetching historical transactions
@@ -238,7 +239,9 @@ describe("The regression suite for the Get the transaction history on the TestNe
         console.log(e);
       }
     } catch (e) {
-      console.log(e);
+      assert.fail(
+        "An error is displayed while Fetching historical transactions."
+      );
     }
 
     // Fetching a single transaction
@@ -600,15 +603,16 @@ describe("The regression suite for the Get the transaction history on the TestNe
         console.log(e);
       }
     } catch (e) {
-      console.log(e);
+      assert.fail("An error is displayed while Fetching single transaction.");
     }
   });
 
   // GET TRANSACTION HISTORY WITH INCORRECT HASH FROM XDAI NETWORK
-  it.only("Setup the SDK for xDai network and get the transaction history with incorrect hash", async () => {
+  it("Setup the SDK for xDai network and get the transaction history with incorrect hash", async () => {
     // initialize the sdk
+    let xdaiTestNetSdk;
     try {
-      let xdaiTestNetSdk = new Sdk(process.env.PRIVATE_KEY, {
+      xdaiTestNetSdk = new Sdk(process.env.PRIVATE_KEY, {
         env: EnvNames.TestNets,
         networkName: NetworkNames.Xdai,
       });
@@ -619,7 +623,7 @@ describe("The regression suite for the Get the transaction history on the TestNe
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      assert.fail("The SDK is not initialled successfully.");
     }
 
     // Compute the smart wallet address
@@ -633,19 +637,89 @@ describe("The regression suite for the Get the transaction history on the TestNe
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      assert.fail("The smart wallet address is not calculated successfully.");
     }
 
     // Fetching a single transaction
     try {
-      await xdaiTestNetSdk.getTransaction({
-        hash: "0x3df9fe91b29f4b2bf1b148baf2f8E207e98137F8318ccf39eDc930d1ceA551df", // Incorrect Transaction Hash
+      let output = await xdaiTestNetSdk.getTransaction({
+        hash: "0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8318ccf39eDc930d1ceA551df", // Incorrect Transaction Hash
       });
+
+      if (output == null) {
+        console.log(
+          "The null is received while fetching the transaction history with incorrect hash."
+        );
+      } else {
+        assert.fail(
+          "Getting the single transaction history with incorrect Hash."
+        );
+      }
+    } catch (e) {
       assert.fail(
         "Getting the single transaction history with incorrect Hash."
       );
+    }
+  });
+
+  // GET TRANSACTION HISTORY WHEN HASH HEX IS NOT WITH 32 SIZE FROM XDAI NETWORK
+  it("Setup the SDK for xDai network and get the transaction history when hash hex is not with 32 size", async () => {
+    // initialize the sdk
+    let xdaiTestNetSdk;
+    try {
+      xdaiTestNetSdk = new Sdk(process.env.PRIVATE_KEY, {
+        env: EnvNames.TestNets,
+        networkName: NetworkNames.Xdai,
+      });
+
+      assert.strictEqual(
+        xdaiTestNetSdk.state.accountAddress,
+        "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
+        "The EOA Address is not calculated correctly."
+      );
     } catch (e) {
-      console.log(e);
+      assert.fail("The SDK is not initialled successfully.");
+    }
+
+    // Compute the smart wallet address
+    try {
+      let smartWalletOutput = await xdaiTestNetSdk.computeContractAccount();
+      let xdaiSmartWalletAddress = smartWalletOutput.address;
+
+      assert.strictEqual(
+        xdaiSmartWalletAddress,
+        "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+        "The smart wallet address is not calculated correctly."
+      );
+    } catch (e) {
+      assert.fail("The smart wallet address is not calculated successfully.");
+    }
+
+    // Fetching a single transaction
+    try {
+      try {
+        await xdaiTestNetSdk.getTransaction({
+          hash: "0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8z18ccf39eDc930d1ceA551df", // Incorrect Transaction Hash
+        });
+
+        assert.fail(
+          "The transaction history is fetched with hash which not having 32 size hex."
+        );
+      } catch (e) {
+        if (e.errors[0].constraints.isHex == "hash must be hex with 32 size") {
+          console.log(
+            "The validation message is displayed when hash not having 32 size hex while fetching the transaction history."
+          );
+        } else {
+          assert.fail(
+            "The transaction history is fetched with hash which not having 32 size hex."
+          );
+        }
+      }
+    } catch (e) {
+      assert.fail(
+        "The transaction history is fetched with hash which not having 32 size hex."
+      );
     }
   });
 });
