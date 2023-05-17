@@ -6,7 +6,7 @@ import Helper from "../../../utils/Helper.js";
 import * as dotenv from "dotenv";
 dotenv.config(); // init dotenv
 
-let wait_time = 5000;
+let wait_time = 1000;
 let deviationPercentage;
 
 let network_etherspot = [
@@ -183,7 +183,9 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
                     rates.items[y].usd +
                     " and the Coingecho is " +
                     responsesCoidMarket.data[0].current_price +
-                    ". So rate variation of the both the tokens are not displayed correctly."
+                    ". So rate variation of both tokens is not displayed correctly for the " +
+                    network_etherspot[n].toUpperCase() +
+                    " Network."
                 );
               } else {
                 console.log(
@@ -193,7 +195,9 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
                     rates.items[y].usd +
                     " and the Coingecho is " +
                     responsesCoidMarket.data[0].current_price +
-                    ". So rate variation of the both the tokens are displayed correctly."
+                    ". So rate variation of both tokens is displayed correctly for the " +
+                    network_etherspot[n].toUpperCase() +
+                    " Network."
                 );
               }
               break;
