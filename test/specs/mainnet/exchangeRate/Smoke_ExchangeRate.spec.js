@@ -6,7 +6,7 @@ import Helper from "../../../utils/Helper.js";
 import * as dotenv from "dotenv";
 dotenv.config(); // init dotenv
 
-let wait_time = 4000;
+let wait_time = 5000;
 let deviationPercentage;
 
 let network_etherspot = [
@@ -98,26 +98,22 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
           );
         }
 
-        try {
-          tokenListAddress_Coingecho = responsesCoinList_CoinGecho.data.filter(
-            (address) => {
-              return (
-                typeof address.platforms[network_coingecho[n]] === "string" &&
-                address.platforms[network_coingecho[n]] !== ""
-              );
-            }
-          );
-
-          tokenListId_Coingecho = responsesCoinList_CoinGecho.data.filter(
-            (coinid) => {
-              return coinid.id;
-            }
-          );
-        } catch (e) {
-          assert.fail(
-            e,
-            "An error is displayed while adding the address and ID of the chain in the respective arrays."
-          );
+        for (let z = 0; z < responsesCoinList_CoinGecho.data.length; z++) {
+          if (
+            typeof responsesCoinList_CoinGecho.data[z].platforms[
+              network_coingecho[n]
+            ] === "string" &&
+            responsesCoinList_CoinGecho.data[z].platforms[
+              network_coingecho[n]
+            ] !== ""
+          ) {
+            tokenListAddress_Coingecho.push(
+              responsesCoinList_CoinGecho.data[z].platforms[
+                network_coingecho[n]
+              ]
+            );
+            tokenListId_Coingecho.push(responsesCoinList_CoinGecho.data[z].id);
+          }
         }
       } catch (e) {
         assert.fail(
@@ -162,13 +158,9 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
             Helper.wait(wait_time);
             let etherspotAddress = rates.items[y].address;
             console.log("Etherspot Address:", etherspotAddress.toLowerCase());
-            console.log(
-              "Coingecho Address:",
-              tokenListAddress_Coingecho[j].toLowerCase()
-            );
+            console.log("Coingecho Address:", tokenListAddress_Coingecho[j]);
             if (
-              etherspotAddress.toLowerCase() ===
-              tokenListAddress_Coingecho[j].toLowerCase()
+              etherspotAddress.toLowerCase() === tokenListAddress_Coingecho[j]
             ) {
               Helper.wait(wait_time);
 
