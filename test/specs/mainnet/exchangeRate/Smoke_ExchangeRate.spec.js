@@ -6,6 +6,9 @@ import Helper from "../../../utils/Helper.js";
 import * as dotenv from "dotenv";
 dotenv.config(); // init dotenv
 
+let wait_time = 4000;
+let deviationPercentage;
+
 let network_etherspot = [
   "arbitrum",
   "bsc",
@@ -22,7 +25,7 @@ let network_etherspot = [
   "fuse",
 ];
 
-let network_coinGecho = [
+let network_coingecho = [
   "arbitrum-one",
   "binance-smart-chain",
   "xdai",
@@ -38,16 +41,16 @@ let network_coinGecho = [
   "fuse",
 ];
 
-describe("Compare the Token Rates of the Etherspot and CoinGecho Services.", () => {
+describe("Compare the Token Rates of the Etherspot and Coingecho Services", () => {
   for (let n = 0; n < network_etherspot.length; n++) {
-    it("Validate the Token Rates of the Etherspot and CoinGecho Services.", async () => {
+    it("Validate the Token Rates of the Etherspot and Coingecho Services", async () => {
       let mainNetSdk;
-      let TOKEN_LIST_ADDRESS_ETHERSPOT = [];
-      let XDAI_CHAIN_ID_ETHERSPOT;
-      let TOKEN_LIST_ADDRESS_COINGECHO = [];
-      let TOKEN_LIST_ID_COINGECHO = [];
-      let responsesCoidList;
-      let requestPayload;
+      let tokenListAddress_Etherspot = [];
+      let tokenListChainId_Etherspot;
+      let tokenListAddress_Coingecho = [];
+      let tokenListId_Coingecho = [];
+      let responsesCoinList_CoinGecho;
+      let requestPayload_Etherspot;
 
       // initialize the sdk
       try {
@@ -62,7 +65,7 @@ describe("Compare the Token Rates of the Etherspot and CoinGecho Services.", () 
           "The EOA Address is not calculated correctly."
         );
       } catch (e) {
-        assert.fail("The SDK is not initialled successfully.");
+        assert.fail(e, "The SDK is not initialled successfully.");
       }
 
       // Compute the smart wallet address
@@ -76,30 +79,50 @@ describe("Compare the Token Rates of the Etherspot and CoinGecho Services.", () 
           "The smart wallet address is not calculated correctly."
         );
       } catch (e) {
-        assert.fail("The smart wallet address is not calculated successfully.");
+        assert.fail(
+          e,
+          "The smart wallet address is not calculated successfully."
+        );
       }
 
-      // Get the token addresses and it's rate from the CoinGecho
+      // Get the token addresses and it's rate from the Coingecho
       try {
-        responsesCoidList = await axios.get(
-          "https://api.coingecko.com/api/v3/coins/list?include_platform=true"
-        );
+        try {
+          responsesCoinList_CoinGecho = await axios.get(
+            "https://api.coingecko.com/api/v3/coins/list?include_platform=true"
+          );
+        } catch (e) {
+          assert.fail(
+            e,
+            "An error is displayed while getting the token addresses from the Coingecho."
+          );
+        }
 
-        for (let z = 0; z < responsesCoidList.data.length; z++) {
-          if (
-            typeof responsesCoidList.data[z].platforms[network_coinGecho[n]] ===
-              "string" &&
-            responsesCoidList.data[z].platforms[network_coinGecho[n]] != ""
-          ) {
-            TOKEN_LIST_ADDRESS_COINGECHO.push(
-              responsesCoidList.data[z].platforms[network_coinGecho[n]]
-            );
-            TOKEN_LIST_ID_COINGECHO.push(responsesCoidList.data[z].id);
-          }
+        try {
+          tokenListAddress_Coingecho = responsesCoinList_CoinGecho.data.filter(
+            (address) => {
+              return (
+                typeof address.platforms[network_coingecho[n]] === "string" &&
+                address.platforms[network_coingecho[n]] !== ""
+              );
+            }
+          );
+
+          tokenListId_Coingecho = responsesCoinList_CoinGecho.data.filter(
+            (coinid) => {
+              return coinid.id;
+            }
+          );
+        } catch (e) {
+          assert.fail(
+            e,
+            "An error is displayed while adding the address and ID of the chain in the respective arrays."
+          );
         }
       } catch (e) {
         assert.fail(
-          "An error is displayed while getting the token addresses and it's rate from the CoinGecho."
+          e,
+          "An error is displayed while getting the token addresses and it's rate from the Coingecho."
         );
       }
 
@@ -111,65 +134,72 @@ describe("Compare the Token Rates of the Etherspot and CoinGecho Services.", () 
 
         // get the list of token address of the Etherspot
         for (let x = 0; x < TokenDetails.length; x++) {
-          TOKEN_LIST_ADDRESS_ETHERSPOT.push(TokenDetails[x].address);
+          tokenListAddress_Etherspot.push(TokenDetails[x].address);
         }
 
         // get the chain id of the Etherspot
-        XDAI_CHAIN_ID_ETHERSPOT = TokenDetails[0].chainId;
+        tokenListChainId_Etherspot = TokenDetails[0].chainId;
 
         // Request payload for fetch the token rates informaiton of the Etherspot
-        requestPayload = {
-          tokens: TOKEN_LIST_ADDRESS_ETHERSPOT,
-          chainId: XDAI_CHAIN_ID_ETHERSPOT,
+        requestPayload_Etherspot = {
+          tokens: tokenListAddress_Etherspot,
+          chainId: tokenListChainId_Etherspot,
         };
       } catch (e) {
         assert.fail(
+          e,
           "An error is displayed while fetching the rate of the token from Etherspot."
         );
       }
 
-      // Fetch the token rates of the Etherspot and compare with coinGecho
+      // Fetch the token rates of the Etherspot and compare with coingecho
       try {
-        let rates = await mainNetSdk.fetchExchangeRates(requestPayload);
+        let rates = await mainNetSdk.fetchExchangeRates(
+          requestPayload_Etherspot
+        );
         for (let y = 0; y < rates.items.length; y++) {
-          for (let j = 0; j < TOKEN_LIST_ADDRESS_COINGECHO.length; j++) {
-            Helper.wait(4000);
+          for (let j = 0; j < tokenListAddress_Coingecho.length; j++) {
+            Helper.wait(wait_time);
             let etherspotAddress = rates.items[y].address;
             console.log("Etherspot Address:", etherspotAddress.toLowerCase());
-            console.log("CoinGecho Address:", TOKEN_LIST_ADDRESS_COINGECHO[j]);
+            console.log(
+              "Coingecho Address:",
+              tokenListAddress_Coingecho[j].toLowerCase()
+            );
             if (
-              etherspotAddress.toLowerCase() == TOKEN_LIST_ADDRESS_COINGECHO[j]
+              etherspotAddress.toLowerCase() ===
+              tokenListAddress_Coingecho[j].toLowerCase()
             ) {
-              Helper.wait(4000);
+              Helper.wait(wait_time);
 
               let responsesCoidMarket = await axios.get(
                 "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=" +
-                  TOKEN_LIST_ID_COINGECHO[j] +
+                  tokenListId_Coingecho[j] +
                   "&per_page=100&page=1&sparkline=true&locale=en"
               );
 
               let num1 = responsesCoidMarket.data[0].current_price; // rates of the coingecho
               let num2 = rates.items[y].usd; // rates of the etherspot
 
-              let deviationPercentage =
+              deviationPercentage =
                 (Math.abs(num1 - num2) / ((num1 + num2) / 2)) * 100;
               if (deviationPercentage > 5) {
                 assert.fail(
                   "The rate of the " +
-                    TOKEN_LIST_ID_COINGECHO[j] +
+                    tokenListId_Coingecho[j] +
                     " token of the Etherspot is " +
                     rates.items[y].usd +
-                    " and the CoinGecho is " +
+                    " and the Coingecho is " +
                     responsesCoidMarket.data[0].current_price +
                     ". So rate variation of the both the tokens are not displayed correctly."
                 );
               } else {
                 console.log(
                   "The rate of the " +
-                    TOKEN_LIST_ID_COINGECHO[j] +
+                    tokenListId_Coingecho[j] +
                     " token of the Etherspot is " +
                     rates.items[y].usd +
-                    " and the CoinGecho is " +
+                    " and the Coingecho is " +
                     responsesCoidMarket.data[0].current_price +
                     ". So rate variation of the both the tokens are displayed correctly."
                 );
@@ -180,7 +210,8 @@ describe("Compare the Token Rates of the Etherspot and CoinGecho Services.", () 
         }
       } catch (e) {
         assert.fail(
-          "An error is displayed while comparing the rates of the Etherspot and CoinGecho."
+          e,
+          "An error is displayed while comparing the rates of the Etherspot and Coingecho."
         );
       }
     });
