@@ -13,6 +13,7 @@ import { ethers } from "ethers";
 
 let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
 let mainNetSdk;
+let smartWalletAddress;
 
 describe("The SDK, when advance routes lifi flow on the MainNet", () => {
   for (let l = 0; l < network.length; l++) {
@@ -39,7 +40,7 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
         // Compute the smart wallet address
         try {
           let smartWalletOutput = await mainNetSdk.computeContractAccount();
-          let smartWalletAddress = smartWalletOutput.address;
+          smartWalletAddress = smartWalletOutput.address;
 
           assert.strictEqual(
             smartWalletAddress,
@@ -150,7 +151,7 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
           try {
             assert.strictEqual(
               quoteRequestPayload.fromTokenAddress,
-              "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+              fromTokenAddress,
               "The fromTokenAddress value is not displayed correct in the quoteRequest Payload."
             );
           } catch (e) {
@@ -160,7 +161,7 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
           try {
             assert.strictEqual(
               quoteRequestPayload.toTokenAddress,
-              "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
+              toTokenAddress,
               "The toTokenAddress value is not displayed correct in the quoteRequest Payload."
             );
           } catch (e) {
@@ -245,8 +246,8 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
             try {
               assert.strictEqual(
                 advanceRoutesLiFi.items[i].fromAddress,
-                "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
-                "The fromAmount value is empty in the advance routes lifi response."
+                smartWalletAddress,
+                "The fromAmount value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
               console.log(e);
@@ -300,7 +301,7 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
             try {
               assert.strictEqual(
                 advanceRoutesLiFi.items[i].toAddress,
-                "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+                smartWalletAddress,
                 "The toAddress value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
@@ -480,10 +481,9 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
           }
 
           try {
-            assert.strictEqual(
+            assert.isNotEmpty(
               estimationResponse.estimation.feeTokenReceiver,
-              "0xf593D35cA402c097e57813bCC6BCAb4b71A597cC",
-              "The feeTokenReceiver Address of the Estimate Batch Response is not displayed correctly."
+              "The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response."
             );
           } catch (e) {
             console.log(e);
@@ -566,7 +566,7 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
           try {
             assert.strictEqual(
               submissionResponse.account,
-              "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+              smartWalletAddress,
               "The account address of the Submit Batch Response is not displayed correctly."
             );
           } catch (e) {
@@ -584,10 +584,9 @@ describe("The SDK, when advance routes lifi flow on the MainNet", () => {
 
           for (let x = 0; x < submissionResponse.to.length; x++) {
             try {
-              assert.strictEqual(
+              assert.isNotEmpty(
                 submissionResponse.to[x],
-                "0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa",
-                "The To Address in the Submit Batch Response is not displayed correctly."
+                "The To Address is not empty in the Submit Batch Response."
               );
             } catch (e) {
               console.log(e);

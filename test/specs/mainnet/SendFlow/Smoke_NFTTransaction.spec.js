@@ -16,6 +16,7 @@ let encodedData = contract.encodeFunctionData("transferFrom", [
   to,
   tokenId,
 ]);
+let contractAddressNFT = "0x22c1f6050e56d2876009903609a2cc3fef83b415";
 
 let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
 let mainNetSdk;
@@ -58,7 +59,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
       let response;
       try {
         response = await mainNetSdk.batchExecuteAccountTransaction({
-          to: "0x22c1f6050e56d2876009903609a2cc3fef83b415", // contract_address of the NFT
+          to: contractAddressNFT, // contract_address of the NFT
           data: encodedData,
         });
         console.log("Batch Reponse: ", response);

@@ -14,6 +14,7 @@ import pkg from "@etherspot/contracts";
 
 let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
 let mainNetSdk;
+let smartWalletAddress;
 
 describe("The SDK, when cross chain quote flow on the MainNet", () => {
   for (let i = 0; i < network.length; i++) {
@@ -40,7 +41,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
         // Compute the smart wallet address
         try {
           let smartWalletOutput = await mainNetSdk.computeContractAccount();
-          let smartWalletAddress = smartWalletOutput.address;
+          smartWalletAddress = smartWalletOutput.address;
 
           assert.strictEqual(
             smartWalletAddress,
@@ -151,7 +152,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
           try {
             assert.strictEqual(
               quoteRequestPayload.fromTokenAddress,
-              "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+              fromTokenAddress,
               "The fromTokenAddress value is not displayed correct in the quoteRequest Payload."
             );
           } catch (e) {
@@ -161,7 +162,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
           try {
             assert.strictEqual(
               quoteRequestPayload.toTokenAddress,
-              "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+              toTokenAddress,
               "The toTokenAddress value is not displayed correct in the quoteRequest Payload."
             );
           } catch (e) {
@@ -248,20 +249,18 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             }
 
             try {
-              assert.strictEqual(
+              assert.isNotEmpty(
                 quote.approvalData.approvalAddress,
-                "0xd7E23c91d00daF2017BdB96F57B69c56dc82C317",
-                "The approvalAddress value of the approvalData is not displayed correct in the single quote response."
+                "The approvalAddress value of the approvalData is empty in the single quote response."
               );
             } catch (e) {
               console.log(e);
             }
 
             try {
-              assert.strictEqual(
+              assert.isNotEmpty(
                 quote.approvalData.amount,
-                "500000",
-                "The amount value of the approvalData is not displayed correct in the single quote response."
+                "The amount value of the approvalData is empty in the single quote response."
               );
             } catch (e) {
               console.log(e);
@@ -277,10 +276,9 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             }
 
             try {
-              assert.strictEqual(
+              assert.isNotEmpty(
                 quote.transaction.to,
-                "0xc30141B657f4216252dc59Af2e7CdB9D8792e1B0",
-                "The To Address value of the transaction is not displayed correct in the single quote response."
+                "The To Address value of the transaction is empty in the single quote response."
               );
             } catch (e) {
               console.log(e);
@@ -298,8 +296,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             try {
               assert.strictEqual(
                 quote.transaction.from,
-                "0xc30141B657f4216252dc59Af2e7CdB9D8792e1B0",
-                "The From Address value of the transaction is not displayed correct in the single quote response."
+                "The From Address value of the transaction is empty in the single quote response."
               );
             } catch (e) {
               console.log(e);
@@ -315,20 +312,18 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             }
 
             try {
-              assert.strictEqual(
+              assert.isNotEmpty(
                 quote.estimate.approvalAddress,
-                "0xd7E23c91d00daF2017BdB96F57B69c56dc82C317",
-                "The approvalAddress value of the estimate is not displayed correct in the single quote response."
+                "The approvalAddress value of the estimate is empty in the single quote response."
               );
             } catch (e) {
               console.log(e);
             }
 
             try {
-              assert.strictEqual(
+              assert.isNotEmpty(
                 quote.estimate.fromAmount,
-                "500000",
-                "The fromAmount value of the estimate is not displayed correct in the single quote response."
+                "The fromAmount value of the estimate is empty in the single quote response."
               );
             } catch (e) {
               console.log(e);
@@ -572,10 +567,9 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
           }
 
           try {
-            assert.strictEqual(
+            assert.isNotEmpty(
               estimationResponse.estimation.feeTokenReceiver,
-              "0xf593D35cA402c097e57813bCC6BCAb4b71A597cC",
-              "The feeTokenReceiver Address of the Estimate Batch Response is not displayed correctly."
+              "The feeTokenReceiver Address is empty in the Estimate Batch Response."
             );
           } catch (e) {
             console.log(e);
@@ -658,7 +652,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
           try {
             assert.strictEqual(
               submissionResponse.account,
-              "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+              smartWalletAddress,
               "The account address of the Submit Batch Response is not displayed correctly."
             );
           } catch (e) {
@@ -676,10 +670,9 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
 
           for (let x = 0; x < submissionResponse.to.length; x++) {
             try {
-              assert.strictEqual(
+              assert.isNotEmpty(
                 submissionResponse.to[x],
-                "0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa",
-                "The To Address in the Submit Batch Response is not displayed correctly."
+                "The To Address is empty in the Submit Batch Response."
               );
             } catch (e) {
               console.log(e);

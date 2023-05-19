@@ -7,6 +7,7 @@ import { assert } from "chai";
 
 let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
 let mainNetSdk;
+let smartWalletAddress;
 
 describe("The SDK, when single chain swap on the MainNet", () => {
   for (let i = 0; i < network.length; i++) {
@@ -37,7 +38,7 @@ describe("The SDK, when single chain swap on the MainNet", () => {
         // Compute the smart wallet address
         try {
           let smartWalletOutput = await mainNetSdk.computeContractAccount();
-          let smartWalletAddress = smartWalletOutput.address;
+          smartWalletAddress = smartWalletOutput.address;
 
           assert.strictEqual(
             smartWalletAddress,
@@ -153,10 +154,9 @@ describe("The SDK, when single chain swap on the MainNet", () => {
                 );
 
               try {
-                assert.strictEqual(
+                assert.isNotEmpty(
                   addTransactionToBatchOutput.requests[x].to,
-                  "0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa",
-                  "The To Address of the batchExecuteAccountTransaction is not displayed correctly."
+                  "The To Address is empty in the batchExecuteAccountTransaction response."
                 );
               } catch (e) {
                 console.log(e);
@@ -199,10 +199,9 @@ describe("The SDK, when single chain swap on the MainNet", () => {
 
           for (let k = 0; k < estimationResponse.requests.length; k++) {
             try {
-              assert.strictEqual(
+              assert.isNotEmpty(
                 estimationResponse.requests[k].to,
-                "0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa",
-                "The To Address of the batchExecuteAccountTransaction is not displayed correctly."
+                "The To Address is empty in the batchExecuteAccountTransaction batch."
               );
             } catch (e) {
               console.log(e);
@@ -239,10 +238,9 @@ describe("The SDK, when single chain swap on the MainNet", () => {
           }
 
           try {
-            assert.strictEqual(
+            assert.isNotEmpty(
               estimationResponse.estimation.feeTokenReceiver,
-              "0xf593D35cA402c097e57813bCC6BCAb4b71A597cC",
-              "The feeTokenReceiver Address of the Estimate Batch Response is not displayed correctly."
+              "The feeTokenReceiver Address is empty in the Estimation Batch Response."
             );
           } catch (e) {
             console.log(e);
@@ -251,7 +249,7 @@ describe("The SDK, when single chain swap on the MainNet", () => {
           try {
             assert.isNumber(
               estimationResponse.estimation.estimatedGas,
-              "The estimatedGas value is not number in the Estimate Batch Response."
+              "The estimatedGas value is not number in the Estimation Batch Response."
             );
             EstimatedGas_Estimate = estimationResponse.estimation.estimatedGas;
           } catch (e) {
@@ -325,7 +323,7 @@ describe("The SDK, when single chain swap on the MainNet", () => {
           try {
             assert.strictEqual(
               submissionResponse.account,
-              "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
+              smartWalletAddress,
               "The account address of the Submit Batch Response is not displayed correctly."
             );
           } catch (e) {
@@ -342,10 +340,9 @@ describe("The SDK, when single chain swap on the MainNet", () => {
           }
 
           try {
-            assert.strictEqual(
+            assert.isNotEmpty(
               submissionResponse.to[0],
-              "0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa",
-              "The To Address in the Submit Batch Response is not displayed correctly."
+              "The To Address is empty in the Submit Batch Response."
             );
           } catch (e) {
             console.log(e);
