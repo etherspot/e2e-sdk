@@ -25,7 +25,7 @@ let network_etherspot = [
   "fuse",
 ];
 
-let network_coingecho = [
+let network_coingecko = [
   "arbitrum-one",
   "binance-smart-chain",
   "xdai",
@@ -41,16 +41,16 @@ let network_coingecho = [
   "fuse",
 ];
 
-describe("Compare the Token Rates of the Etherspot and Coingecho Services", () => {
+describe("Compare the Token Rates of the Etherspot and Coingecko Services", () => {
   for (let n = 0; n < network_etherspot.length; n++) {
-    it("Validate the Token Rates of the Etherspot and Coingecho Services", async () => {
+    it("Validate the Token Rates of the Etherspot and Coingecko Services", async () => {
       let mainNetSdk;
-      let tokenListAddress_Etherspot = [];
-      let tokenListChainId_Etherspot;
-      let tokenListAddress_Coingecho = [];
-      let tokenListId_Coingecho = [];
-      let responsesCoinList_CoinGecho;
-      let requestPayload_Etherspot;
+      let tokenListAddress_etherspot = [];
+      let tokenListChainId_etherspot;
+      let tokenListAddress_coingecko = [];
+      let tokenListId_coingecko = [];
+      let responsesCoinList_coingecko;
+      let requestPayload_etherspot;
 
       // initialize the sdk
       try {
@@ -85,40 +85,40 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
         );
       }
 
-      // Get the token addresses and it's rate from the Coingecho
+      // Get the token addresses and it's rate from the Coingecko
       try {
         try {
-          responsesCoinList_CoinGecho = await axios.get(
+          responsesCoinList_coingecko = await axios.get(
             "https://api.coingecko.com/api/v3/coins/list?include_platform=true"
           );
         } catch (e) {
           assert.fail(
             e,
-            "An error is displayed while getting the token addresses from the Coingecho."
+            "An error is displayed while getting the token addresses from the Coingecko."
           );
         }
 
-        for (let z = 0; z < responsesCoinList_CoinGecho.data.length; z++) {
+        for (let z = 0; z < responsesCoinList_coingecko.data.length; z++) {
           if (
-            typeof responsesCoinList_CoinGecho.data[z].platforms[
-              network_coingecho[n]
+            typeof responsesCoinList_coingecko.data[z].platforms[
+              network_coingecko[n]
             ] === "string" &&
-            responsesCoinList_CoinGecho.data[z].platforms[
-              network_coingecho[n]
+            responsesCoinList_coingecko.data[z].platforms[
+              network_coingecko[n]
             ] !== ""
           ) {
-            tokenListAddress_Coingecho.push(
-              responsesCoinList_CoinGecho.data[z].platforms[
-                network_coingecho[n]
+            tokenListAddress_coingecko.push(
+              responsesCoinList_coingecko.data[z].platforms[
+                network_coingecko[n]
               ]
             );
-            tokenListId_Coingecho.push(responsesCoinList_CoinGecho.data[z].id);
+            tokenListId_coingecko.push(responsesCoinList_coingecko.data[z].id);
           }
         }
       } catch (e) {
         assert.fail(
           e,
-          "An error is displayed while getting the token addresses and it's rate from the Coingecho."
+          "An error is displayed while getting the token addresses and it's rate from the Coingecko."
         );
       }
 
@@ -130,16 +130,16 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
 
         // get the list of token address of the Etherspot
         for (let x = 0; x < TokenDetails.length; x++) {
-          tokenListAddress_Etherspot.push(TokenDetails[x].address);
+          tokenListAddress_etherspot.push(TokenDetails[x].address);
         }
 
         // get the chain id of the Etherspot
-        tokenListChainId_Etherspot = TokenDetails[0].chainId;
+        tokenListChainId_etherspot = TokenDetails[0].chainId;
 
         // Request payload for fetch the token rates informaiton of the Etherspot
-        requestPayload_Etherspot = {
-          tokens: tokenListAddress_Etherspot,
-          chainId: tokenListChainId_Etherspot,
+        requestPayload_etherspot = {
+          tokens: tokenListAddress_etherspot,
+          chainId: tokenListChainId_etherspot,
         };
       } catch (e) {
         assert.fail(
@@ -148,29 +148,29 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
         );
       }
 
-      // Fetch the token rates of the Etherspot and compare with coingecho
+      // Fetch the token rates of the Etherspot and compare with coingecko
       try {
         let rates = await mainNetSdk.fetchExchangeRates(
-          requestPayload_Etherspot
+          requestPayload_etherspot
         );
         for (let y = 0; y < rates.items.length; y++) {
-          for (let j = 0; j < tokenListAddress_Coingecho.length; j++) {
+          for (let j = 0; j < tokenListAddress_coingecko.length; j++) {
             Helper.wait(wait_time);
             let etherspotAddress = rates.items[y].address;
             console.log("Etherspot Address:", etherspotAddress.toLowerCase());
-            console.log("Coingecho Address:", tokenListAddress_Coingecho[j]);
+            console.log("Coingecko Address:", tokenListAddress_coingecko[j]);
             if (
-              etherspotAddress.toLowerCase() === tokenListAddress_Coingecho[j]
+              etherspotAddress.toLowerCase() === tokenListAddress_coingecko[j]
             ) {
               Helper.wait(wait_time);
 
               let responsesCoidMarket = await axios.get(
                 "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=" +
-                  tokenListId_Coingecho[j] +
+                  tokenListId_coingecko[j] +
                   "&per_page=100&page=1&sparkline=true&locale=en"
               );
 
-              let num1 = responsesCoidMarket.data[0].current_price; // rates of the coingecho
+              let num1 = responsesCoidMarket.data[0].current_price; // rates of the coingecko
               let num2 = rates.items[y].usd; // rates of the etherspot
 
               deviationPercentage =
@@ -178,10 +178,10 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
               if (deviationPercentage > 5) {
                 assert.fail(
                   "The rate of the " +
-                    tokenListId_Coingecho[j] +
+                    tokenListId_coingecko[j] +
                     " token of the Etherspot is " +
                     rates.items[y].usd +
-                    " and the Coingecho is " +
+                    " and the Coingecko is " +
                     responsesCoidMarket.data[0].current_price +
                     ". So rate variation of both tokens is not displayed correctly for the " +
                     network_etherspot[n].toUpperCase() +
@@ -190,10 +190,10 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
               } else {
                 console.log(
                   "The rate of the " +
-                    tokenListId_Coingecho[j] +
+                    tokenListId_coingecko[j] +
                     " token of the Etherspot is " +
                     rates.items[y].usd +
-                    " and the Coingecho is " +
+                    " and the Coingecko is " +
                     responsesCoidMarket.data[0].current_price +
                     ". So rate variation of both tokens is displayed correctly for the " +
                     network_etherspot[n].toUpperCase() +
@@ -207,7 +207,7 @@ describe("Compare the Token Rates of the Etherspot and Coingecho Services", () =
       } catch (e) {
         assert.fail(
           e,
-          "An error is displayed while comparing the rates of the Etherspot and Coingecho."
+          "An error is displayed while comparing the rates of the Etherspot and Coingecko."
         );
       }
     });
