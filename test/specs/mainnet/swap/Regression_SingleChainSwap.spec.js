@@ -24,6 +24,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -38,6 +39,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -57,6 +59,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         );
       }
     } catch (e) {
+      console.log(e);
       assert.fail("An error is displayed while fetching the offer list.");
     }
 
@@ -150,6 +153,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         console.log(e);
       }
     } catch (e) {
+      console.log(e);
       assert.fail("The estimation of the batch is not performed successfully.");
     }
 
@@ -346,6 +350,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         console.log(e);
       }
     } catch (e) {
+      console.log(e);
       assert.fail("The submittion of the batch is not performed successfully.");
     }
   });
@@ -366,6 +371,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -380,6 +386,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -395,11 +402,13 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
       try {
         assert.strictEqual(offers.length, 0, "The offers are displayed.");
       } catch (e) {
+        console.log(e);
         assert.fail(
           "The offers are displayed, Even if the fromTokenAddress is set as a Native Token."
         );
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The offers are displayed, Even if the fromTokenAddress is set as a Native Token."
       );
@@ -423,6 +432,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -437,6 +447,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -460,6 +471,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail("An error is displayed while fetching the offers list.");
     }
 
@@ -478,12 +490,14 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
             "The validation is displayed when submiting the batch without estimation."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The submition of batch is completed without estimation."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail("The submition of batch is completed without estimation.");
     }
   });
@@ -504,6 +518,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -518,6 +533,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -529,6 +545,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         fromAmount: ethers.utils.parseUnits("100000000", 6), // Exceeded Token Balance
       });
     } catch (e) {
+      console.log(e);
       assert.fail("An error is displayed while fetching the offers list.");
     }
 
@@ -542,12 +559,14 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
             "The validation for exceeded Value is displayed as expected while the batch execution."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
       );
@@ -570,6 +589,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -584,6 +604,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -595,6 +616,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         fromAmount: ethers.utils.parseUnits("100000000", 6), // Exceeded Token Balance
       });
     } catch (e) {
+      console.log(e);
       assert.fail("An error is displayed while fetching the offers list.");
     }
 
@@ -608,12 +630,14 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
             "The validation for exceeded Value is displayed as expected while the batch execution."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
       );
@@ -635,6 +659,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -649,6 +674,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -671,12 +697,14 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
             "The validation message is displayed when ERC20 Token addresses are not same."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The offers list is displayed even if the ERC20 Token addresses are same."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The offers list is displayed even if the ERC20 Token addresses are same."
       );
@@ -699,6 +727,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -713,6 +742,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -735,12 +765,14 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
             "The Get exchange offers is not performed due to The To Token Address is not added."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The offers list is performed without The To Token Address in Get exchange offers request."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The offers list is performed without The To Token Address in Get exchange offers request."
       );
@@ -763,6 +795,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -777,6 +810,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -799,12 +833,14 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
             "The Get exchange offers is not performed due to The From Token Address is not added."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The offers list is performed without The From Token Address in Get exchange offers request."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The offers list is performed without The From Token Address in Get exchange offers request."
       );
@@ -827,6 +863,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -841,6 +878,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -863,12 +901,14 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
             "The Get exchange offers is not performed due to The amount is not added."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The offers list is performed without The amount in Get exchange offers request."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The offers list is performed without The amount in Get exchange offers request."
       );
@@ -891,6 +931,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -905,6 +946,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -928,12 +970,14 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
             "The Get exchange offers is not performed due to The To Token Address is invalid."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The offers list is performed with invalid To Token Address in Get exchange offers request."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The offers list is performed with invalid To Token Address in Get exchange offers request."
       );
@@ -956,6 +1000,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -970,6 +1015,7 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -993,12 +1039,14 @@ describe("The regression suite for the single chain swap on the MainNet", () => 
             "The Get exchange offers is not performed due to The From Token Address is invalid."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The offers list is performed with invalid From Token Address in Get exchange offers request."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The offers list is performed with invalid From Token Address in Get exchange offers request."
       );

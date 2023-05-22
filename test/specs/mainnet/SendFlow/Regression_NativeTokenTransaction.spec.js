@@ -21,6 +21,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -35,6 +36,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -52,12 +54,14 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             "The validation for To Address is displayed as expected while batch execution."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The expected validation is not displayed when entered the invalid To Address while performing batch execution."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The expected validation is not displayed when entered the invalid To Address while performing batch execution."
       );
@@ -80,6 +84,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -94,6 +99,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -114,12 +120,14 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             "The validation for Value is displayed as expected while the batch execution."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The expected validation is not displayed when entered the invalid Value while performing batch execution."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The expected validation is not displayed when entered the invalid Value while performing batch execution."
       );
@@ -142,6 +150,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -156,6 +165,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -166,6 +176,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         value: "100000000000000000000000", // Exceeded Value
       });
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The exceeded Value is not required in the wallet balance for the batch execution."
       );
@@ -181,12 +192,14 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             "The validation for exceeded Value is displayed as expected while the batch execution."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
       );
@@ -209,6 +222,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -223,6 +237,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -245,12 +260,14 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             "The validation is displayed while entering the duplicate sender address."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The validation is not displayed while entering the duplicate sender address."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The validation is not displayed while entering the duplicate sender address."
       );
@@ -273,6 +290,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -287,6 +305,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -297,6 +316,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         value: "1000000000000",
       });
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The addition of transaction in the batch is not performed successfully."
       );
@@ -317,12 +337,14 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             "The validation is displayed when submiting the batch without estimation."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The submition of batch is completed without estimation."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail("The submition of batch is completed without estimation.");
     }
   });

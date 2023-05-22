@@ -38,6 +38,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
           "The EOA Address is not calculated correctly."
         );
       } catch (e) {
+        console.log(e);
         assert.fail("The SDK is not initialled successfully.");
       }
 
@@ -52,6 +53,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
           "The smart wallet address is not calculated correctly."
         );
       } catch (e) {
+        console.log(e);
         assert.fail("The smart wallet address is not calculated successfully.");
       }
 
@@ -64,6 +66,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
         });
         console.log("Batch Reponse: ", response);
       } catch (e) {
+        console.log(e);
         assert.fail(
           "The addition of transaction in the batch is not performed successfully."
         );
@@ -75,6 +78,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
         estimationResponse = await mainNetSdk.estimateGatewayBatch();
         console.log("Gas estimated at:", estimationResponse);
       } catch (e) {
+        console.log(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -88,6 +92,7 @@ describe("The SDK, when sending a NFT Transaction on the MainNet", () => {
         });
         console.log("Status of the batch submition: ", submissionResponse);
       } catch (e) {
+        console.log(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );

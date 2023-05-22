@@ -36,6 +36,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
+          console.log(e);
           assert.fail("The SDK is not initialled successfully.");
         }
 
@@ -50,6 +51,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The smart wallet address is not calculated successfully."
           );
@@ -170,6 +172,7 @@ describe("Get the transaction history on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The estimation of the batch is not performed successfully."
           );
@@ -350,6 +353,7 @@ describe("Get the transaction history on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The submittion of the batch is not performed successfully."
           );
@@ -673,6 +677,7 @@ describe("Get the transaction history on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
+          console.log(e);
           assert.fail(
             "An error is displayed while getting the submmited batch with sent status."
           );
@@ -907,6 +912,7 @@ describe("Get the transaction history on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
+          console.log(e);
           assert.fail(
             "An error is displayed while Fetching single transaction."
           );
@@ -1261,6 +1267,7 @@ describe("Get the transaction history on the MainNet", () => {
             }
           }
         } catch (e) {
+          console.log(e);
           assert.fail(
             "An error is displayed while Fetching historical transactions."
           );
