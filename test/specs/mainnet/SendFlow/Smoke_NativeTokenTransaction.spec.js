@@ -4,8 +4,7 @@ dotenv.config(); // init dotenv
 import { assert } from "chai";
 import { EnvNames, Sdk } from "etherspot";
 
-// let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
-let network = ["xdai"];
+let network = ["arbitrum", "bsc", "xdai", "matic", "optimism"];
 let mainNetSdk;
 let smartWalletAddress;
 let smartWalletOutput;
@@ -31,6 +30,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
+          console.log(e);
           assert.fail("The SDK is not initialled successfully.");
         }
 
@@ -45,6 +45,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The smart wallet address is not calculated successfully."
           );
@@ -59,6 +60,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
               value: value,
             });
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The addition of transaction in the batch is not performed successfully."
           );
@@ -100,6 +102,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
         try {
           estimationResponse = await mainNetSdk.estimateGatewayBatch();
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The estimation of the batch is not performed successfully."
           );
@@ -184,6 +187,7 @@ describe("The SDK, when sending a native asset on the MainNet", () => {
             guarded: false,
           });
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The submittion of the batch is not performed successfully."
           );

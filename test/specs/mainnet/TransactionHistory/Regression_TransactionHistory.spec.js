@@ -21,6 +21,7 @@ describe("The regression suite for the Get the transaction history on the MainNe
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -35,6 +36,7 @@ describe("The regression suite for the Get the transaction history on the MainNe
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -239,6 +241,7 @@ describe("The regression suite for the Get the transaction history on the MainNe
         console.log(e);
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "An error is displayed while Fetching historical transactions."
       );
@@ -603,6 +606,7 @@ describe("The regression suite for the Get the transaction history on the MainNe
         console.log(e);
       }
     } catch (e) {
+      console.log(e);
       assert.fail("An error is displayed while Fetching single transaction.");
     }
   });
@@ -623,6 +627,7 @@ describe("The regression suite for the Get the transaction history on the MainNe
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -637,6 +642,7 @@ describe("The regression suite for the Get the transaction history on the MainNe
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -651,11 +657,13 @@ describe("The regression suite for the Get the transaction history on the MainNe
           "The null is received while fetching the transaction history with incorrect hash."
         );
       } else {
+        console.log(e);
         assert.fail(
           "Getting the single transaction history with incorrect Hash."
         );
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "Getting the single transaction history with incorrect Hash."
       );
@@ -678,6 +686,7 @@ describe("The regression suite for the Get the transaction history on the MainNe
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -692,6 +701,7 @@ describe("The regression suite for the Get the transaction history on the MainNe
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -701,7 +711,6 @@ describe("The regression suite for the Get the transaction history on the MainNe
         await xdaiMainNetSdk.getTransaction({
           hash: "0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8z18ccf39eDc930d1ceA551df", // Incorrect Transaction Hash
         });
-
         assert.fail(
           "The transaction history is fetched with hash which not having 32 size hex."
         );
@@ -711,12 +720,14 @@ describe("The regression suite for the Get the transaction history on the MainNe
             "The validation message is displayed when hash not having 32 size hex while fetching the transaction history."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The transaction history is fetched with hash which not having 32 size hex."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The transaction history is fetched with hash which not having 32 size hex."
       );

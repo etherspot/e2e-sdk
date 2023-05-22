@@ -28,6 +28,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -42,6 +43,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -77,12 +79,14 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
             "The advance routes lifi is not completed without fromChainId of the Get advance routes lifi as expected."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The advance routes lifi is completed without fromChainId of the Get advance routes lifi."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The advance routes lifi is completed without fromChainId of the Get advance routes lifi."
       );
@@ -105,6 +109,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -119,6 +124,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -154,12 +160,14 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
             "The advance routes lifi is not completed without toChainId of the Get advance routes lifi as expected."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The advance routes lifi is completed without toChainId of the Get advance routes lifi."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The advance routes lifi is completed without toChainId of the Get advance routes lifi."
       );
@@ -182,6 +190,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -196,6 +205,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -230,12 +240,14 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
             "The advance routes lifi is not completed without fromTokenAddress of the Get advance routes lifi as expected."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The advance routes lifi is completed without fromTokenAddress of the Get advance routes lifi."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The advance routes lifi is completed without fromTokenAddress of the Get advance routes lifi."
       );
@@ -258,6 +270,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -272,6 +285,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -306,12 +320,14 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
             "The advance routes lifi is not completed without totokenaddress of the Get advance routes lifi as expected."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The advance routes lifi is completed without totokenaddress of the Get advance routes lifi."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The advance routes lifi is completed without totokenaddress of the Get advance routes lifi."
       );
@@ -334,6 +350,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -348,6 +365,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -383,12 +401,14 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
             "The advance routes lifi is not completed without fromamount of the Get advance routes lifi as expected."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The advance routes lifi is completed without fromamount of the Get advance routes lifi."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The advance routes lifi is completed without fromamount of the Get advance routes lifi."
       );
@@ -411,6 +431,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -425,6 +446,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -461,6 +483,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         );
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The items are displayed in the get advance Routes LiFi response when perform the advance route lifi action from native token to another chain's ERC20 token."
       );
@@ -483,6 +506,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -497,6 +521,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -533,6 +558,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         );
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The items are displayed in the get advance Routes LiFi response when perform the advance route lifi action from ERC20 token to another chain's native token."
       );
@@ -555,6 +581,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -569,6 +596,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -605,6 +633,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         );
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The items are displayed in the get advance Routes LiFi response when perform the advance route lifi action with the same ERC20 tokens."
       );
@@ -627,6 +656,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -641,6 +671,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -686,6 +717,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "An error is dipslayed in the getAdvanceRoutesLiFi response."
       );
@@ -701,12 +733,14 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
             "The validation for exceeded Value is displayed as expected while the batch execution."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
       );
@@ -729,6 +763,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -743,6 +778,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -788,6 +824,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "An error is dipslayed in the getAdvanceRoutesLiFi response."
       );
@@ -797,7 +834,6 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
     try {
       try {
         await xdaiMainNetSdk.estimateGatewayBatch();
-
         assert.fail(
           "The estimation is performed even if the token balance is low."
         );
@@ -807,10 +843,12 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
             "The estimation is not performed with low token balance as expected."
           );
         } else {
+          console.log(e);
           assert.fail("The estimation is performed with low token balance.");
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail("The estimation is performed with low token balance.");
     }
   });
@@ -831,6 +869,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -845,6 +884,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
+      console.log(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -890,6 +930,7 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail(
         "An error is dipslayed in the getAdvanceRoutesLiFi response."
       );
@@ -910,12 +951,14 @@ describe("The SDK, when advance route lifi flow on the MainNet", () => {
             "The validation is displayed when submiting the batch without estimation."
           );
         } else {
+          console.log(e);
           assert.fail(
             "The submition of batch is completed without estimation."
           );
         }
       }
     } catch (e) {
+      console.log(e);
       assert.fail("The submition of batch is completed without estimation.");
     }
   });

@@ -35,6 +35,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             "The EOA Address is not calculated correctly."
           );
         } catch (e) {
+          console.log(e);
           assert.fail("The SDK is not initialled successfully.");
         }
 
@@ -49,6 +50,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             "The smart wallet address is not calculated correctly."
           );
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The smart wallet address is not calculated successfully."
           );
@@ -188,6 +190,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
+          console.log(e);
           assert.fail("An error is displayed in the quote Request Payload.");
         }
 
@@ -522,6 +525,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
+          console.log(e);
           assert.fail(
             "An error is displated while performing the action on the cross chain quotes."
           );
@@ -605,6 +609,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The estimation of the batch is not performed successfully."
           );
@@ -787,6 +792,7 @@ describe("The SDK, when cross chain quote flow on the MainNet", () => {
             console.log(e);
           }
         } catch (e) {
+          console.log(e);
           assert.fail(
             "The submittion of the batch is not performed successfully."
           );
