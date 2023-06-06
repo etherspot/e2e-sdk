@@ -5,7 +5,23 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "mocha --timeout 900000"
+    "test-mainnet-sendtoken-arbitrum": "mocha --timeout 600000 --spec test/specs/mainnet/01_sendToken/Arbitrum.spec.js",
+    "test-mainnet-sendtoken-bsc": "mocha --timeout 600000 --spec test/specs/mainnet/01_sendToken/BSC.spec.js",
+    "test-mainnet-sendtoken-matic": "mocha --timeout 600000 --spec test/specs/mainnet/01_sendToken/Matic.spec.js",
+    "test-mainnet-sendtoken-optimism": "mocha --timeout 600000 --spec test/specs/mainnet/01_sendToken/Optimism.spec.js",
+    "test-mainnet-sendtoken-xdai": "mocha --timeout 600000 --spec test/specs/mainnet/01_sendToken/xDai.spec.js",
+    "test-mainnet-transactionhistory-arbitrum": "mocha --timeout 600000 --spec test/specs/mainnet/02_transactionHistory/Arbitrum.spec.js",
+    "test-mainnet-transactionhistory-bsc": "mocha --timeout 600000 --spec test/specs/mainnet/02_transactionHistory/BSC.spec.js",
+    "test-mainnet-transactionhistory-matic": "mocha --timeout 600000 --spec test/specs/mainnet/02_transactionHistory/Matic.spec.js",
+    "test-mainnet-transactionhistory-optimism": "mocha --timeout 600000 --spec test/specs/mainnet/02_transactionHistory/Optimism.spec.js",
+    "test-mainnet-transactionhistory-xdai": "mocha --timeout 600000 --spec test/specs/mainnet/02_transactionHistory/xDai.spec.js",
+    "test-mainnet-swap-arbitrum": "mocha --timeout 600000 --spec test/specs/mainnet/03_swap/Arbitrum.spec.js",
+    "test-mainnet-swap-bsc": "mocha --timeout 600000 --spec test/specs/mainnet/03_swap/BSC.spec.js",
+    "test-mainnet-swap-matic": "mocha --timeout 600000 --spec test/specs/mainnet/03_swap/Matic.spec.js",
+    "test-mainnet-swap-optimism": "mocha --timeout 600000 --spec test/specs/mainnet/03_swap/Optimism.spec.js",
+    "test-mainnet-swap-xdai": "mocha --timeout 600000 --spec test/specs/mainnet/03_swap/xDai.spec.js",
+    "test-mainnet-exchangerate-allnetworks": "mocha --timeout 600000 --spec test/specs/mainnet/04_exchangeRate/AllNetworks.spec.js",
+    "test-mainnet": "mocha --timeout 600000 --spec test/specs/mainnet/*/*.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,7 +31,7 @@
     "dotenv": "^16.0.3",
     "erc-20-abi": "^1.0.0",
     "ethers": "5.6",
-    "etherspot": "^1.42.8",
+    "etherspot": "file:../etherspot-sdk/dist/index.js",
     "mocha": "^10.2.0",
     "ws": "^8.13.0"
   }
