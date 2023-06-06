@@ -6,6 +6,7 @@ import Helper from "../../../utils/Helper.js";
 import * as dotenv from "dotenv";
 dotenv.config(); // init dotenv
 
+let mainNetSdk;
 let wait_time = 1000;
 let deviationPercentage;
 
@@ -44,7 +45,6 @@ let network_coingecko = [
 describe("Compare the Token Rates of the Etherspot and Coingecko Services", () => {
   for (let n = 0; n < network_etherspot.length; n++) {
     it("Validate the Token Rates of the Etherspot and Coingecko Services", async () => {
-      let mainNetSdk;
       let tokenListAddress_etherspot = [];
       let tokenListChainId_etherspot;
       let tokenListAddress_coingecko = [];
