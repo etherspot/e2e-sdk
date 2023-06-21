@@ -26,6 +26,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@etherspot/contracts": "^2.0.1",
     "axios": "^1.4.0",
     "chai": "^4.3.7",
     "dotenv": "^16.0.3",
