@@ -31,7 +31,7 @@ describe("Get the transaction history on the MainNet", () => {
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -46,7 +46,7 @@ describe("Get the transaction history on the MainNet", () => {
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -105,7 +105,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The To Address is empty in the Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -114,7 +114,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The data value is empty in the Batch Reponse."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -123,10 +123,10 @@ describe("Get the transaction history on the MainNet", () => {
             "The estimation value is not null in the Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       // Estimating the batch
@@ -144,7 +144,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The To Address is empty in the Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -153,7 +153,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The data value is empty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -162,7 +162,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The feeTokenReceiver Address isempty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -172,7 +172,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -182,7 +182,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -193,7 +193,7 @@ describe("Get the transaction history on the MainNet", () => {
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -202,10 +202,10 @@ describe("Get the transaction history on the MainNet", () => {
             "The signature value is empty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -229,7 +229,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The transaction value is not null in the Get Submitted Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -238,7 +238,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The hash value is empty in the Get Submitted Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -248,7 +248,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The status of the Get Submitted Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -258,7 +258,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The account address of the Get Submitted Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -267,7 +267,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The nonce value is not number in the Get Submitted Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -276,7 +276,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The To Address is empty in the Get Submitted Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -285,7 +285,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The data value is empty in the Get Submitted Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -294,7 +294,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The senderSignature value is empty in the Get Submitted Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -304,7 +304,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -314,7 +314,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -324,7 +324,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -334,7 +334,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -343,7 +343,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The feeToken value is not null in the Get Submitted Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -353,7 +353,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -363,7 +363,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -372,7 +372,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The feeData value is empty in the Get Submitted Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -381,10 +381,10 @@ describe("Get the transaction history on the MainNet", () => {
             "The delayedUntil value is not null in the Get Submitted Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
@@ -404,7 +404,7 @@ describe("Get the transaction history on the MainNet", () => {
 
           Helper.wait(2000);
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } while (!(transactionState == "Sent"));
 
@@ -428,7 +428,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The Hash value of the transaction is empty in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -438,7 +438,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The state value of the transaction is empty in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -447,7 +447,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The sender address value of the transaction is empty in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -456,7 +456,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The gasPrice value of the transaction is empty in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -465,7 +465,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The gasUsed value of the transaction is not number in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -474,7 +474,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The totalCost value of the transaction is empty in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -483,7 +483,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The address of the logs of the Get Submitted Batch Response is not displayed."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -492,7 +492,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The data of the logs of the Get Submitted Batch Response is not displayed."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -501,7 +501,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The topics of the logs of the Get Submitted Batch Response is not displayed."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -510,7 +510,7 @@ describe("Get the transaction history on the MainNet", () => {
               "hash transaction value is not null in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -520,7 +520,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The status of the Get Submitted Batch Response is not displayed correctly."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -530,7 +530,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The account address of the Get Submitted Batch Response is not displayed correctly."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -539,7 +539,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The nonce value is not number in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -548,7 +548,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The To Address is empty in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -557,7 +557,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The data value is empty in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -566,7 +566,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The senderSignature value is empty in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -576,7 +576,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             EstimatedGas_Submitted = output.estimatedGas;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -586,7 +586,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The Estimated Gas value is not displayed correctly."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -596,7 +596,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             EstimatedGasPrice_Submitted = output.estimatedGasPrice._hex;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -606,7 +606,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The Estimated Gas Price value is not displayed correctly."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -615,7 +615,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The feeToken value is not null in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -626,7 +626,7 @@ describe("Get the transaction history on the MainNet", () => {
 
             FeeAmount_Submitted = output.feeAmount._hex;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -636,7 +636,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The Fee Amount value is not displayed correctly."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -645,7 +645,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The feeData value is empty in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -654,7 +654,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The delayedUntil value is not null in the Get Submitted Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -664,7 +664,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The contract of the events is enpty in the Get Submitted Batch Response"
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -674,7 +674,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The event of the events is enpty in the Get Submitted Batch Response"
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -683,7 +683,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The args of the events is empty in the Get Submitted Batch Response"
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -693,7 +693,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The contract of the events is empty in the Get Submitted Batch Response"
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -703,7 +703,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The event of the events is enpty in the Get Submitted Batch Response"
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -712,10 +712,10 @@ describe("Get the transaction history on the MainNet", () => {
               "The args of the events is enpty in the Get Submitted Batch Response"
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         } catch (e) {
-          console.log(e);
+          console.error(e);
           assert.fail(
             "An error is displayed while getting the submmited batch with sent status."
           );
@@ -745,7 +745,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The blockHash value is empty in the get single transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -755,7 +755,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             blockNumber_singleTransaction = singleTransaction.blockNumber;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -765,7 +765,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             from_singleTransaction = singleTransaction.from;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -775,7 +775,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             gasLimit_singleTransaction = singleTransaction.gasLimit;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -785,7 +785,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             gasPrice_singleTransaction = singleTransaction.gasPrice;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -795,7 +795,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             gasUsed_singleTransaction = singleTransaction.gasUsed;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -805,7 +805,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             hash_singleTransaction = singleTransaction.hash;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -814,7 +814,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The input value is empty in the Get Single Transaction Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           for (let i = 0; i < singleTransaction.logs.length; i++) {
@@ -824,7 +824,7 @@ describe("Get the transaction history on the MainNet", () => {
                 "The address of the logs value is empty in the Get Single Transaction Response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -833,7 +833,7 @@ describe("Get the transaction history on the MainNet", () => {
                 "The data of the logs value is empty in the Get Single Transaction Response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
           }
 
@@ -843,7 +843,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The nonce value is not number in the Get Single Transaction Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -854,7 +854,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             status_singleTransaction = singleTransaction.status;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -864,7 +864,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             timestamp_singleTransaction = singleTransaction.timestamp;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -873,7 +873,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The To Address value is empty in the Get Single Transaction Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -882,7 +882,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The To transactionIndex value is not number in the Get Single Transaction Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -892,7 +892,7 @@ describe("Get the transaction history on the MainNet", () => {
             );
             value_singleTransaction = singleTransaction.value;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -903,10 +903,10 @@ describe("Get the transaction history on the MainNet", () => {
             blockExplorerUrl_singleTransaction =
               singleTransaction.blockExplorerUrl;
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         } catch (e) {
-          console.log(e);
+          console.error(e);
           assert.fail(
             "An error is displayed while Fetching single transaction."
           );
@@ -939,7 +939,7 @@ describe("Get the transaction history on the MainNet", () => {
                 );
                 blockNumber_transactions = transactions.items[x].blockNumber;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -949,7 +949,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The blockNumber of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -959,7 +959,7 @@ describe("Get the transaction history on the MainNet", () => {
                 );
                 timestamp_transactions = transactions.items[x].timestamp;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -969,7 +969,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The timestamp of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -979,7 +979,7 @@ describe("Get the transaction history on the MainNet", () => {
                 );
                 from_transactions = transactions.items[x].from;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -989,7 +989,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The from address of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -999,7 +999,7 @@ describe("Get the transaction history on the MainNet", () => {
                 );
                 gasLimit_transactions = transactions.items[x].gasLimit;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1009,7 +1009,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The gasLimit of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1019,7 +1019,7 @@ describe("Get the transaction history on the MainNet", () => {
                 );
                 gasPrice_transactions = transactions.items[x].gasPrice;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1029,7 +1029,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The gasPrice of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1039,7 +1039,7 @@ describe("Get the transaction history on the MainNet", () => {
                 );
                 gasUsed_transactions = transactions.items[x].gasUsed;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1049,7 +1049,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The gasUsed of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1059,7 +1059,7 @@ describe("Get the transaction history on the MainNet", () => {
                 );
                 hash_transactions = transactions.items[x].hash;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1069,7 +1069,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The hash of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1078,7 +1078,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The logs value is empty in the Get Transactions Response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1089,7 +1089,7 @@ describe("Get the transaction history on the MainNet", () => {
                 );
                 status_transactions = transactions.items[x].status;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1099,7 +1099,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The status of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1109,7 +1109,7 @@ describe("Get the transaction history on the MainNet", () => {
                 );
                 value_transactions = transactions.items[x].value;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1119,7 +1119,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The value of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1129,7 +1129,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The direction value is empty in the Get Transactions Response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1138,7 +1138,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The batch value is empty in the Get Transactions Response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1147,7 +1147,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The asset value is empty in the Get Transactions Response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1158,7 +1158,7 @@ describe("Get the transaction history on the MainNet", () => {
                 blockExplorerUrl_transactions =
                   transactions.items[x].blockExplorerUrl;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1168,7 +1168,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The blockExplorerUrl of get single transaction response and get transactions response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               // validate hash of submitted batch and single transaction is displayed same
@@ -1179,7 +1179,7 @@ describe("Get the transaction history on the MainNet", () => {
                   "The hash of the get single transaction response and get submitted Batch response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               // validate hash of submitted batch and from transactions list is displayed same
@@ -1190,13 +1190,13 @@ describe("Get the transaction history on the MainNet", () => {
                   "The hash of the get transactions response and get submitted Batch response are not matched."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
               break;
             }
           }
         } catch (e) {
-          console.log(e);
+          console.error(e);
           assert.fail(
             "An error is displayed while Fetching historical transactions."
           );
@@ -1207,7 +1207,7 @@ describe("Get the transaction history on the MainNet", () => {
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE MATIC NETWORK AND GET THE TRANSACTION HISTORY"
       );
     }
@@ -1244,7 +1244,7 @@ describe("Get the transaction history on the MainNet", () => {
           blockNumber_transactions =
             transactions.items[randomTransaction].blockNumber;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1255,7 +1255,7 @@ describe("Get the transaction history on the MainNet", () => {
           timestamp_transactions =
             transactions.items[randomTransaction].timestamp;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1265,7 +1265,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           from_transactions = transactions.items[randomTransaction].from;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1276,7 +1276,7 @@ describe("Get the transaction history on the MainNet", () => {
           gasLimit_transactions =
             transactions.items[randomTransaction].gasLimit;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1287,7 +1287,7 @@ describe("Get the transaction history on the MainNet", () => {
           gasPrice_transactions =
             transactions.items[randomTransaction].gasPrice;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1297,7 +1297,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           gasUsed_transactions = transactions.items[randomTransaction].gasUsed;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1307,7 +1307,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           hash_transactions = transactions.items[randomTransaction].hash;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1318,7 +1318,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           status_transactions = transactions.items[randomTransaction].status;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1328,7 +1328,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           value_transactions = transactions.items[randomTransaction].value;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1338,7 +1338,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The direction value is not equal in the get transactions response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1347,7 +1347,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The batch value is empty in the get transactions response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1356,7 +1356,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The asset value is empty in the get transactions response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1367,10 +1367,10 @@ describe("Get the transaction history on the MainNet", () => {
           blockExplorerUrl_transactions =
             transactions.items[randomTransaction].blockExplorerUrl;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displayed while Fetching historical transactions."
         );
@@ -1400,7 +1400,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The blockHash value is empty in the get single transaction response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1410,7 +1410,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           blockNumber_singleTransaction = singleTransaction.blockNumber;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1420,7 +1420,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           from_singleTransaction = singleTransaction.from;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1430,7 +1430,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           gasLimit_singleTransaction = singleTransaction.gasLimit;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1440,7 +1440,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           gasPrice_singleTransaction = singleTransaction.gasPrice;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1450,7 +1450,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           gasUsed_singleTransaction = singleTransaction.gasUsed;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1460,7 +1460,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           hash_singleTransaction = singleTransaction.hash;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1469,7 +1469,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The input value is empty in the get single transaction response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         for (let i = 0; i < singleTransaction.logs.length; i++) {
@@ -1479,7 +1479,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The address of the logs value is empty in the get single transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -1488,7 +1488,7 @@ describe("Get the transaction history on the MainNet", () => {
               "The data of the logs value is empty in the get single transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -1498,7 +1498,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The nonce value is not number in the get single transaction response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1509,7 +1509,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           status_singleTransaction = singleTransaction.status;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1519,7 +1519,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           timestamp_singleTransaction = singleTransaction.timestamp;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1529,7 +1529,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The To Address value is empty in the get single transaction response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1538,7 +1538,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The To transactionIndex value is not number in the get single transaction response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1548,7 +1548,7 @@ describe("Get the transaction history on the MainNet", () => {
           );
           value_singleTransaction = singleTransaction.value;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1559,7 +1559,7 @@ describe("Get the transaction history on the MainNet", () => {
           blockExplorerUrl_singleTransaction =
             singleTransaction.blockExplorerUrl;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1569,7 +1569,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The blockNumber of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1579,7 +1579,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The timestamp of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1589,7 +1589,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The from address of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1599,7 +1599,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The gasLimit of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1609,7 +1609,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The gasPrice of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1619,7 +1619,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The gasUsed of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1629,7 +1629,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The hash of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1639,7 +1639,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The status of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1649,7 +1649,7 @@ describe("Get the transaction history on the MainNet", () => {
             "The value of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1659,14 +1659,14 @@ describe("Get the transaction history on the MainNet", () => {
             "The blockExplorerUrl of get single transaction response and get transactions response are not matched."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed while Fetching single transaction.");
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE MATIC NETWORK AND GET THE TRANSACTION HISTORY FROM THE RANDOM HASH"
       );
     }
@@ -1685,19 +1685,19 @@ describe("Get the transaction history on the MainNet", () => {
             "The null is received while fetching the transaction history with incorrect hash."
           );
         } else {
-          console.log(e);
+          console.error(e);
           assert.fail(
             "Getting the single transaction history with incorrect Hash."
           );
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "Getting the single transaction history with incorrect Hash."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE MATIC NETWORK AND GET THE TRANSACTION HISTORY WITH INCORRECT HASH"
       );
     }
@@ -1722,20 +1722,20 @@ describe("Get the transaction history on the MainNet", () => {
               "The validation message is displayed when hash not having 32 size hex while fetching the transaction history."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The transaction history is fetched with hash which not having 32 size hex."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The transaction history is fetched with hash which not having 32 size hex."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE MATIC NETWORK AND GET THE TRANSACTION HISTORY WHEN HASH HEX IS NOT WITH 32 SIZE"
       );
     }

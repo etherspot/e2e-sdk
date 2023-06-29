@@ -36,7 +36,7 @@ describe("The SDK, when swap the token with different features with the optimism
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -52,7 +52,7 @@ describe("The SDK, when swap the token with different features with the optimism
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -115,7 +115,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The provider value is empty in the offer response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -124,7 +124,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The receiveAmount value is empty in the offer response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -133,7 +133,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The exchangeRate value is not number in the offer response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -142,7 +142,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The transactions value is empty in the offer response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             for (let x = 0; x < transactionDetails.length; x++) {
@@ -158,7 +158,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The To Address is empty in the batchExecuteAccountTransaction response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -170,7 +170,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   addTransactionToBatchOutput.requests;
                 TransactionData_count = TransactionData_record.length;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -179,7 +179,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "It is not expected behaviour of the estimation in the batchExecuteAccountTransaction Response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             }
           }
@@ -187,7 +187,7 @@ describe("The SDK, when swap the token with different features with the optimism
           assert.fail("The offers are not displayed in the offer list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed while fetching the offers list.");
       }
 
@@ -207,7 +207,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address is empty in the batchExecuteAccountTransaction batch."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -216,7 +216,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Data value is empty in the Estimation Batch response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -227,7 +227,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The count of the request of the EstimationResponse is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -237,7 +237,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -246,7 +246,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeTokenReceiver Address is empty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -256,7 +256,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -267,7 +267,7 @@ describe("The SDK, when swap the token with different features with the optimism
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -276,10 +276,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The signature value is empty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -302,7 +302,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The transaction is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -311,7 +311,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The hash value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -321,7 +321,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The status of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -331,7 +331,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -340,7 +340,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The nonce value is not number in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -349,7 +349,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The To Address is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -358,7 +358,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The data value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -368,7 +368,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The count of the To Addresses are not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -378,7 +378,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The count of the data values are not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -387,7 +387,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The senderSignature value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -397,7 +397,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -407,7 +407,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -417,7 +417,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -427,7 +427,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -436,7 +436,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeToken value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -446,7 +446,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -456,7 +456,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -465,7 +465,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeData value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -474,16 +474,16 @@ describe("The SDK, when swap the token with different features with the optimism
             "The delayedUntil value is npot null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION ON THE OPTIMISM NETWORK"
       );
     }
@@ -515,7 +515,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The fromChainId value is not number in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -524,7 +524,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The toChainId value is not number in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -534,7 +534,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The fromTokenAddress value is not displayed correct in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -544,7 +544,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The toTokenAddress value is not displayed correct in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -553,7 +553,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The fromAmount value is empty in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -563,10 +563,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The serviceProvider value is not displayed correct in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed in the quote Request Payload.");
       }
 
@@ -583,7 +583,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The provider value is not displayed correct in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -592,7 +592,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The approvalData value is empty in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -601,7 +601,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The transaction value is empty in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -610,7 +610,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The estimate value is empty in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           if (quotes.items.length > 0) {
@@ -623,7 +623,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The provider value is not displayed correct in the quotes response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -632,7 +632,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The approvalAddress value of the approvalData is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -641,7 +641,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The amount value of the approvalData is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -650,7 +650,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The data value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -659,7 +659,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The To Address value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -668,7 +668,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The value's value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -677,7 +677,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The From Address value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -686,7 +686,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The chainId value of the transaction is not number in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -695,7 +695,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The approvalAddress value of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -704,7 +704,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmount value of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -713,7 +713,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmount value of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
             let toAmount_estimate_quote = quote.estimate.toAmount;
 
@@ -723,7 +723,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The limit value of the gas cost of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -732,7 +732,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The amountUSD value of the gas cost of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -741,7 +741,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The token value of the gas cost of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -750,7 +750,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromToken value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -759,7 +759,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toToken value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -768,7 +768,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toTokenAmount value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
             let toTokenAmount_data_estimate_quote =
               quote.estimate.data.toTokenAmount;
@@ -780,7 +780,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The To Amount Gas value is not displayed correctly."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -789,7 +789,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The estimatedGas value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             let tokenAddres = quote.estimate.data.fromToken.address;
@@ -824,7 +824,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The To Address value is empty in the Batch Execution Account Transaction response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -833,7 +833,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The Data value is empty in the Execution Batch Rccount Transaction response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             }
 
@@ -843,7 +843,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The estimatation value is empty in the Batch Execution Account Transaction response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             // Batch the cross chain transaction
@@ -863,7 +863,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The To Address value is empty in the Batch Cross Chain Transaction response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -872,7 +872,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The Data value is empty in the Batch Cross Chain Transaction response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
           }
 
@@ -882,13 +882,13 @@ describe("The SDK, when swap the token with different features with the optimism
               "The estimation value is not null in the Batch Cross Chain Transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         } else {
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displated while performing the action on the cross chain quotes."
         );
@@ -910,7 +910,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address value is empty in the Estimation Batch response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -919,7 +919,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Data value is empty in the Estimation Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -930,7 +930,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -939,7 +939,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeTokenReceiver Address is empty in the Estimate Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -949,7 +949,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -960,7 +960,7 @@ describe("The SDK, when swap the token with different features with the optimism
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -969,10 +969,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The signature value is empty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -995,7 +995,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The transaction is no null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1004,7 +1004,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The hash value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1014,7 +1014,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The status of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1024,7 +1024,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1033,7 +1033,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The nonce value is not number in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         for (let x = 0; x < SubmissionResponse.to.length; x++) {
@@ -1043,7 +1043,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address is empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -1054,7 +1054,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The data value is empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -1064,7 +1064,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The senderSignature value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1074,7 +1074,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1084,7 +1084,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1094,7 +1094,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1104,7 +1104,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1113,7 +1113,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeToken value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1123,7 +1123,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1133,7 +1133,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1142,7 +1142,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeData value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1151,16 +1151,16 @@ describe("The SDK, when swap the token with different features with the optimism
             "The delayedUntil value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION ON THE OPTIMISM NETWORK"
       );
     }
@@ -1192,7 +1192,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The fromChainId value is not number in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1201,7 +1201,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The toChainId value is not number in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1211,7 +1211,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The fromTokenAddress value is not displayed correct in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1221,7 +1221,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The toTokenAddress value is not displayed correct in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1230,7 +1230,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The fromAmount value is empty in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1240,10 +1240,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The serviceProvider value is not displayed correct in the quoteRequest Payload."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed in the quote Request Payload.");
       }
 
@@ -1262,7 +1262,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The id value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1271,7 +1271,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1280,7 +1280,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1289,7 +1289,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1298,7 +1298,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1308,7 +1308,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmount value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1317,7 +1317,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1326,7 +1326,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1335,7 +1335,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1344,7 +1344,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmountMin value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1353,7 +1353,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1363,7 +1363,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAddress value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1372,7 +1372,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The gasCostUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1381,7 +1381,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The containsSwitchChain value is not false in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1390,7 +1390,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The steps value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1399,7 +1399,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The insurance value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -1408,7 +1408,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The tags value is enpty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
           }
 
@@ -1426,7 +1426,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The To Address value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1435,7 +1435,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The gasLimit value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1444,7 +1444,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The gasPrice value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1453,7 +1453,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The data value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1462,7 +1462,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The value's value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1471,7 +1471,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The chainId value is not number in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -1480,7 +1480,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The type value is not null in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             }
 
@@ -1499,7 +1499,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displated while performing the action on the advance routes lifi."
         );
@@ -1521,7 +1521,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address value is empty in the Batch Execution Account Transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -1530,7 +1530,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The data value is empty in the Batch Execution Account Transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -1541,7 +1541,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1550,7 +1550,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1560,7 +1560,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1571,7 +1571,7 @@ describe("The SDK, when swap the token with different features with the optimism
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1580,10 +1580,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The signature value is empty in the Estimation Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -1606,7 +1606,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The transaction value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1615,7 +1615,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The hash value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1625,7 +1625,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The status of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1635,7 +1635,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1644,7 +1644,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The nonce value is not number in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         for (let x = 0; x < SubmissionResponse.to.length; x++) {
@@ -1654,7 +1654,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address is not empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -1663,7 +1663,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The data value is empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -1673,7 +1673,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The senderSignature value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1683,7 +1683,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1693,7 +1693,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1703,7 +1703,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1713,7 +1713,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1722,7 +1722,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeToken value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1732,7 +1732,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1742,7 +1742,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1751,7 +1751,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeData value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1760,16 +1760,16 @@ describe("The SDK, when swap the token with different features with the optimism
             "The delayedUntil value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTES LIFI ACTION ON THE OPTIMISM NETWORK"
       );
     }
@@ -1799,7 +1799,7 @@ describe("The SDK, when swap the token with different features with the optimism
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed while fetching the offer list.");
       }
 
@@ -1820,7 +1820,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address of the batchExecuteAccountTransaction is not displayed correctly."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -1829,7 +1829,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Data value is empty in the batchExecuteAccountTransaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -1840,7 +1840,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1850,7 +1850,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeTokenReceiver Address of the Estimate Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1860,7 +1860,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1871,7 +1871,7 @@ describe("The SDK, when swap the token with different features with the optimism
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1880,10 +1880,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The signature value is empty in the Estimation Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -1906,7 +1906,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The transaction value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1915,7 +1915,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The hash value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1925,7 +1925,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The status of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1935,7 +1935,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1944,7 +1944,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The nonce value is not number in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1954,7 +1954,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The To Address in the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1963,7 +1963,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The data value of the Submit Batch Response is not displayed."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1972,7 +1972,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The senderSignature value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1982,7 +1982,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -1992,7 +1992,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2002,7 +2002,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2012,7 +2012,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2021,7 +2021,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeToken value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2031,7 +2031,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2041,7 +2041,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2050,7 +2050,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeData value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2059,16 +2059,16 @@ describe("The SDK, when swap the token with different features with the optimism
             "The delayedUntil value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO NATIVE TOKEN ON THE OPTIMISM NETWORK"
       );
     }
@@ -2098,7 +2098,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The provider value is empty in the offer response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -2107,7 +2107,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The receiveAmount value is empty in the offer response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -2116,7 +2116,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The exchangeRate value is not number in the offer response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -2125,7 +2125,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The transactions value is empty in the offer response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             for (let x = 0; x < transactionDetails.length; x++) {
@@ -2141,7 +2141,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The To Address is empty in the batchExecuteAccountTransaction response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -2153,7 +2153,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   addTransactionToBatchOutput.requests;
                 TransactionData_count = TransactionData_record.length;
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -2162,7 +2162,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "It is not expected behaviour of the estimation in the batchExecuteAccountTransaction Response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             }
           }
@@ -2170,7 +2170,7 @@ describe("The SDK, when swap the token with different features with the optimism
           assert.fail("The offers are not displayed in the offer list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed while fetching the offers list.");
       }
 
@@ -2190,7 +2190,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address is empty in the batchExecuteAccountTransaction batch."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -2199,7 +2199,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Data value is empty in the Estimation Batch response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -2210,7 +2210,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The count of the request of the EstimationResponse is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2220,7 +2220,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2229,7 +2229,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeTokenReceiver Address is empty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2239,7 +2239,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2250,7 +2250,7 @@ describe("The SDK, when swap the token with different features with the optimism
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2259,10 +2259,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The signature value is empty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -2285,7 +2285,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The transaction is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2294,7 +2294,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The hash value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2304,7 +2304,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The status of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2314,7 +2314,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2323,7 +2323,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The nonce value is not number in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2332,7 +2332,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The To Address is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2341,7 +2341,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The data value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2351,7 +2351,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The count of the To Addresses are not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2361,7 +2361,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The count of the data values are not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2370,7 +2370,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The senderSignature value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2380,7 +2380,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2390,7 +2390,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2400,7 +2400,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2410,7 +2410,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2419,7 +2419,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeToken value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2429,7 +2429,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2439,7 +2439,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2448,7 +2448,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeData value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -2457,16 +2457,16 @@ describe("The SDK, when swap the token with different features with the optimism
             "The delayedUntil value is npot null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM NATIVE TOKEN TO ERC20 TOKEN ON THE OPTIMISM NETWORK"
       );
     }
@@ -2496,7 +2496,7 @@ describe("The SDK, when swap the token with different features with the optimism
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed while fetching the offers list.");
       }
 
@@ -2515,18 +2515,18 @@ describe("The SDK, when swap the token with different features with the optimism
               "The validation is displayed when submiting the batch without estimation."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The submition of batch is completed without estimation."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("The submition of batch is completed without estimation.");
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT ESTIMATION OF THE BATCH ON THE OPTIMISM NETWORK"
       );
     }
@@ -2542,7 +2542,7 @@ describe("The SDK, when swap the token with different features with the optimism
           fromAmount: ethers.utils.parseUnits("100000000", 6), // Exceeded Token Balance
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed while fetching the offers list.");
       }
 
@@ -2556,20 +2556,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The validation for exceeded Value is displayed as expected while the batch execution."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO ERC20 TOKEN WITH EXCEED TOKEN BALANCE ON THE OPTIMISM NETWORK"
       );
     }
@@ -2585,7 +2585,7 @@ describe("The SDK, when swap the token with different features with the optimism
           fromAmount: ethers.utils.parseUnits("100000000", 6), // Exceeded Token Balance
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed while fetching the offers list.");
       }
 
@@ -2599,20 +2599,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The validation for exceeded Value is displayed as expected while the batch execution."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO NATIVE TOKEN WITH EXCEED TOKEN BALANCE ON THE OPTIMISM NETWORK"
       );
     }
@@ -2640,20 +2640,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The validation message is displayed when ERC20 Token addresses are not same."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The offers list is displayed even if the ERC20 Token addresses are same."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The offers list is displayed even if the ERC20 Token addresses are same."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO THE SAME ERC20 TOKEN ON THE OPTIMISM NETWORK"
       );
     }
@@ -2680,20 +2680,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Get exchange offers is not performed due to The To Token Address is not added."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The offers list is performed without The To Token Address in Get exchange offers request."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The offers list is performed without The To Token Address in Get exchange offers request."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT TOTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE OPTIMISM NETWORK"
       );
     }
@@ -2720,20 +2720,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Get exchange offers is not performed due to The From Token Address is not added."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The offers list is performed without The From Token Address in Get exchange offers request."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The offers list is performed without The From Token Address in Get exchange offers request."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT FROMTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE OPTIMISM NETWORK"
       );
     }
@@ -2760,20 +2760,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Get exchange offers is not performed due to The amount is not added."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The offers list is performed without The amount in Get exchange offers request."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The offers list is performed without The amount in Get exchange offers request."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT FROMAMOUNT VALUE WHILE GET THE EXCHANGE OFFERS ON THE OPTIMISM NETWORK"
       );
     }
@@ -2801,20 +2801,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Get exchange offers is not performed due to The To Token Address is invalid."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The offers list is performed with invalid To Token Address in Get exchange offers request."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The offers list is performed with invalid To Token Address in Get exchange offers request."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITH INVALID TOTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE OPTIMISM NETWORK"
       );
     }
@@ -2842,20 +2842,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Get exchange offers is not performed due to The From Token Address is invalid."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The offers list is performed with invalid From Token Address in Get exchange offers request."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The offers list is performed with invalid From Token Address in Get exchange offers request."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITH INVALID FROMTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE OPTIMISM NETWORK"
       );
     }
@@ -2894,20 +2894,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The cross chain quotes is not completed without fromChainId of the Get cross chain quotes as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The cross chain quotes is completed without fromChainId of the Get cross chain quotes."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The cross chain quotes is completed without fromChainId of the Get cross chain quotes."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT FROMCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -2946,20 +2946,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The cross chain quotes is not completed without tochainid of the Get cross chain quotes as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The cross chain quotes is completed without tochainid of the Get cross chain quotes."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The cross chain quotes is completed without tochainid of the Get cross chain quotes."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT TOCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -2998,20 +2998,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The cross chain quotes is not completed without fromTokenAddress of the Get cross chain quotes as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The cross chain quotes is completed without fromTokenAddress of the Get cross chain quotes."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The cross chain quotes is completed without fromTokenAddress of the Get cross chain quotes."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT FROMTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -3050,20 +3050,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The cross chain quotes is not completed without totokenaddress of the Get cross chain quotes as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The cross chain quotes is completed without totokenaddress of the Get cross chain quotes."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The cross chain quotes is completed without totokenaddress of the Get cross chain quotes."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT TOTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -3102,20 +3102,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The cross chain quotes is not completed without fromAmount of the Get cross chain quotes as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The cross chain quotes is completed without fromAmount of the Get cross chain quotes."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The cross chain quotes is completed without fromAmount of the Get cross chain quotes."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT FROMAMOUNT VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -3153,7 +3153,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The provider value is not displayed correct in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -3162,7 +3162,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The approvalData value is empty in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -3171,7 +3171,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The transaction value is empty in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -3180,7 +3180,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The estimate value is empty in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           if (quotes.items.length > 0) {
@@ -3193,7 +3193,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The provider value is not displayed correct in the quotes response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3202,7 +3202,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The approvalAddress value of the approvalData is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3211,7 +3211,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The amount value of the approvalData is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3220,7 +3220,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The data value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3229,7 +3229,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The To Address value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3238,7 +3238,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The value's value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3247,7 +3247,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The From Address value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3256,7 +3256,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The chainId value of the transaction is not number in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3265,7 +3265,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The approvalAddress value of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3274,7 +3274,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmount value of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3283,7 +3283,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmount value of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
             let toAmount_estimate_quote = quote.estimate.toAmount;
 
@@ -3293,7 +3293,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The limit value of the gas cost of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3302,7 +3302,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The amountUSD value of the gas cost of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3311,7 +3311,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The token value of the gas cost of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3320,7 +3320,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromToken value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3329,7 +3329,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toToken value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3338,7 +3338,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toTokenAmount value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
             let toTokenAmount_data_estimate_quote =
               quote.estimate.data.toTokenAmount;
@@ -3350,7 +3350,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The To Amount Gas value is not displayed correctly."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3359,7 +3359,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The estimatedGas value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             let tokenAddres = quote.estimate.data.fromToken.address;
@@ -3394,7 +3394,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The To Address value is empty in the Batch Execution Account Transaction response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -3403,7 +3403,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The Data value is empty in the Execution Batch Rccount Transaction response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             }
 
@@ -3413,7 +3413,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The estimatation value is empty in the Batch Execution Account Transaction response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             // Batch the cross chain transaction
@@ -3433,7 +3433,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The To Address value is empty in the Batch Cross Chain Transaction response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3442,7 +3442,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The Data value is empty in the Batch Cross Chain Transaction response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
           }
 
@@ -3452,13 +3452,13 @@ describe("The SDK, when swap the token with different features with the optimism
               "The estimation value is not null in the Batch Cross Chain Transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         } else {
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displated while performing the action on the cross chain quotes."
         );
@@ -3480,7 +3480,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address value is empty in the Estimation Batch response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -3489,7 +3489,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Data value is empty in the Estimation Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -3500,7 +3500,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3509,7 +3509,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeTokenReceiver Address is empty in the Estimate Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3519,7 +3519,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3530,7 +3530,7 @@ describe("The SDK, when swap the token with different features with the optimism
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3539,10 +3539,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The signature value is empty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -3565,7 +3565,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The transaction is no null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3574,7 +3574,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The hash value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3584,7 +3584,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The status of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3594,7 +3594,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3603,7 +3603,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The nonce value is not number in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         for (let x = 0; x < SubmissionResponse.to.length; x++) {
@@ -3613,7 +3613,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address is empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -3624,7 +3624,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The data value is empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -3634,7 +3634,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The senderSignature value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3644,7 +3644,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3654,7 +3654,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3664,7 +3664,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3674,7 +3674,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3683,7 +3683,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeToken value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3693,7 +3693,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3703,7 +3703,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3712,7 +3712,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeData value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -3721,16 +3721,16 @@ describe("The SDK, when swap the token with different features with the optimism
             "The delayedUntil value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION FROM NATIVE TOKEN TO ANOTHER CHAIN'S ERC20 TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -3768,7 +3768,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The provider value is not displayed correct in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -3777,7 +3777,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The approvalData value is empty in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -3786,7 +3786,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The transaction value is empty in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -3795,7 +3795,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The estimate value is empty in the quotes response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           if (quotes.items.length > 0) {
@@ -3808,7 +3808,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The provider value is not displayed correct in the quotes response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3817,7 +3817,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The approvalAddress value of the approvalData is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3826,7 +3826,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The amount value of the approvalData is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3835,7 +3835,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The data value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3844,7 +3844,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The To Address value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3853,7 +3853,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The value's value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3862,7 +3862,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The From Address value of the transaction is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3871,7 +3871,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The chainId value of the transaction is not number in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3880,7 +3880,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The approvalAddress value of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3889,7 +3889,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmount value of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3898,7 +3898,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmount value of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
             let toAmount_estimate_quote = quote.estimate.toAmount;
 
@@ -3908,7 +3908,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The limit value of the gas cost of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3917,7 +3917,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The amountUSD value of the gas cost of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3926,7 +3926,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The token value of the gas cost of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3935,7 +3935,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromToken value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3944,7 +3944,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toToken value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3953,7 +3953,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toTokenAmount value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
             let toTokenAmount_data_estimate_quote =
               quote.estimate.data.toTokenAmount;
@@ -3965,7 +3965,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The To Amount Gas value is not displayed correctly."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -3974,7 +3974,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The estimatedGas value of the data of the estimate is empty in the single quote response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             let tokenAddres = quote.estimate.data.fromToken.address;
@@ -4009,7 +4009,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The To Address value is empty in the Batch Execution Account Transaction response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -4018,7 +4018,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The Data value is empty in the Execution Batch Rccount Transaction response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             }
 
@@ -4028,7 +4028,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The estimatation value is empty in the Batch Execution Account Transaction response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             // Batch the cross chain transaction
@@ -4048,7 +4048,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The To Address value is empty in the Batch Cross Chain Transaction response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -4057,7 +4057,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The Data value is empty in the Batch Cross Chain Transaction response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
           }
 
@@ -4067,13 +4067,13 @@ describe("The SDK, when swap the token with different features with the optimism
               "The estimation value is not null in the Batch Cross Chain Transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         } else {
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displated while performing the action on the cross chain quotes."
         );
@@ -4095,7 +4095,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address value is empty in the Estimation Batch response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -4104,7 +4104,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The Data value is empty in the Estimation Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -4115,7 +4115,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4124,7 +4124,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeTokenReceiver Address is empty in the Estimate Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4134,7 +4134,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4145,7 +4145,7 @@ describe("The SDK, when swap the token with different features with the optimism
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4154,10 +4154,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The signature value is empty in the Estimation Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -4180,7 +4180,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The transaction is no null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4189,7 +4189,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The hash value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4199,7 +4199,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The status of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4209,7 +4209,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4218,7 +4218,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The nonce value is not number in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         for (let x = 0; x < SubmissionResponse.to.length; x++) {
@@ -4228,7 +4228,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address is empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -4239,7 +4239,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The data value is empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -4249,7 +4249,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The senderSignature value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4259,7 +4259,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4269,7 +4269,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4279,7 +4279,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4289,7 +4289,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4298,7 +4298,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeToken value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4308,7 +4308,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4318,7 +4318,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4327,7 +4327,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeData value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -4336,16 +4336,16 @@ describe("The SDK, when swap the token with different features with the optimism
             "The delayedUntil value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION FROM ERC20 TOKEN TO ANOTHER CHAIN'S NATIVE TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -4386,10 +4386,10 @@ describe("The SDK, when swap the token with different features with the optimism
           );
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH THE SAME ERC20 TOKENS IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -4460,7 +4460,7 @@ describe("The SDK, when swap the token with different features with the optimism
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is dipslayed in the getCrossChainQuotes response."
         );
@@ -4476,20 +4476,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The validation for exceeded Value is displayed as expected while the batch execution."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH EXCEEDED TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -4560,7 +4560,7 @@ describe("The SDK, when swap the token with different features with the optimism
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is dipslayed in the getCrossChainQuotes response."
         );
@@ -4579,16 +4579,16 @@ describe("The SDK, when swap the token with different features with the optimism
               "The estimation is not performed with low token balance as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail("The estimation is performed with low token balance.");
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("The estimation is performed with low token balance.");
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -4659,7 +4659,7 @@ describe("The SDK, when swap the token with different features with the optimism
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is dipslayed in the getCrossChainQuotes response."
         );
@@ -4680,18 +4680,18 @@ describe("The SDK, when swap the token with different features with the optimism
               "The validation is displayed when submiting the batch without estimation."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The submition of batch is completed without estimation."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("The submition of batch is completed without estimation.");
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT ESTIMATION OF THE BATCH ON THE OPTIMISM NETWORK"
       );
     }
@@ -4764,14 +4764,14 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The batch is not executed the account transaction with invalid tokenAddress of the approval transaction request."
                 );
               } else {
-                console.log(e);
+                console.error(e);
                 assert.fail(
                   "The batch is executed the account transaction with invalid tokenAddress of the approval transaction request."
                 );
               }
             }
           } catch (e) {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The batch is executed the account transaction with invalid tokenAddress of the approval transaction request."
             );
@@ -4780,13 +4780,13 @@ describe("The SDK, when swap the token with different features with the optimism
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displayed while performing the approval transaction."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID TOKENADDRESS OF THE APPROVAL TRANSACTION REQUEST ON THE OPTIMISM NETWORK"
       );
     }
@@ -4857,7 +4857,7 @@ describe("The SDK, when swap the token with different features with the optimism
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed while Get the cross chain quotes.");
       }
 
@@ -4874,20 +4874,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The batch is not executed the account transaction with invalid approvalAddress of the approval transaction request."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The batch is executed the account transaction with invalid approvalAddress of the approval transaction request."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The batch is executed the account transaction with invalid approvalAddress of the approval transaction request."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID APPROVALADDRESS OF THE APPROVAL TRANSACTION REQUEST ON THE OPTIMISM NETWORK"
       );
     }
@@ -4959,7 +4959,7 @@ describe("The SDK, when swap the token with different features with the optimism
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("An error is displayed while Get the cross chain quotes.");
       }
 
@@ -4976,20 +4976,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The batch is not executed the account transaction with invalid amount of the approval transaction request."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The batch is executed the account transaction with invalid amount of the approval transaction request."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The batch is executed the account transaction with invalid amount of the approval transaction request."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID AMOUNT OF THE APPROVAL TRANSACTION REQUEST ON THE OPTIMISM NETWORK"
       );
     }
@@ -5051,7 +5051,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 value: approvalTransactionRequest.value,
               });
 
-              console.log(e);
+              console.error(e);
               assert.fail(
                 "The batch approval transaction is performed with invalid To Address of the approval transaction payload."
               );
@@ -5063,14 +5063,14 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The batch approval transaction is not performed with invalid To Address of the approval transaction payload."
                 );
               } else {
-                console.log(e);
+                console.error(e);
                 assert.fail(
                   "The batch approval transaction is performed with invalid To Address of the approval transaction payload."
                 );
               }
             }
           } catch (e) {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The batch approval transaction is performed with invalid To Address of the approval transaction payload."
             );
@@ -5079,13 +5079,13 @@ describe("The SDK, when swap the token with different features with the optimism
           assert.fail("The quotes are not displayed in the quote list.");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displayed while performing the approval transaction."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID TO ADDRESS OF THE APPROVAL TRANSACTION PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -5124,20 +5124,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The advance routes lifi is not completed without fromChainId of the Get advance routes lifi as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The advance routes lifi is completed without fromChainId of the Get advance routes lifi."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The advance routes lifi is completed without fromChainId of the Get advance routes lifi."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT FROMCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -5176,20 +5176,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The advance routes lifi is not completed without toChainId of the Get advance routes lifi as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The advance routes lifi is completed without toChainId of the Get advance routes lifi."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The advance routes lifi is completed without toChainId of the Get advance routes lifi."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT TOCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -5228,20 +5228,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The advance routes lifi is not completed without fromTokenAddress of the Get advance routes lifi as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The advance routes lifi is completed without fromTokenAddress of the Get advance routes lifi."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The advance routes lifi is completed without fromTokenAddress of the Get advance routes lifi."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT FROMTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -5280,20 +5280,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The advance routes lifi is not completed without totokenaddress of the Get advance routes lifi as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The advance routes lifi is completed without totokenaddress of the Get advance routes lifi."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The advance routes lifi is completed without totokenaddress of the Get advance routes lifi."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT TOTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -5332,20 +5332,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The advance routes lifi is not completed without fromamount of the Get advance routes lifi as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The advance routes lifi is completed without fromamount of the Get advance routes lifi."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The advance routes lifi is completed without fromamount of the Get advance routes lifi."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT FROMAMOUNT VALUE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -5385,7 +5385,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The id value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5394,7 +5394,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5403,7 +5403,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5412,7 +5412,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5421,7 +5421,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5431,7 +5431,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmount value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5440,7 +5440,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5449,7 +5449,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5458,7 +5458,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5467,7 +5467,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmountMin value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5476,7 +5476,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5486,7 +5486,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAddress value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5495,7 +5495,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The gasCostUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5504,7 +5504,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The containsSwitchChain value is not false in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5513,7 +5513,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The steps value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5522,7 +5522,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The insurance value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5531,7 +5531,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The tags value is enpty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
           }
 
@@ -5549,7 +5549,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The To Address value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -5558,7 +5558,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The gasLimit value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -5567,7 +5567,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The gasPrice value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -5576,7 +5576,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The data value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -5585,7 +5585,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The value's value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -5594,7 +5594,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The chainId value is not number in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -5603,7 +5603,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The type value is not null in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             }
 
@@ -5622,7 +5622,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displated while performing the action on the advance routes lifi."
         );
@@ -5644,7 +5644,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address value is empty in the Batch Execution Account Transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -5653,7 +5653,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The data value is empty in the Batch Execution Account Transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -5664,7 +5664,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5673,7 +5673,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5683,7 +5683,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5694,7 +5694,7 @@ describe("The SDK, when swap the token with different features with the optimism
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5703,10 +5703,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The signature value is empty in the Estimation Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -5729,7 +5729,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The transaction value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5738,7 +5738,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The hash value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5748,7 +5748,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The status of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5758,7 +5758,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5767,7 +5767,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The nonce value is not number in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         for (let x = 0; x < SubmissionResponse.to.length; x++) {
@@ -5777,7 +5777,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address is not empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -5786,7 +5786,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The data value is empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -5796,7 +5796,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The senderSignature value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5806,7 +5806,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5816,7 +5816,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5826,7 +5826,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5836,7 +5836,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5845,7 +5845,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeToken value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5855,7 +5855,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5865,7 +5865,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5874,7 +5874,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeData value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -5883,16 +5883,16 @@ describe("The SDK, when swap the token with different features with the optimism
             "The delayedUntil value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION FROM NATIVE TOKEN TO ANOTHER CHAIN'S ERC20 TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -5932,7 +5932,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The id value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5941,7 +5941,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5950,7 +5950,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5959,7 +5959,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5968,7 +5968,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5978,7 +5978,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The fromAmount value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5987,7 +5987,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toChainId value is not number in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -5996,7 +5996,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmountUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -6005,7 +6005,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmount value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -6014,7 +6014,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAmountMin value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -6023,7 +6023,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toToken value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -6033,7 +6033,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The toAddress value is not displayed correct in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -6042,7 +6042,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The gasCostUSD value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -6051,7 +6051,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The containsSwitchChain value is not false in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -6060,7 +6060,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The steps value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -6069,7 +6069,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The insurance value is empty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
 
             try {
@@ -6078,7 +6078,7 @@ describe("The SDK, when swap the token with different features with the optimism
                 "The tags value is enpty in the advance routes lifi response."
               );
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
           }
 
@@ -6096,7 +6096,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The To Address value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -6105,7 +6105,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The gasLimit value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -6114,7 +6114,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The gasPrice value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -6123,7 +6123,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The data value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -6132,7 +6132,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The value's value is empty in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -6141,7 +6141,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The chainId value is not number in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
 
               try {
@@ -6150,7 +6150,7 @@ describe("The SDK, when swap the token with different features with the optimism
                   "The type value is not null in the transactions response."
                 );
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             }
 
@@ -6169,7 +6169,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displated while performing the action on the advance routes lifi."
         );
@@ -6191,7 +6191,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address value is empty in the Batch Execution Account Transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -6200,7 +6200,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The data value is empty in the Batch Execution Account Transaction response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -6211,7 +6211,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6220,7 +6220,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6230,7 +6230,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6241,7 +6241,7 @@ describe("The SDK, when swap the token with different features with the optimism
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6250,10 +6250,10 @@ describe("The SDK, when swap the token with different features with the optimism
             "The signature value is empty in the Estimation Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -6276,7 +6276,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The transaction value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6285,7 +6285,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The hash value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6295,7 +6295,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The status of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6305,7 +6305,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6314,7 +6314,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The nonce value is not number in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         for (let x = 0; x < SubmissionResponse.to.length; x++) {
@@ -6324,7 +6324,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The To Address is not empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
 
           try {
@@ -6333,7 +6333,7 @@ describe("The SDK, when swap the token with different features with the optimism
               "The data value is empty in the Submit Batch Response."
             );
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
         }
 
@@ -6343,7 +6343,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The senderSignature value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6353,7 +6353,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6363,7 +6363,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6373,7 +6373,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6383,7 +6383,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Estimated Gas Price value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6392,7 +6392,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeToken value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6402,7 +6402,7 @@ describe("The SDK, when swap the token with different features with the optimism
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6412,7 +6412,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The Fee Amount value is not displayed correctly."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6421,7 +6421,7 @@ describe("The SDK, when swap the token with different features with the optimism
             "The feeData value is empty in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         try {
@@ -6430,16 +6430,16 @@ describe("The SDK, when swap the token with different features with the optimism
             "The delayedUntil value is not null in the Submit Batch Response."
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION FROM ERC20 TOKEN TO ANOTHER CHAIN'S NATIVE TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -6480,13 +6480,13 @@ describe("The SDK, when swap the token with different features with the optimism
           );
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The items are displayed in the get advance Routes LiFi response when perform the advance route lifi action with the same ERC20 tokens."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH THE SAME ERC20 TOKENS IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -6535,7 +6535,7 @@ describe("The SDK, when swap the token with different features with the optimism
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is dipslayed in the getAdvanceRoutesLiFi response."
         );
@@ -6551,20 +6551,20 @@ describe("The SDK, when swap the token with different features with the optimism
               "The validation for exceeded Value is displayed as expected while the batch execution."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH EXCEEDED TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -6613,7 +6613,7 @@ describe("The SDK, when swap the token with different features with the optimism
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is dipslayed in the getAdvanceRoutesLiFi response."
         );
@@ -6632,16 +6632,16 @@ describe("The SDK, when swap the token with different features with the optimism
               "The estimation is not performed with low token balance as expected."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail("The estimation is performed with low token balance.");
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("The estimation is performed with low token balance.");
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE OPTIMISM NETWORK"
       );
     }
@@ -6690,7 +6690,7 @@ describe("The SDK, when swap the token with different features with the optimism
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is dipslayed in the getAdvanceRoutesLiFi response."
         );
@@ -6711,18 +6711,18 @@ describe("The SDK, when swap the token with different features with the optimism
               "The validation is displayed when submiting the batch without estimation."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The submition of batch is completed without estimation."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("The submition of batch is completed without estimation.");
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT ESTIMATION OF THE BATCH ON THE OPTIMISM NETWORK"
       );
     }

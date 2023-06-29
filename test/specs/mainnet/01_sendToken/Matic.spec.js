@@ -30,7 +30,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
         "The EOA Address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
       assert.fail("The SDK is not initialled successfully.");
     }
 
@@ -45,7 +45,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
         "The smart wallet address is not calculated correctly."
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
       assert.fail("The smart wallet address is not calculated successfully.");
     }
 
@@ -95,7 +95,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
             value: value,
           });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The addition of transaction in the batch is not performed successfully."
         );
@@ -107,7 +107,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The To Address value is empty in the Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -116,7 +116,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The data value is empty in the Batch Reponse."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -125,7 +125,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The estimation value is not null in the Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       // Estimating the batch
@@ -137,7 +137,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
       try {
         EstimationResponse = await maticMainNetSdk.estimateGatewayBatch();
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The estimation of the batch is not performed successfully."
         );
@@ -149,7 +149,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The To Address value is empty in the Batch Estimation Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -158,7 +158,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The data value is empty in the Batch Estimation Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -168,7 +168,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The feeTokenReceiver Address of the Batch Estimation Response is not displayed correctly."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -178,7 +178,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
         );
         EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -188,7 +188,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
         );
         FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -199,7 +199,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
         EstimatedGasPrice_Estimate =
           EstimationResponse.estimation.estimatedGasPrice._hex;
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -208,7 +208,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The signature value is empty in the Estimation Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       // Submitting the batch
@@ -222,7 +222,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           guarded: false,
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The submittion of the batch is not performed successfully."
         );
@@ -234,7 +234,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The transaction value is not null in the Submit Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -243,7 +243,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The hash value is empty in the Submit Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -253,7 +253,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The status of the Submit Batch Response is not displayed correctly."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -263,7 +263,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The account address of the Submit Batch Response is not displayed correctly."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -272,7 +272,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The nonce value is not number in the Submit Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -281,7 +281,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The To Address value is empty in the Submit Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -290,7 +290,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The data value is empty in the Submit Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -299,7 +299,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The senderSignature value is empty in the Submit Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -309,7 +309,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
         );
         EstimatedGas_Submit = SubmissionResponse.estimatedGas;
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -319,7 +319,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The Estimated Gas value is not displayed correctly."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -329,7 +329,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
         );
         EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -339,7 +339,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The Estimated Gas Price value is not displayed correctly."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -348,7 +348,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The feeToken value is not null in the Submit Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -358,7 +358,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
         );
         FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -368,7 +368,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The Fee Amount value is not displayed correctly."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -377,7 +377,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The feeData value is empty in the Submit Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
 
       try {
@@ -386,10 +386,10 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           "The delayedUntil value is not null in the Submit Batch Response."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE MATIC NETWORK"
       );
     }
@@ -413,20 +413,20 @@ describe("The SDK, when sending a native token with matic network on the MainNet
               "The validation for To Address is displayed as expected while batch execution."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The expected validation is not displayed when entered the invalid To Address while performing batch execution."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The expected validation is not displayed when entered the invalid To Address while performing batch execution."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITH INVALID TO ADDRESS ON THE MATIC NETWORK"
       );
     }
@@ -451,20 +451,20 @@ describe("The SDK, when sending a native token with matic network on the MainNet
               "The validation for Value is displayed as expected while the batch execution."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The expected validation is not displayed when entered the invalid Value while performing batch execution."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The expected validation is not displayed when entered the invalid Value while performing batch execution."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITH INVALID VALUE ON THE MATIC NETWORK"
       );
     }
@@ -479,7 +479,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           value: "100000000000000000000000", // Exceeded Value
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The exceeded Value is not required in the wallet balance for the batch execution."
         );
@@ -495,20 +495,20 @@ describe("The SDK, when sending a native token with matic network on the MainNet
               "The validation for exceeded Value is displayed as expected while the batch execution."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITH EXCEEDED VALUE ON THE MATIC NETWORK"
       );
     }
@@ -535,20 +535,20 @@ describe("The SDK, when sending a native token with matic network on the MainNet
               "The validation is displayed while entering the duplicate sender address."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The validation is not displayed while entering the duplicate sender address."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The validation is not displayed while entering the duplicate sender address."
         );
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE SAME ADDRESS ON THE MATIC NETWORK"
       );
     }
@@ -563,7 +563,7 @@ describe("The SDK, when sending a native token with matic network on the MainNet
           value: "1000000000000",
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "The addition of transaction in the batch is not performed successfully."
         );
@@ -584,18 +584,18 @@ describe("The SDK, when sending a native token with matic network on the MainNet
               "The validation is displayed when submiting the batch without estimation."
             );
           } else {
-            console.log(e);
+            console.error(e);
             assert.fail(
               "The submition of batch is completed without estimation."
             );
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("The submition of batch is completed without estimation.");
       }
     } else {
-      console.log(
+      console.warn(
         "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITHOUT ESTIMATION OF THE BATCH ON THE MATIC NETWORK"
       );
     }
