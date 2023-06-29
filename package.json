@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "test-mainnet": "mocha --timeout 600000 --spec test/specs/mainnet/*/*.js",
     "test-mainnet-sendtoken-arbitrum": "mocha --timeout 600000 --spec test/specs/mainnet/01_sendToken/Arbitrum.spec.js",
     "test-mainnet-sendtoken-bsc": "mocha --timeout 600000 --spec test/specs/mainnet/01_sendToken/BSC.spec.js",
     "test-mainnet-sendtoken-matic": "mocha --timeout 600000 --spec test/specs/mainnet/01_sendToken/Matic.spec.js",
@@ -20,8 +21,7 @@
     "test-mainnet-swap-matic": "mocha --timeout 600000 --spec test/specs/mainnet/03_swap/Matic.spec.js",
     "test-mainnet-swap-optimism": "mocha --timeout 600000 --spec test/specs/mainnet/03_swap/Optimism.spec.js",
     "test-mainnet-swap-xdai": "mocha --timeout 600000 --spec test/specs/mainnet/03_swap/xDai.spec.js",
-    "test-mainnet-exchangerate-allnetworks": "mocha --timeout 600000 --spec test/specs/mainnet/04_exchangeRate/AllNetworks.spec.js",
-    "test-mainnet": "mocha --timeout 600000 --spec test/specs/mainnet/*/*.js"
+    "test-mainnet-exchangerate-allnetworks": "mocha --timeout 600000 --spec test/specs/otherFeatures/exchangeRate/AllNetworks.spec.js"
   },
   "author": "",
   "license": "ISC",

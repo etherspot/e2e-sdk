@@ -65,7 +65,7 @@ describe("Compare the Token Rates of the Etherspot and Coingecko Services", () =
           "The EOA Address is not calculated correctly."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("The SDK is not initialled successfully.");
       }
 
@@ -80,7 +80,7 @@ describe("Compare the Token Rates of the Etherspot and Coingecko Services", () =
           "The smart wallet address is not calculated correctly."
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail("The smart wallet address is not calculated successfully.");
       }
 
@@ -91,7 +91,7 @@ describe("Compare the Token Rates of the Etherspot and Coingecko Services", () =
             "https://api.coingecko.com/api/v3/coins/list?include_platform=true"
           );
         } catch (e) {
-          console.log(e);
+          console.error(e);
           assert.fail(
             "An error is displayed while getting the token addresses from the Coingecko."
           );
@@ -115,7 +115,7 @@ describe("Compare the Token Rates of the Etherspot and Coingecko Services", () =
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displayed while getting the token addresses and it's rate from the Coingecko."
         );
@@ -141,7 +141,7 @@ describe("Compare the Token Rates of the Etherspot and Coingecko Services", () =
           chainId: tokenListChainId_etherspot,
         };
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displayed while fetching the rate of the token from Etherspot."
         );
@@ -204,7 +204,7 @@ describe("Compare the Token Rates of the Etherspot and Coingecko Services", () =
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         assert.fail(
           "An error is displayed while comparing the rates of the Etherspot and Coingecko."
         );
