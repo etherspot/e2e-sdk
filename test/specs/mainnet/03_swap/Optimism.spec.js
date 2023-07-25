@@ -63,8 +63,8 @@ describe("The SDK, when swap the token with different features with the optimism
     let native_final;
     let usdc_final;
     let usdt_final;
-    let minimum_token_balance = 2;
-    let minimum_native_balance = 0.01;
+    let minimum_token_balance = 0.001;
+    let minimum_native_balance = 0.001;
 
     for (let i = 0; i < output.items.length; i++) {
       let tokenAddress = output.items[i].token;
@@ -559,7 +559,7 @@ describe("The SDK, when swap the token with different features with the optimism
         try {
           assert.strictEqual(
             quoteRequestPayload.serviceProvider,
-            "SocketV2",
+            "LiFi",
             "The serviceProvider value is not displayed correct in the quoteRequest Payload."
           );
         } catch (e) {
@@ -574,7 +574,9 @@ describe("The SDK, when swap the token with different features with the optimism
       let batchCrossChainTransaction;
       let quotes;
       try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
+        quotes = await optimismMainNetSdk.getCrossChainQuotes(
+          quoteRequestPayload
+        );
 
         if (quotes.items.length > 0) {
           try {
@@ -799,7 +801,7 @@ describe("The SDK, when swap the token with different features with the optimism
             // Build the approval transaction request
             let { ContractNames, getContractAbi } = pkg;
             let abi = getContractAbi(ContractNames.ERC20Token);
-            let erc20Contract = xdaiMainNetSdk.registerContract(
+            let erc20Contract = optimismMainNetSdk.registerContract(
               "erc20Contract",
               abi,
               tokenAddres
@@ -811,7 +813,7 @@ describe("The SDK, when swap the token with different features with the optimism
 
             // Batch the approval transaction
             let batchexecacctrans =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await optimismMainNetSdk.batchExecuteAccountTransaction({
                 to: approvalTransactionRequest.to,
                 data: approvalTransactionRequest.data,
                 value: approvalTransactionRequest.value,
@@ -849,7 +851,7 @@ describe("The SDK, when swap the token with different features with the optimism
             // Batch the cross chain transaction
             let { to, value, data } = quote.transaction;
             batchCrossChainTransaction =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await optimismMainNetSdk.batchExecuteAccountTransaction({
                 to,
                 data: data,
                 value,
@@ -901,7 +903,7 @@ describe("The SDK, when swap the token with different features with the optimism
       let EstimatedGasPrice_Estimate;
 
       try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+        EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
 
         for (let k = 0; k < EstimationResponse.requests.length; k++) {
           try {
@@ -985,7 +987,7 @@ describe("The SDK, when swap the token with different features with the optimism
       let EstimatedGasPrice_Submit;
 
       try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+        SubmissionResponse = await optimismMainNetSdk.submitGatewayBatch({
           guarded: false,
         });
 
@@ -1020,7 +1022,7 @@ describe("The SDK, when swap the token with different features with the optimism
         try {
           assert.strictEqual(
             SubmissionResponse.account,
-            xdaiSmartWalletAddress,
+            optimismSmartWalletAddress,
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
@@ -3144,7 +3146,9 @@ describe("The SDK, when swap the token with different features with the optimism
       let batchCrossChainTransaction;
       let quotes;
       try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
+        quotes = await optimismMainNetSdk.getCrossChainQuotes(
+          quoteRequestPayload
+        );
 
         if (quotes.items.length > 0) {
           try {
@@ -3369,7 +3373,7 @@ describe("The SDK, when swap the token with different features with the optimism
             // Build the approval transaction request
             let { ContractNames, getContractAbi } = pkg;
             let abi = getContractAbi(ContractNames.ERC20Token);
-            let erc20Contract = xdaiMainNetSdk.registerContract(
+            let erc20Contract = optimismMainNetSdk.registerContract(
               "erc20Contract",
               abi,
               tokenAddres
@@ -3381,7 +3385,7 @@ describe("The SDK, when swap the token with different features with the optimism
 
             // Batch the approval transaction
             let batchexecacctrans =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await optimismMainNetSdk.batchExecuteAccountTransaction({
                 to: approvalTransactionRequest.to,
                 data: approvalTransactionRequest.data,
                 value: approvalTransactionRequest.value,
@@ -3419,7 +3423,7 @@ describe("The SDK, when swap the token with different features with the optimism
             // Batch the cross chain transaction
             let { to, value, data } = quote.transaction;
             batchCrossChainTransaction =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await optimismMainNetSdk.batchExecuteAccountTransaction({
                 to,
                 data: data,
                 value,
@@ -3471,7 +3475,7 @@ describe("The SDK, when swap the token with different features with the optimism
       let EstimatedGasPrice_Estimate;
 
       try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+        EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
 
         for (let k = 0; k < EstimationResponse.requests.length; k++) {
           try {
@@ -3555,7 +3559,7 @@ describe("The SDK, when swap the token with different features with the optimism
       let EstimatedGasPrice_Submit;
 
       try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+        SubmissionResponse = await optimismMainNetSdk.submitGatewayBatch({
           guarded: false,
         });
 
@@ -3590,7 +3594,7 @@ describe("The SDK, when swap the token with different features with the optimism
         try {
           assert.strictEqual(
             SubmissionResponse.account,
-            xdaiSmartWalletAddress,
+            optimismSmartWalletAddress,
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
@@ -3759,7 +3763,9 @@ describe("The SDK, when swap the token with different features with the optimism
       let batchCrossChainTransaction;
       let quotes;
       try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
+        quotes = await optimismMainNetSdk.getCrossChainQuotes(
+          quoteRequestPayload
+        );
 
         if (quotes.items.length > 0) {
           try {
@@ -3984,7 +3990,7 @@ describe("The SDK, when swap the token with different features with the optimism
             // Build the approval transaction request
             let { ContractNames, getContractAbi } = pkg;
             let abi = getContractAbi(ContractNames.ERC20Token);
-            let erc20Contract = xdaiMainNetSdk.registerContract(
+            let erc20Contract = optimismMainNetSdk.registerContract(
               "erc20Contract",
               abi,
               tokenAddres
@@ -3996,7 +4002,7 @@ describe("The SDK, when swap the token with different features with the optimism
 
             // Batch the approval transaction
             let batchexecacctrans =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await optimismMainNetSdk.batchExecuteAccountTransaction({
                 to: approvalTransactionRequest.to,
                 data: approvalTransactionRequest.data,
                 value: approvalTransactionRequest.value,
@@ -4034,7 +4040,7 @@ describe("The SDK, when swap the token with different features with the optimism
             // Batch the cross chain transaction
             let { to, value, data } = quote.transaction;
             batchCrossChainTransaction =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await optimismMainNetSdk.batchExecuteAccountTransaction({
                 to,
                 data: data,
                 value,
@@ -4086,7 +4092,7 @@ describe("The SDK, when swap the token with different features with the optimism
       let EstimatedGasPrice_Estimate;
 
       try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+        EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
 
         for (let k = 0; k < EstimationResponse.requests.length; k++) {
           try {
@@ -4170,7 +4176,7 @@ describe("The SDK, when swap the token with different features with the optimism
       let EstimatedGasPrice_Submit;
 
       try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+        SubmissionResponse = await optimismMainNetSdk.submitGatewayBatch({
           guarded: false,
         });
 
@@ -4205,7 +4211,7 @@ describe("The SDK, when swap the token with different features with the optimism
         try {
           assert.strictEqual(
             SubmissionResponse.account,
-            xdaiSmartWalletAddress,
+            optimismSmartWalletAddress,
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {

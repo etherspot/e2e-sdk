@@ -558,7 +558,7 @@ describe("The SDK, when swap the token with different features with the matic ne
         try {
           assert.strictEqual(
             quoteRequestPayload.serviceProvider,
-            "SocketV2",
+            "LiFi",
             "The serviceProvider value is not displayed correct in the quoteRequest Payload."
           );
         } catch (e) {
@@ -573,7 +573,7 @@ describe("The SDK, when swap the token with different features with the matic ne
       let batchCrossChainTransaction;
       let quotes;
       try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
+        quotes = await maticMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
 
         if (quotes.items.length > 0) {
           try {
@@ -798,7 +798,7 @@ describe("The SDK, when swap the token with different features with the matic ne
             // Build the approval transaction request
             let { ContractNames, getContractAbi } = pkg;
             let abi = getContractAbi(ContractNames.ERC20Token);
-            let erc20Contract = xdaiMainNetSdk.registerContract(
+            let erc20Contract = maticMainNetSdk.registerContract(
               "erc20Contract",
               abi,
               tokenAddres
@@ -810,7 +810,7 @@ describe("The SDK, when swap the token with different features with the matic ne
 
             // Batch the approval transaction
             let batchexecacctrans =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await maticMainNetSdk.batchExecuteAccountTransaction({
                 to: approvalTransactionRequest.to,
                 data: approvalTransactionRequest.data,
                 value: approvalTransactionRequest.value,
@@ -848,7 +848,7 @@ describe("The SDK, when swap the token with different features with the matic ne
             // Batch the cross chain transaction
             let { to, value, data } = quote.transaction;
             batchCrossChainTransaction =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await maticMainNetSdk.batchExecuteAccountTransaction({
                 to,
                 data: data,
                 value,
@@ -900,7 +900,7 @@ describe("The SDK, when swap the token with different features with the matic ne
       let EstimatedGasPrice_Estimate;
 
       try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+        EstimationResponse = await maticMainNetSdk.estimateGatewayBatch();
 
         for (let k = 0; k < EstimationResponse.requests.length; k++) {
           try {
@@ -984,7 +984,7 @@ describe("The SDK, when swap the token with different features with the matic ne
       let EstimatedGasPrice_Submit;
 
       try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+        SubmissionResponse = await maticMainNetSdk.submitGatewayBatch({
           guarded: false,
         });
 
@@ -1019,7 +1019,7 @@ describe("The SDK, when swap the token with different features with the matic ne
         try {
           assert.strictEqual(
             SubmissionResponse.account,
-            xdaiSmartWalletAddress,
+            maticSmartWalletAddress,
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
@@ -2087,8 +2087,6 @@ describe("The SDK, when swap the token with different features with the matic ne
           fromAmount: ethers.utils.parseUnits("0.0001", 18),
         });
 
-        console.log("Offers::::::", offers);
-
         if (offers.length > 0) {
           for (let j = 0; j < offers.length; j++) {
             transactionDetails = offers[j].transactions;
@@ -3145,7 +3143,7 @@ describe("The SDK, when swap the token with different features with the matic ne
       let batchCrossChainTransaction;
       let quotes;
       try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
+        quotes = await maticMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
 
         if (quotes.items.length > 0) {
           try {
@@ -3370,7 +3368,7 @@ describe("The SDK, when swap the token with different features with the matic ne
             // Build the approval transaction request
             let { ContractNames, getContractAbi } = pkg;
             let abi = getContractAbi(ContractNames.ERC20Token);
-            let erc20Contract = xdaiMainNetSdk.registerContract(
+            let erc20Contract = maticMainNetSdk.registerContract(
               "erc20Contract",
               abi,
               tokenAddres
@@ -3382,7 +3380,7 @@ describe("The SDK, when swap the token with different features with the matic ne
 
             // Batch the approval transaction
             let batchexecacctrans =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await maticMainNetSdk.batchExecuteAccountTransaction({
                 to: approvalTransactionRequest.to,
                 data: approvalTransactionRequest.data,
                 value: approvalTransactionRequest.value,
@@ -3420,7 +3418,7 @@ describe("The SDK, when swap the token with different features with the matic ne
             // Batch the cross chain transaction
             let { to, value, data } = quote.transaction;
             batchCrossChainTransaction =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await maticMainNetSdk.batchExecuteAccountTransaction({
                 to,
                 data: data,
                 value,
@@ -3472,7 +3470,7 @@ describe("The SDK, when swap the token with different features with the matic ne
       let EstimatedGasPrice_Estimate;
 
       try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+        EstimationResponse = await maticMainNetSdk.estimateGatewayBatch();
 
         for (let k = 0; k < EstimationResponse.requests.length; k++) {
           try {
@@ -3556,7 +3554,7 @@ describe("The SDK, when swap the token with different features with the matic ne
       let EstimatedGasPrice_Submit;
 
       try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+        SubmissionResponse = await maticMainNetSdk.submitGatewayBatch({
           guarded: false,
         });
 
@@ -3591,7 +3589,7 @@ describe("The SDK, when swap the token with different features with the matic ne
         try {
           assert.strictEqual(
             SubmissionResponse.account,
-            xdaiSmartWalletAddress,
+            maticSmartWalletAddress,
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
@@ -3760,7 +3758,7 @@ describe("The SDK, when swap the token with different features with the matic ne
       let batchCrossChainTransaction;
       let quotes;
       try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
+        quotes = await maticMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
 
         if (quotes.items.length > 0) {
           try {
@@ -3985,7 +3983,7 @@ describe("The SDK, when swap the token with different features with the matic ne
             // Build the approval transaction request
             let { ContractNames, getContractAbi } = pkg;
             let abi = getContractAbi(ContractNames.ERC20Token);
-            let erc20Contract = xdaiMainNetSdk.registerContract(
+            let erc20Contract = maticMainNetSdk.registerContract(
               "erc20Contract",
               abi,
               tokenAddres
@@ -3997,7 +3995,7 @@ describe("The SDK, when swap the token with different features with the matic ne
 
             // Batch the approval transaction
             let batchexecacctrans =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await maticMainNetSdk.batchExecuteAccountTransaction({
                 to: approvalTransactionRequest.to,
                 data: approvalTransactionRequest.data,
                 value: approvalTransactionRequest.value,
@@ -4035,7 +4033,7 @@ describe("The SDK, when swap the token with different features with the matic ne
             // Batch the cross chain transaction
             let { to, value, data } = quote.transaction;
             batchCrossChainTransaction =
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+              await maticMainNetSdk.batchExecuteAccountTransaction({
                 to,
                 data: data,
                 value,
@@ -4087,7 +4085,7 @@ describe("The SDK, when swap the token with different features with the matic ne
       let EstimatedGasPrice_Estimate;
 
       try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+        EstimationResponse = await maticMainNetSdk.estimateGatewayBatch();
 
         for (let k = 0; k < EstimationResponse.requests.length; k++) {
           try {
@@ -4171,7 +4169,7 @@ describe("The SDK, when swap the token with different features with the matic ne
       let EstimatedGasPrice_Submit;
 
       try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+        SubmissionResponse = await maticMainNetSdk.submitGatewayBatch({
           guarded: false,
         });
 
@@ -4206,7 +4204,7 @@ describe("The SDK, when swap the token with different features with the matic ne
         try {
           assert.strictEqual(
             SubmissionResponse.account,
-            xdaiSmartWalletAddress,
+            maticSmartWalletAddress,
             "The account address of the Submit Batch Response is not displayed correctly."
           );
         } catch (e) {
