@@ -408,8 +408,6 @@ describe("Get the transaction history on the MainNet", () => {
         }
       } while (!(transactionState == "Sent"));
 
-      console.log("transactionState::::::::", transactionState);
-
       // get submmited batch with sent status
       if (!(transactionState === "Reverted")) {
         let output;
