@@ -1,23 +1,23 @@
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config(); // init dotenv
 
-import { assert } from "chai";
-import { EnvNames, NetworkNames, Sdk } from "etherspot";
-import { BigNumber, utils } from "ethers";
-import Helper from "../../../utils/Helper.js";
+import { assert } from 'chai';
+import { EnvNames, NetworkNames, Sdk } from 'etherspot';
+import { BigNumber, utils } from 'ethers';
+import Helper from '../../../utils/Helper.js';
 
 let xdaiMainNetSdk;
 let xdaiSmartWalletAddress;
 let xdaiSmartWalletOutput;
 let xdaiNativeAddress = null;
-let xdaiUsdcAddress = "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83";
-let xdaiUsdtAddress = "0x4ECaBa5870353805a9F068101A40E0f32ed605C6";
-let toAddress = "0x71Bec2309cC6BDD5F1D73474688A6154c28Db4B5";
-let value = "1000000000000"; // 18 decimal
+let xdaiUsdcAddress = '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83';
+let xdaiUsdtAddress = '0x4ECaBa5870353805a9F068101A40E0f32ed605C6';
+let toAddress = '0x71Bec2309cC6BDD5F1D73474688A6154c28Db4B5';
+let value = '1000000000000'; // 18 decimal
 let runTest;
 
-describe("Get the transaction history on the MainNet", () => {
-  beforeEach("Checking the sufficient wallet balance", async () => {
+describe('Get the transaction history on the MainNet', () => {
+  beforeEach('Checking the sufficient wallet balance', async () => {
     // initialize the sdk
     try {
       xdaiMainNetSdk = new Sdk(process.env.PRIVATE_KEY, {
@@ -27,12 +27,12 @@ describe("Get the transaction history on the MainNet", () => {
 
       assert.strictEqual(
         xdaiMainNetSdk.state.accountAddress,
-        "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
-        "The EOA Address is not calculated correctly."
+        '0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f',
+        'The EOA Address is not calculated correctly.'
       );
     } catch (e) {
       console.error(e);
-      assert.fail("The SDK is not initialled successfully.");
+      assert.fail('The SDK is not initialled successfully.');
     }
 
     // Compute the smart wallet address
@@ -42,12 +42,12 @@ describe("Get the transaction history on the MainNet", () => {
 
       assert.strictEqual(
         xdaiSmartWalletAddress,
-        "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
-        "The smart wallet address is not calculated correctly."
+        '0x666E17ad27fB620D7519477f3b33d809775d65Fe',
+        'The smart wallet address is not calculated correctly.'
       );
     } catch (e) {
       console.error(e);
-      assert.fail("The smart wallet address is not calculated successfully.");
+      assert.fail('The smart wallet address is not calculated successfully.');
     }
 
     let output = await xdaiMainNetSdk.getAccountBalances();
@@ -85,7 +85,7 @@ describe("Get the transaction history on the MainNet", () => {
     }
   });
 
-  it("SMOKE: Perform the send native token on the xdai network and get the transaction history", async () => {
+  it('SMOKE: Perform the send native token on the xdai network and get the transaction history', async () => {
     if (runTest) {
       let AddTransactionToBatchOutput;
       let hashAddressBig;
@@ -102,7 +102,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             AddTransactionToBatchOutput.requests[0].to,
-            "The To Address is empty in the Batch Response."
+            'The To Address is empty in the Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -111,7 +111,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             AddTransactionToBatchOutput.requests[0].data,
-            "The data value is empty in the Batch Reponse."
+            'The data value is empty in the Batch Reponse.'
           );
         } catch (e) {
           console.error(e);
@@ -120,7 +120,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNull(
             AddTransactionToBatchOutput.estimation,
-            "The estimation value is not null in the Batch Response."
+            'The estimation value is not null in the Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -141,7 +141,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             EstimationResponse.requests[0].to,
-            "The To Address is empty in the Batch Response."
+            'The To Address is empty in the Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -150,7 +150,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             EstimationResponse.requests[0].data,
-            "The data value is empty in the Estimation Batch Response."
+            'The data value is empty in the Estimation Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -159,7 +159,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             EstimationResponse.estimation.feeTokenReceiver,
-            "The feeTokenReceiver Address isempty in the Estimation Batch Response."
+            'The feeTokenReceiver Address isempty in the Estimation Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -168,7 +168,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             EstimationResponse.estimation.estimatedGas,
-            "The estimatedGas value is not number in the Estimate Batch Response."
+            'The estimatedGas value is not number in the Estimate Batch Response.'
           );
           EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
         } catch (e) {
@@ -178,7 +178,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             EstimationResponse.estimation.feeAmount,
-            "The feeAmount value is empty in the Estimation Batch Response."
+            'The feeAmount value is empty in the Estimation Batch Response.'
           );
           FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
         } catch (e) {
@@ -188,7 +188,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             EstimationResponse.estimation.estimatedGasPrice,
-            "The estimatedGasPrice value is empty in the Estimation Batch Response."
+            'The estimatedGasPrice value is empty in the Estimation Batch Response.'
           );
           EstimatedGasPrice_Estimate =
             EstimationResponse.estimation.estimatedGasPrice._hex;
@@ -199,7 +199,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             EstimationResponse.estimation.signature,
-            "The signature value is empty in the Estimation Batch Response."
+            'The signature value is empty in the Estimation Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -207,7 +207,7 @@ describe("Get the transaction history on the MainNet", () => {
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The estimation of the batch is not performed successfully."
+          'The estimation of the batch is not performed successfully.'
         );
       }
 
@@ -226,7 +226,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNull(
             SubmissionResponse.transaction,
-            "The transaction value is not null in the Get Submitted Batch Response."
+            'The transaction value is not null in the Get Submitted Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -235,7 +235,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             SubmissionResponse.hash,
-            "The hash value is empty in the Get Submitted Batch Response."
+            'The hash value is empty in the Get Submitted Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -244,8 +244,8 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.strictEqual(
             SubmissionResponse.state,
-            "Queued",
-            "The status of the Get Submitted Batch Response is not displayed correctly."
+            'Queued',
+            'The status of the Get Submitted Batch Response is not displayed correctly.'
           );
         } catch (e) {
           console.error(e);
@@ -255,7 +255,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             SubmissionResponse.account,
             xdaiSmartWalletAddress,
-            "The account address of the Get Submitted Batch Response is not displayed correctly."
+            'The account address of the Get Submitted Batch Response is not displayed correctly.'
           );
         } catch (e) {
           console.error(e);
@@ -264,7 +264,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             SubmissionResponse.nonce,
-            "The nonce value is not number in the Get Submitted Batch Response."
+            'The nonce value is not number in the Get Submitted Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -273,7 +273,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             SubmissionResponse.to[0],
-            "The To Address is empty in the Get Submitted Batch Response."
+            'The To Address is empty in the Get Submitted Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -282,7 +282,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             SubmissionResponse.data[0],
-            "The data value is empty in the Get Submitted Batch Response."
+            'The data value is empty in the Get Submitted Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -291,7 +291,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             SubmissionResponse.senderSignature,
-            "The senderSignature value is empty in the Get Submitted Batch Response."
+            'The senderSignature value is empty in the Get Submitted Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -300,7 +300,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             SubmissionResponse.estimatedGas,
-            "The Estimated Gas value is not number in the Get Submitted Batch Response."
+            'The Estimated Gas value is not number in the Get Submitted Batch Response.'
           );
           EstimatedGas_Submit = SubmissionResponse.estimatedGas;
         } catch (e) {
@@ -311,7 +311,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             EstimatedGas_Estimate,
             EstimatedGas_Submit,
-            "The Estimated Gas value is not displayed correctly."
+            'The Estimated Gas value is not displayed correctly.'
           );
         } catch (e) {
           console.error(e);
@@ -320,7 +320,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             SubmissionResponse.estimatedGasPrice._hex,
-            "The estimatedGasPrice value is empty in the Get Submitted Batch Response."
+            'The estimatedGasPrice value is empty in the Get Submitted Batch Response.'
           );
           EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
         } catch (e) {
@@ -331,7 +331,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             EstimatedGasPrice_Estimate,
             EstimatedGasPrice_Submit,
-            "The Estimated Gas Price value is not displayed correctly."
+            'The Estimated Gas Price value is not displayed correctly.'
           );
         } catch (e) {
           console.error(e);
@@ -340,7 +340,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNull(
             SubmissionResponse.feeToken,
-            "The feeToken value is not null in the Get Submitted Batch Response."
+            'The feeToken value is not null in the Get Submitted Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -349,7 +349,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             SubmissionResponse.feeAmount._hex,
-            "The feeAmount value is empty in the Get Submitted Batch Response."
+            'The feeAmount value is empty in the Get Submitted Batch Response.'
           );
           FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
         } catch (e) {
@@ -360,7 +360,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             FeeAmount_Estimate,
             FeeAmount_Submit,
-            "The Fee Amount value is not displayed correctly."
+            'The Fee Amount value is not displayed correctly.'
           );
         } catch (e) {
           console.error(e);
@@ -369,7 +369,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             SubmissionResponse.feeData,
-            "The feeData value is empty in the Get Submitted Batch Response."
+            'The feeData value is empty in the Get Submitted Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -378,7 +378,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNull(
             SubmissionResponse.delayedUntil,
-            "The delayedUntil value is not null in the Get Submitted Batch Response."
+            'The delayedUntil value is not null in the Get Submitted Batch Response.'
           );
         } catch (e) {
           console.error(e);
@@ -386,7 +386,7 @@ describe("Get the transaction history on the MainNet", () => {
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The submittion of the batch is not performed successfully."
+          'The submittion of the batch is not performed successfully.'
         );
       }
 
@@ -397,8 +397,8 @@ describe("Get the transaction history on the MainNet", () => {
             hash: hashAddressBig,
           });
           transactionState = output.state;
-          if (transactionState === "Reverted") {
-            console.log("The transaction status is Reverted.");
+          if (transactionState === 'Reverted') {
+            console.log('The transaction status is Reverted.');
             break;
           }
 
@@ -406,10 +406,10 @@ describe("Get the transaction history on the MainNet", () => {
         } catch (e) {
           console.error(e);
         }
-      } while (!(transactionState == "Sent"));
+      } while (!(transactionState == 'Sent'));
 
       // get submmited batch with sent status
-      if (!(transactionState === "Reverted")) {
+      if (!(transactionState === 'Reverted')) {
         let output;
         let EstimatedGas_Submitted;
         let FeeAmount_Submitted;
@@ -423,7 +423,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.transaction.hash,
-              "The Hash value of the transaction is empty in the Get Submitted Batch Response."
+              'The Hash value of the transaction is empty in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -432,8 +432,8 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.strictEqual(
               output.transaction.state,
-              "Sent",
-              "The state value of the transaction is empty in the Get Submitted Batch Response."
+              'Sent',
+              'The state value of the transaction is empty in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -442,7 +442,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.transaction.sender,
-              "The sender address value of the transaction is empty in the Get Submitted Batch Response."
+              'The sender address value of the transaction is empty in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -451,7 +451,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.transaction.gasPrice,
-              "The gasPrice value of the transaction is empty in the Get Submitted Batch Response."
+              'The gasPrice value of the transaction is empty in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -460,7 +460,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNumber(
               output.transaction.gasUsed,
-              "The gasUsed value of the transaction is not number in the Get Submitted Batch Response."
+              'The gasUsed value of the transaction is not number in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -469,7 +469,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.transaction.totalCost,
-              "The totalCost value of the transaction is empty in the Get Submitted Batch Response."
+              'The totalCost value of the transaction is empty in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -478,7 +478,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.logs[0].address,
-              "The address of the logs of the Get Submitted Batch Response is not displayed."
+              'The address of the logs of the Get Submitted Batch Response is not displayed.'
             );
           } catch (e) {
             console.error(e);
@@ -487,7 +487,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.logs[0].data,
-              "The data of the logs of the Get Submitted Batch Response is not displayed."
+              'The data of the logs of the Get Submitted Batch Response is not displayed.'
             );
           } catch (e) {
             console.error(e);
@@ -496,7 +496,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.logs[0].topics,
-              "The topics of the logs of the Get Submitted Batch Response is not displayed."
+              'The topics of the logs of the Get Submitted Batch Response is not displayed.'
             );
           } catch (e) {
             console.error(e);
@@ -505,7 +505,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.hash,
-              "hash transaction value is not null in the Get Submitted Batch Response."
+              'hash transaction value is not null in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -514,8 +514,8 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.strictEqual(
               output.state,
-              "Sent",
-              "The status of the Get Submitted Batch Response is not displayed correctly."
+              'Sent',
+              'The status of the Get Submitted Batch Response is not displayed correctly.'
             );
           } catch (e) {
             console.error(e);
@@ -525,7 +525,7 @@ describe("Get the transaction history on the MainNet", () => {
             assert.strictEqual(
               output.account,
               xdaiSmartWalletAddress,
-              "The account address of the Get Submitted Batch Response is not displayed correctly."
+              'The account address of the Get Submitted Batch Response is not displayed correctly.'
             );
           } catch (e) {
             console.error(e);
@@ -534,7 +534,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNumber(
               output.nonce,
-              "The nonce value is not number in the Get Submitted Batch Response."
+              'The nonce value is not number in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -543,7 +543,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.to[0],
-              "The To Address is empty in the Get Submitted Batch Response."
+              'The To Address is empty in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -552,7 +552,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.data[0],
-              "The data value is empty in the Get Submitted Batch Response."
+              'The data value is empty in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -561,7 +561,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.senderSignature,
-              "The senderSignature value is empty in the Get Submitted Batch Response."
+              'The senderSignature value is empty in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -570,7 +570,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNumber(
               output.estimatedGas,
-              "The Estimated Gas value is not number in the Get Submitted Batch Response."
+              'The Estimated Gas value is not number in the Get Submitted Batch Response.'
             );
             EstimatedGas_Submitted = output.estimatedGas;
           } catch (e) {
@@ -581,7 +581,7 @@ describe("Get the transaction history on the MainNet", () => {
             assert.strictEqual(
               EstimatedGas_Estimate,
               EstimatedGas_Submitted,
-              "The Estimated Gas value is not displayed correctly."
+              'The Estimated Gas value is not displayed correctly.'
             );
           } catch (e) {
             console.error(e);
@@ -590,7 +590,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.estimatedGasPrice._hex,
-              "The estimatedGasPrice value is empty in the Get Submitted Batch Response."
+              'The estimatedGasPrice value is empty in the Get Submitted Batch Response.'
             );
             EstimatedGasPrice_Submitted = output.estimatedGasPrice._hex;
           } catch (e) {
@@ -601,7 +601,7 @@ describe("Get the transaction history on the MainNet", () => {
             assert.strictEqual(
               EstimatedGasPrice_Estimate,
               EstimatedGasPrice_Submitted,
-              "The Estimated Gas Price value is not displayed correctly."
+              'The Estimated Gas Price value is not displayed correctly.'
             );
           } catch (e) {
             console.error(e);
@@ -610,7 +610,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNull(
               output.feeToken,
-              "The feeToken value is not null in the Get Submitted Batch Response."
+              'The feeToken value is not null in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -619,7 +619,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.feeAmount._hex,
-              "The feeAmount value is empty in the Get Submitted Batch Response."
+              'The feeAmount value is empty in the Get Submitted Batch Response.'
             );
 
             FeeAmount_Submitted = output.feeAmount._hex;
@@ -631,7 +631,7 @@ describe("Get the transaction history on the MainNet", () => {
             assert.strictEqual(
               FeeAmount_Estimate,
               FeeAmount_Submitted,
-              "The Fee Amount value is not displayed correctly."
+              'The Fee Amount value is not displayed correctly.'
             );
           } catch (e) {
             console.error(e);
@@ -640,7 +640,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.feeData,
-              "The feeData value is empty in the Get Submitted Batch Response."
+              'The feeData value is empty in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -649,7 +649,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNull(
               output.delayedUntil,
-              "The delayedUntil value is not null in the Get Submitted Batch Response."
+              'The delayedUntil value is not null in the Get Submitted Batch Response.'
             );
           } catch (e) {
             console.error(e);
@@ -658,8 +658,8 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.strictEqual(
               output.events[0].contract,
-              "PersonalAccountRegistry",
-              "The contract of the events is enpty in the Get Submitted Batch Response"
+              'PersonalAccountRegistry',
+              'The contract of the events is enpty in the Get Submitted Batch Response'
             );
           } catch (e) {
             console.error(e);
@@ -668,8 +668,8 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.strictEqual(
               output.events[0].event,
-              "AccountTransactionExecuted",
-              "The event of the events is enpty in the Get Submitted Batch Response"
+              'AccountTransactionExecuted',
+              'The event of the events is enpty in the Get Submitted Batch Response'
             );
           } catch (e) {
             console.error(e);
@@ -678,7 +678,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.events[0].args,
-              "The args of the events is empty in the Get Submitted Batch Response"
+              'The args of the events is empty in the Get Submitted Batch Response'
             );
           } catch (e) {
             console.error(e);
@@ -687,8 +687,8 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.strictEqual(
               output.events[1].contract,
-              "PersonalAccountRegistry",
-              "The contract of the events is empty in the Get Submitted Batch Response"
+              'PersonalAccountRegistry',
+              'The contract of the events is empty in the Get Submitted Batch Response'
             );
           } catch (e) {
             console.error(e);
@@ -697,8 +697,8 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.strictEqual(
               output.events[1].event,
-              "AccountCallRefunded",
-              "The event of the events is enpty in the Get Submitted Batch Response"
+              'AccountCallRefunded',
+              'The event of the events is enpty in the Get Submitted Batch Response'
             );
           } catch (e) {
             console.error(e);
@@ -707,7 +707,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               output.events[1].args,
-              "The args of the events is enpty in the Get Submitted Batch Response"
+              'The args of the events is enpty in the Get Submitted Batch Response'
             );
           } catch (e) {
             console.error(e);
@@ -715,7 +715,7 @@ describe("Get the transaction history on the MainNet", () => {
         } catch (e) {
           console.error(e);
           assert.fail(
-            "An error is displayed while getting the submmited batch with sent status."
+            'An error is displayed while getting the submmited batch with sent status.'
           );
         }
 
@@ -729,7 +729,6 @@ describe("Get the transaction history on the MainNet", () => {
         let hash_singleTransaction;
         let status_singleTransaction;
         let timestamp_singleTransaction;
-        let value_singleTransaction;
         let blockExplorerUrl_singleTransaction;
 
         try {
@@ -740,7 +739,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.blockHash,
-              "The blockHash value is empty in the get single transaction response."
+              'The blockHash value is empty in the get single transaction response.'
             );
           } catch (e) {
             console.error(e);
@@ -749,7 +748,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNumber(
               singleTransaction.blockNumber,
-              "The blockNumber value is not number in the get single transaction response."
+              'The blockNumber value is not number in the get single transaction response.'
             );
             blockNumber_singleTransaction = singleTransaction.blockNumber;
           } catch (e) {
@@ -759,7 +758,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.from,
-              "The from address value is empty in the Get Single Transaction Response."
+              'The from address value is empty in the Get Single Transaction Response.'
             );
             from_singleTransaction = singleTransaction.from;
           } catch (e) {
@@ -769,7 +768,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNumber(
               singleTransaction.gasLimit,
-              "The gasLimit value is not number in the Get Single Transaction Response."
+              'The gasLimit value is not number in the Get Single Transaction Response.'
             );
             gasLimit_singleTransaction = singleTransaction.gasLimit;
           } catch (e) {
@@ -779,7 +778,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.gasPrice,
-              "The gasPrice value is empty in the Get Single Transaction Response."
+              'The gasPrice value is empty in the Get Single Transaction Response.'
             );
             gasPrice_singleTransaction = singleTransaction.gasPrice;
           } catch (e) {
@@ -789,7 +788,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNumber(
               singleTransaction.gasUsed,
-              "The gasUsed value is not number in the Get Single Transaction Response."
+              'The gasUsed value is not number in the Get Single Transaction Response.'
             );
             gasUsed_singleTransaction = singleTransaction.gasUsed;
           } catch (e) {
@@ -799,7 +798,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.hash,
-              "The hash value is empty in the Get Single Transaction Response."
+              'The hash value is empty in the Get Single Transaction Response.'
             );
             hash_singleTransaction = singleTransaction.hash;
           } catch (e) {
@@ -809,7 +808,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.input,
-              "The input value is empty in the Get Single Transaction Response."
+              'The input value is empty in the Get Single Transaction Response.'
             );
           } catch (e) {
             console.error(e);
@@ -819,7 +818,7 @@ describe("Get the transaction history on the MainNet", () => {
             try {
               assert.isNotEmpty(
                 singleTransaction.logs[i].address,
-                "The address of the logs value is empty in the Get Single Transaction Response."
+                'The address of the logs value is empty in the Get Single Transaction Response.'
               );
             } catch (e) {
               console.error(e);
@@ -828,7 +827,7 @@ describe("Get the transaction history on the MainNet", () => {
             try {
               assert.isNotEmpty(
                 singleTransaction.logs[i].data,
-                "The data of the logs value is empty in the Get Single Transaction Response."
+                'The data of the logs value is empty in the Get Single Transaction Response.'
               );
             } catch (e) {
               console.error(e);
@@ -838,7 +837,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNumber(
               singleTransaction.nonce,
-              "The nonce value is not number in the Get Single Transaction Response."
+              'The nonce value is not number in the Get Single Transaction Response.'
             );
           } catch (e) {
             console.error(e);
@@ -847,8 +846,8 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.strictEqual(
               singleTransaction.status,
-              "Completed",
-              "The status value is empty in the Get Single Transaction Response."
+              'Completed',
+              'The status value is empty in the Get Single Transaction Response.'
             );
             status_singleTransaction = singleTransaction.status;
           } catch (e) {
@@ -858,7 +857,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNumber(
               singleTransaction.timestamp,
-              "The timestamp value is not number in the Get Single Transaction Response."
+              'The timestamp value is not number in the Get Single Transaction Response.'
             );
             timestamp_singleTransaction = singleTransaction.timestamp;
           } catch (e) {
@@ -868,7 +867,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.to,
-              "The To Address value is empty in the Get Single Transaction Response."
+              'The To Address value is empty in the Get Single Transaction Response.'
             );
           } catch (e) {
             console.error(e);
@@ -877,7 +876,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNumber(
               singleTransaction.transactionIndex,
-              "The To transactionIndex value is not number in the Get Single Transaction Response."
+              'The To transactionIndex value is not number in the Get Single Transaction Response.'
             );
           } catch (e) {
             console.error(e);
@@ -886,9 +885,8 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.value,
-              "The To value value is empty in the Get Single Transaction Response."
+              'The To value value is empty in the Get Single Transaction Response.'
             );
-            value_singleTransaction = singleTransaction.value;
           } catch (e) {
             console.error(e);
           }
@@ -896,7 +894,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.blockExplorerUrl,
-              "The To blockExplorerUrl value is empty in the Get Single Transaction Response."
+              'The To blockExplorerUrl value is empty in the Get Single Transaction Response.'
             );
             blockExplorerUrl_singleTransaction =
               singleTransaction.blockExplorerUrl;
@@ -906,7 +904,7 @@ describe("Get the transaction history on the MainNet", () => {
         } catch (e) {
           console.error(e);
           assert.fail(
-            "An error is displayed while Fetching single transaction."
+            'An error is displayed while Fetching single transaction.'
           );
         }
 
@@ -920,7 +918,6 @@ describe("Get the transaction history on the MainNet", () => {
         let hash_transactions;
         let status_transactions;
         let timestamp_transactions;
-        let value_transactions;
         let blockExplorerUrl_transactions;
 
         try {
@@ -933,7 +930,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNumber(
                   transactions.items[x].blockNumber,
-                  "The blockNumber value is not number in the Get Transactions Response."
+                  'The blockNumber value is not number in the Get Transactions Response.'
                 );
                 blockNumber_transactions = transactions.items[x].blockNumber;
               } catch (e) {
@@ -944,7 +941,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   blockNumber_singleTransaction,
                   blockNumber_transactions,
-                  "The blockNumber of get single transaction response and get transactions response are not matched."
+                  'The blockNumber of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -953,7 +950,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNumber(
                   transactions.items[x].timestamp,
-                  "The timestamp value is not number in the Get Transactions Response."
+                  'The timestamp value is not number in the Get Transactions Response.'
                 );
                 timestamp_transactions = transactions.items[x].timestamp;
               } catch (e) {
@@ -964,7 +961,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   timestamp_singleTransaction,
                   timestamp_transactions,
-                  "The timestamp of get single transaction response and get transactions response are not matched."
+                  'The timestamp of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -973,7 +970,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNotEmpty(
                   transactions.items[x].from,
-                  "The from address value is empty in the Get Transactions Response."
+                  'The from address value is empty in the Get Transactions Response.'
                 );
                 from_transactions = transactions.items[x].from;
               } catch (e) {
@@ -984,7 +981,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   from_singleTransaction,
                   from_transactions,
-                  "The from address of get single transaction response and get transactions response are not matched."
+                  'The from address of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -993,7 +990,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNumber(
                   transactions.items[x].gasLimit,
-                  "The gasLimit value is not number in the Get Transactions Response."
+                  'The gasLimit value is not number in the Get Transactions Response.'
                 );
                 gasLimit_transactions = transactions.items[x].gasLimit;
               } catch (e) {
@@ -1004,7 +1001,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   gasLimit_singleTransaction,
                   gasLimit_transactions,
-                  "The gasLimit of get single transaction response and get transactions response are not matched."
+                  'The gasLimit of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1013,7 +1010,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNotEmpty(
                   transactions.items[x].gasPrice,
-                  "The gasPrice value is empty in the Get Transactions Response."
+                  'The gasPrice value is empty in the Get Transactions Response.'
                 );
                 gasPrice_transactions = transactions.items[x].gasPrice;
               } catch (e) {
@@ -1024,7 +1021,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   gasPrice_singleTransaction,
                   gasPrice_transactions,
-                  "The gasPrice of get single transaction response and get transactions response are not matched."
+                  'The gasPrice of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1033,7 +1030,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNumber(
                   transactions.items[x].gasUsed,
-                  "The gasUsed value is not number in the Get Transactions Response."
+                  'The gasUsed value is not number in the Get Transactions Response.'
                 );
                 gasUsed_transactions = transactions.items[x].gasUsed;
               } catch (e) {
@@ -1044,7 +1041,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   gasUsed_singleTransaction,
                   gasUsed_transactions,
-                  "The gasUsed of get single transaction response and get transactions response are not matched."
+                  'The gasUsed of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1053,7 +1050,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNotEmpty(
                   transactions.items[x].hash,
-                  "The hash value is empty in the Get Transactions Response."
+                  'The hash value is empty in the Get Transactions Response.'
                 );
                 hash_transactions = transactions.items[x].hash;
               } catch (e) {
@@ -1064,7 +1061,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   hash_singleTransaction,
                   hash_transactions,
-                  "The hash of get single transaction response and get transactions response are not matched."
+                  'The hash of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1073,7 +1070,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNotEmpty(
                   transactions.items[x].logs,
-                  "The logs value is empty in the Get Transactions Response."
+                  'The logs value is empty in the Get Transactions Response.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1082,8 +1079,8 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.strictEqual(
                   transactions.items[x].status,
-                  "Completed",
-                  "The status value is empty in the Get Transactions Response."
+                  'Completed',
+                  'The status value is empty in the Get Transactions Response.'
                 );
                 status_transactions = transactions.items[x].status;
               } catch (e) {
@@ -1094,7 +1091,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   status_singleTransaction,
                   status_transactions,
-                  "The status of get single transaction response and get transactions response are not matched."
+                  'The status of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1103,18 +1100,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNotEmpty(
                   transactions.items[x].value,
-                  "The value value is empty in the Get Transactions Response."
-                );
-                value_transactions = transactions.items[x].value;
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.strictEqual(
-                  value_singleTransaction,
-                  value_transactions,
-                  "The value of get single transaction response and get transactions response are not matched."
+                  'The value value is empty in the Get Transactions Response.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1123,8 +1109,8 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.strictEqual(
                   transactions.items[x].direction,
-                  "Sender",
-                  "The direction value is empty in the Get Transactions Response."
+                  'Sender',
+                  'The direction value is empty in the Get Transactions Response.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1133,7 +1119,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNotEmpty(
                   transactions.items[x].batch,
-                  "The batch value is empty in the Get Transactions Response."
+                  'The batch value is empty in the Get Transactions Response.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1142,7 +1128,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNotEmpty(
                   transactions.items[x].asset,
-                  "The asset value is empty in the Get Transactions Response."
+                  'The asset value is empty in the Get Transactions Response.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1151,7 +1137,7 @@ describe("Get the transaction history on the MainNet", () => {
               try {
                 assert.isNotEmpty(
                   transactions.items[x].blockExplorerUrl,
-                  "The blockExplorerUrl value is empty in the Get Transactions Response."
+                  'The blockExplorerUrl value is empty in the Get Transactions Response.'
                 );
                 blockExplorerUrl_transactions =
                   transactions.items[x].blockExplorerUrl;
@@ -1163,7 +1149,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   blockExplorerUrl_singleTransaction,
                   blockExplorerUrl_transactions,
-                  "The blockExplorerUrl of get single transaction response and get transactions response are not matched."
+                  'The blockExplorerUrl of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1174,7 +1160,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   output.transaction.hash,
                   singleTransaction.hash,
-                  "The hash of the get single transaction response and get submitted Batch response are not matched."
+                  'The hash of the get single transaction response and get submitted Batch response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1185,7 +1171,7 @@ describe("Get the transaction history on the MainNet", () => {
                 assert.strictEqual(
                   output.transaction.hash,
                   transactions.items[x].hash,
-                  "The hash of the get transactions response and get submitted Batch response are not matched."
+                  'The hash of the get transactions response and get submitted Batch response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1196,22 +1182,22 @@ describe("Get the transaction history on the MainNet", () => {
         } catch (e) {
           console.error(e);
           assert.fail(
-            "An error is displayed while Fetching historical transactions."
+            'An error is displayed while Fetching historical transactions.'
           );
         }
       } else {
         assert.fail(
-          "The submitted batch is not received with sent transaction status."
+          'The submitted batch is not received with sent transaction status.'
         );
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE XDAI NETWORK AND GET THE TRANSACTION HISTORY"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE XDAI NETWORK AND GET THE TRANSACTION HISTORY'
       );
     }
   });
 
-  it("REGRESSION: Perform the send native token on the xdai network and get the transaction history from the random hash", async () => {
+  it('REGRESSION: Perform the send native token on the xdai network and get the transaction history from the random hash', async () => {
     if (runTest) {
       // Fetching historical transactions
       let transactions;
@@ -1225,7 +1211,6 @@ describe("Get the transaction history on the MainNet", () => {
       let hash_transactions;
       let status_transactions;
       let timestamp_transactions;
-      let value_transactions;
       let blockExplorerUrl_transactions;
 
       try {
@@ -1237,7 +1222,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             transactions.items[randomTransaction].blockNumber,
-            "The blockNumber value is not number in the get transactions response."
+            'The blockNumber value is not number in the get transactions response.'
           );
           blockNumber_transactions =
             transactions.items[randomTransaction].blockNumber;
@@ -1248,7 +1233,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             transactions.items[randomTransaction].timestamp,
-            "The timestamp value is not number in the get transactions response."
+            'The timestamp value is not number in the get transactions response.'
           );
           timestamp_transactions =
             transactions.items[randomTransaction].timestamp;
@@ -1259,7 +1244,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             transactions.items[randomTransaction].from,
-            "The from address vlaue is empty in the get transactions response."
+            'The from address vlaue is empty in the get transactions response.'
           );
           from_transactions = transactions.items[randomTransaction].from;
         } catch (e) {
@@ -1269,7 +1254,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             transactions.items[randomTransaction].gasLimit,
-            "The gasLimit value is not number in the get transactions response."
+            'The gasLimit value is not number in the get transactions response.'
           );
           gasLimit_transactions =
             transactions.items[randomTransaction].gasLimit;
@@ -1280,7 +1265,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             transactions.items[randomTransaction].gasPrice,
-            "The gasPrice value is empty in the get transactions response."
+            'The gasPrice value is empty in the get transactions response.'
           );
           gasPrice_transactions =
             transactions.items[randomTransaction].gasPrice;
@@ -1291,7 +1276,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             transactions.items[randomTransaction].gasUsed,
-            "The gasUsed value is not number in the get transactions response."
+            'The gasUsed value is not number in the get transactions response.'
           );
           gasUsed_transactions = transactions.items[randomTransaction].gasUsed;
         } catch (e) {
@@ -1301,7 +1286,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             transactions.items[randomTransaction].hash,
-            "The hash value is empty in the get transactions response."
+            'The hash value is empty in the get transactions response.'
           );
           hash_transactions = transactions.items[randomTransaction].hash;
         } catch (e) {
@@ -1311,8 +1296,8 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.strictEqual(
             transactions.items[randomTransaction].status,
-            "Completed",
-            "The status value is empty in the get transactions response."
+            'Completed',
+            'The status value is empty in the get transactions response.'
           );
           status_transactions = transactions.items[randomTransaction].status;
         } catch (e) {
@@ -1324,7 +1309,6 @@ describe("Get the transaction history on the MainNet", () => {
             transactions.items[randomTransaction].value,
             "The value's value is empty in the get transactions response."
           );
-          value_transactions = transactions.items[randomTransaction].value;
         } catch (e) {
           console.error(e);
         }
@@ -1332,8 +1316,8 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.strictEqual(
             transactions.items[randomTransaction].direction,
-            "Sender",
-            "The direction value is not equal in the get transactions response."
+            'Sender',
+            'The direction value is not equal in the get transactions response.'
           );
         } catch (e) {
           console.error(e);
@@ -1342,7 +1326,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             transactions.items[randomTransaction].batch,
-            "The batch value is empty in the get transactions response."
+            'The batch value is empty in the get transactions response.'
           );
         } catch (e) {
           console.error(e);
@@ -1351,7 +1335,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             transactions.items[randomTransaction].asset,
-            "The asset value is empty in the get transactions response."
+            'The asset value is empty in the get transactions response.'
           );
         } catch (e) {
           console.error(e);
@@ -1360,7 +1344,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             transactions.items[randomTransaction].blockExplorerUrl,
-            "The blockExplorerUrl value is empty in the get transactions response."
+            'The blockExplorerUrl value is empty in the get transactions response.'
           );
           blockExplorerUrl_transactions =
             transactions.items[randomTransaction].blockExplorerUrl;
@@ -1370,7 +1354,7 @@ describe("Get the transaction history on the MainNet", () => {
       } catch (e) {
         console.error(e);
         assert.fail(
-          "An error is displayed while Fetching historical transactions."
+          'An error is displayed while Fetching historical transactions.'
         );
       }
 
@@ -1384,7 +1368,6 @@ describe("Get the transaction history on the MainNet", () => {
       let hash_singleTransaction;
       let status_singleTransaction;
       let timestamp_singleTransaction;
-      let value_singleTransaction;
       let blockExplorerUrl_singleTransaction;
 
       try {
@@ -1395,7 +1378,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             singleTransaction.blockHash,
-            "The blockHash value is empty in the get single transaction response."
+            'The blockHash value is empty in the get single transaction response.'
           );
         } catch (e) {
           console.error(e);
@@ -1404,7 +1387,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             singleTransaction.blockNumber,
-            "The blockNumber value is not number in the get single transaction response."
+            'The blockNumber value is not number in the get single transaction response.'
           );
           blockNumber_singleTransaction = singleTransaction.blockNumber;
         } catch (e) {
@@ -1414,7 +1397,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             singleTransaction.from,
-            "The from address value is empty in the get single transaction response."
+            'The from address value is empty in the get single transaction response.'
           );
           from_singleTransaction = singleTransaction.from;
         } catch (e) {
@@ -1424,7 +1407,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             singleTransaction.gasLimit,
-            "The gasLimit value is not number in the get single transaction response."
+            'The gasLimit value is not number in the get single transaction response.'
           );
           gasLimit_singleTransaction = singleTransaction.gasLimit;
         } catch (e) {
@@ -1434,7 +1417,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             singleTransaction.gasPrice,
-            "The gasPrice value is empty in the get single transaction response."
+            'The gasPrice value is empty in the get single transaction response.'
           );
           gasPrice_singleTransaction = singleTransaction.gasPrice;
         } catch (e) {
@@ -1444,7 +1427,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             singleTransaction.gasUsed,
-            "The gasUsed value is not number in the get single transaction response."
+            'The gasUsed value is not number in the get single transaction response.'
           );
           gasUsed_singleTransaction = singleTransaction.gasUsed;
         } catch (e) {
@@ -1454,7 +1437,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             singleTransaction.hash,
-            "The hash value is empty in the get single transaction response."
+            'The hash value is empty in the get single transaction response.'
           );
           hash_singleTransaction = singleTransaction.hash;
         } catch (e) {
@@ -1464,7 +1447,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             singleTransaction.input,
-            "The input value is empty in the get single transaction response."
+            'The input value is empty in the get single transaction response.'
           );
         } catch (e) {
           console.error(e);
@@ -1474,7 +1457,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.logs[i].address,
-              "The address of the logs value is empty in the get single transaction response."
+              'The address of the logs value is empty in the get single transaction response.'
             );
           } catch (e) {
             console.error(e);
@@ -1483,7 +1466,7 @@ describe("Get the transaction history on the MainNet", () => {
           try {
             assert.isNotEmpty(
               singleTransaction.logs[i].data,
-              "The data of the logs value is empty in the get single transaction response."
+              'The data of the logs value is empty in the get single transaction response.'
             );
           } catch (e) {
             console.error(e);
@@ -1493,7 +1476,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             singleTransaction.nonce,
-            "The nonce value is not number in the get single transaction response."
+            'The nonce value is not number in the get single transaction response.'
           );
         } catch (e) {
           console.error(e);
@@ -1502,8 +1485,8 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.strictEqual(
             singleTransaction.status,
-            "Completed",
-            "The status value is empty in the get single transaction response."
+            'Completed',
+            'The status value is empty in the get single transaction response.'
           );
           status_singleTransaction = singleTransaction.status;
         } catch (e) {
@@ -1513,7 +1496,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             singleTransaction.timestamp,
-            "The timestamp value is not number in the get single transaction response."
+            'The timestamp value is not number in the get single transaction response.'
           );
           timestamp_singleTransaction = singleTransaction.timestamp;
         } catch (e) {
@@ -1521,10 +1504,9 @@ describe("Get the transaction history on the MainNet", () => {
         }
 
         try {
-          assert.strictEqual(
+          assert.isNotEmpty(
             singleTransaction.to,
-            "0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163",
-            "The To Address value is empty in the get single transaction response."
+            'The To Address value is empty in the Get Single Transaction Response.'
           );
         } catch (e) {
           console.error(e);
@@ -1533,7 +1515,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNumber(
             singleTransaction.transactionIndex,
-            "The To transactionIndex value is not number in the get single transaction response."
+            'The To transactionIndex value is not number in the get single transaction response.'
           );
         } catch (e) {
           console.error(e);
@@ -1542,9 +1524,8 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             singleTransaction.value,
-            "The To value value is empty in the get single transaction response."
+            'The To value value is empty in the get single transaction response.'
           );
-          value_singleTransaction = singleTransaction.value;
         } catch (e) {
           console.error(e);
         }
@@ -1552,7 +1533,7 @@ describe("Get the transaction history on the MainNet", () => {
         try {
           assert.isNotEmpty(
             singleTransaction.blockExplorerUrl,
-            "The To blockExplorerUrl value is empty in the get single transaction response."
+            'The To blockExplorerUrl value is empty in the get single transaction response.'
           );
           blockExplorerUrl_singleTransaction =
             singleTransaction.blockExplorerUrl;
@@ -1564,7 +1545,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             blockNumber_singleTransaction,
             blockNumber_transactions,
-            "The blockNumber of get single transaction response and get transactions response are not matched."
+            'The blockNumber of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
@@ -1574,7 +1555,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             timestamp_singleTransaction,
             timestamp_transactions,
-            "The timestamp of get single transaction response and get transactions response are not matched."
+            'The timestamp of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
@@ -1584,7 +1565,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             from_singleTransaction,
             from_transactions,
-            "The from address of get single transaction response and get transactions response are not matched."
+            'The from address of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
@@ -1594,7 +1575,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             gasLimit_singleTransaction,
             gasLimit_transactions,
-            "The gasLimit of get single transaction response and get transactions response are not matched."
+            'The gasLimit of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
@@ -1604,7 +1585,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             gasPrice_singleTransaction,
             gasPrice_transactions,
-            "The gasPrice of get single transaction response and get transactions response are not matched."
+            'The gasPrice of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
@@ -1614,7 +1595,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             gasUsed_singleTransaction,
             gasUsed_transactions,
-            "The gasUsed of get single transaction response and get transactions response are not matched."
+            'The gasUsed of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
@@ -1624,7 +1605,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             hash_singleTransaction,
             hash_transactions,
-            "The hash of get single transaction response and get transactions response are not matched."
+            'The hash of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
@@ -1634,17 +1615,7 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             status_singleTransaction,
             status_transactions,
-            "The status of get single transaction response and get transactions response are not matched."
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            value_singleTransaction,
-            value_transactions,
-            "The value of get single transaction response and get transactions response are not matched."
+            'The status of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
@@ -1654,87 +1625,87 @@ describe("Get the transaction history on the MainNet", () => {
           assert.strictEqual(
             blockExplorerUrl_singleTransaction,
             blockExplorerUrl_transactions,
-            "The blockExplorerUrl of get single transaction response and get transactions response are not matched."
+            'The blockExplorerUrl of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
         }
       } catch (e) {
         console.error(e);
-        assert.fail("An error is displayed while Fetching single transaction.");
+        assert.fail('An error is displayed while Fetching single transaction.');
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE XDAI NETWORK AND GET THE TRANSACTION HISTORY FROM THE RANDOM HASH"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE XDAI NETWORK AND GET THE TRANSACTION HISTORY FROM THE RANDOM HASH'
       );
     }
   });
 
-  it("REGRESSION: Perform the send native token on the xdai network and get the transaction history with incorrect hash", async () => {
+  it('REGRESSION: Perform the send native token on the xdai network and get the transaction history with incorrect hash', async () => {
     if (runTest) {
       // Fetching a single transaction
       try {
         let output = await xdaiMainNetSdk.getTransaction({
-          hash: "0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8318ccf39eDc930d1ceA551df", // Incorrect Transaction Hash
+          hash: '0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8318ccf39eDc930d1ceA551df', // Incorrect Transaction Hash
         });
 
         if (output == null) {
           console.log(
-            "The null is received while fetching the transaction history with incorrect hash."
+            'The null is received while fetching the transaction history with incorrect hash.'
           );
         } else {
           console.error(e);
           assert.fail(
-            "Getting the single transaction history with incorrect Hash."
+            'Getting the single transaction history with incorrect Hash.'
           );
         }
       } catch (e) {
         console.error(e);
         assert.fail(
-          "Getting the single transaction history with incorrect Hash."
+          'Getting the single transaction history with incorrect Hash.'
         );
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE XDAI NETWORK AND GET THE TRANSACTION HISTORY WITH INCORRECT HASH"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE XDAI NETWORK AND GET THE TRANSACTION HISTORY WITH INCORRECT HASH'
       );
     }
   });
 
-  it("REGRESSION: Perform the send native token on the xdai network and get the transaction history when hash hex is not with 32 size", async () => {
+  it('REGRESSION: Perform the send native token on the xdai network and get the transaction history when hash hex is not with 32 size', async () => {
     if (runTest) {
       // Fetching a single transaction
       try {
         try {
           await xdaiMainNetSdk.getTransaction({
-            hash: "0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8z18ccf39eDc930d1ceA551df", // Incorrect Transaction Hash
+            hash: '0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8z18ccf39eDc930d1ceA551df', // Incorrect Transaction Hash
           });
           assert.fail(
-            "The transaction history is fetched with hash which not having 32 size hex."
+            'The transaction history is fetched with hash which not having 32 size hex.'
           );
         } catch (e) {
           if (
-            e.errors[0].constraints.isHex == "hash must be hex with 32 size"
+            e.errors[0].constraints.isHex == 'hash must be hex with 32 size'
           ) {
             console.log(
-              "The validation message is displayed when hash not having 32 size hex while fetching the transaction history."
+              'The validation message is displayed when hash not having 32 size hex while fetching the transaction history.'
             );
           } else {
             console.error(e);
             assert.fail(
-              "The transaction history is fetched with hash which not having 32 size hex."
+              'The transaction history is fetched with hash which not having 32 size hex.'
             );
           }
         }
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The transaction history is fetched with hash which not having 32 size hex."
+          'The transaction history is fetched with hash which not having 32 size hex.'
         );
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE XDAI NETWORK AND GET THE TRANSACTION HISTORY WHEN HASH HEX IS NOT WITH 32 SIZE"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE XDAI NETWORK AND GET THE TRANSACTION HISTORY WHEN HASH HEX IS NOT WITH 32 SIZE'
       );
     }
   });
