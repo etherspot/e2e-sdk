@@ -58,8 +58,8 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
     let native_final;
     let usdc_final;
     let usdt_final;
-    let minimum_token_balance = 0.001;
-    let minimum_native_balance = 0.001;
+    let minimum_token_balance = 0.0001;
+    let minimum_native_balance = 0.0001;
 
     for (let i = 0; i < output.items.length; i++) {
       let tokenAddress = output.items[i].token;

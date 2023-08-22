@@ -1,22 +1,22 @@
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config(); // init dotenv
 
-import { assert } from "chai";
-import { EnvNames, NetworkNames, Sdk } from "etherspot";
-import { utils } from "ethers";
+import { assert } from 'chai';
+import { EnvNames, NetworkNames, Sdk } from 'etherspot';
+import { utils } from 'ethers';
 
 let optimismMainNetSdk;
 let optimismSmartWalletAddress;
 let optimismSmartWalletOutput;
 let optimismNativeAddress = null;
-let optimismUsdcAddress = "0x7F5c764cBc14f9669B88837ca1490cCa17c31607";
-let optimismUsdtAddress = "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58";
-let toAddress = "0x71Bec2309cC6BDD5F1D73474688A6154c28Db4B5";
-let value = "1000000000000"; // 18 decimal
+let optimismUsdcAddress = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607';
+let optimismUsdtAddress = '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58';
+let toAddress = '0x71Bec2309cC6BDD5F1D73474688A6154c28Db4B5';
+let value = '1000000000000'; // 18 decimal
 let runTest;
 
-describe("The SDK, when sending a native token with optimism network on the MainNet", () => {
-  beforeEach("Checking the sufficient wallet balance", async () => {
+describe('The SDK, when sending a native token with optimism network on the MainNet', () => {
+  beforeEach('Checking the sufficient wallet balance', async () => {
     // initialize the sdk
     try {
       optimismMainNetSdk = new Sdk(process.env.PRIVATE_KEY, {
@@ -26,12 +26,12 @@ describe("The SDK, when sending a native token with optimism network on the Main
 
       assert.strictEqual(
         optimismMainNetSdk.state.accountAddress,
-        "0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f",
-        "The EOA Address is not calculated correctly."
+        '0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f',
+        'The EOA Address is not calculated correctly.'
       );
     } catch (e) {
       console.error(e);
-      assert.fail("The SDK is not initialled successfully.");
+      assert.fail('The SDK is not initialled successfully.');
     }
 
     // Compute the smart wallet address
@@ -42,12 +42,12 @@ describe("The SDK, when sending a native token with optimism network on the Main
 
       assert.strictEqual(
         optimismSmartWalletAddress,
-        "0x666E17ad27fB620D7519477f3b33d809775d65Fe",
-        "The smart wallet address is not calculated correctly."
+        '0x666E17ad27fB620D7519477f3b33d809775d65Fe',
+        'The smart wallet address is not calculated correctly.'
       );
     } catch (e) {
       console.error(e);
-      assert.fail("The smart wallet address is not calculated successfully.");
+      assert.fail('The smart wallet address is not calculated successfully.');
     }
 
     let output = await optimismMainNetSdk.getAccountBalances();
@@ -57,8 +57,8 @@ describe("The SDK, when sending a native token with optimism network on the Main
     let native_final;
     let usdc_final;
     let usdt_final;
-    let minimum_token_balance = 0.001;
-    let minimum_native_balance = 0.001;
+    let minimum_token_balance = 0.0001;
+    let minimum_native_balance = 0.0001;
 
     for (let i = 0; i < output.items.length; i++) {
       let tokenAddress = output.items[i].token;
@@ -85,7 +85,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
     }
   });
 
-  it("SMOKE: Perform the send native token on the optimism network", async () => {
+  it('SMOKE: Perform the send native token on the optimism network', async () => {
     if (runTest) {
       let AddTransactionToBatchOutput;
       // Adding transaction to a batch
@@ -98,14 +98,14 @@ describe("The SDK, when sending a native token with optimism network on the Main
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The addition of transaction in the batch is not performed successfully."
+          'The addition of transaction in the batch is not performed successfully.'
         );
       }
 
       try {
         assert.isNotEmpty(
           AddTransactionToBatchOutput.requests[0].to,
-          "The To Address value is empty in the Batch Response."
+          'The To Address value is empty in the Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -114,7 +114,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           AddTransactionToBatchOutput.requests[0].data,
-          "The data value is empty in the Batch Reponse."
+          'The data value is empty in the Batch Reponse.'
         );
       } catch (e) {
         console.error(e);
@@ -123,7 +123,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNull(
           AddTransactionToBatchOutput.estimation,
-          "The estimation value is not null in the Batch Response."
+          'The estimation value is not null in the Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -140,14 +140,14 @@ describe("The SDK, when sending a native token with optimism network on the Main
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The estimation of the batch is not performed successfully."
+          'The estimation of the batch is not performed successfully.'
         );
       }
 
       try {
         assert.isNotEmpty(
           EstimationResponse.requests[0].to,
-          "The To Address value is empty in the Batch Estimation Response."
+          'The To Address value is empty in the Batch Estimation Response.'
         );
       } catch (e) {
         console.error(e);
@@ -156,7 +156,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           EstimationResponse.requests[0].data,
-          "The data value is empty in the Batch Estimation Response."
+          'The data value is empty in the Batch Estimation Response.'
         );
       } catch (e) {
         console.error(e);
@@ -166,7 +166,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
         assert.isNotEmpty(
           EstimationResponse.estimation.feeTokenReceiver,
           toAddress,
-          "The feeTokenReceiver Address of the Batch Estimation Response is not displayed correctly."
+          'The feeTokenReceiver Address of the Batch Estimation Response is not displayed correctly.'
         );
       } catch (e) {
         console.error(e);
@@ -175,7 +175,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNumber(
           EstimationResponse.estimation.estimatedGas,
-          "The estimatedGas value is not number in the Estimate Batch Response."
+          'The estimatedGas value is not number in the Estimate Batch Response.'
         );
         EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
       } catch (e) {
@@ -185,7 +185,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           EstimationResponse.estimation.feeAmount,
-          "The feeAmount value is empty in the Estimation Response."
+          'The feeAmount value is empty in the Estimation Response.'
         );
         FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
       } catch (e) {
@@ -195,7 +195,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           EstimationResponse.estimation.estimatedGasPrice,
-          "The estimatedGasPrice value is empty in the Estimation Response."
+          'The estimatedGasPrice value is empty in the Estimation Response.'
         );
         EstimatedGasPrice_Estimate =
           EstimationResponse.estimation.estimatedGasPrice._hex;
@@ -206,7 +206,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           EstimationResponse.estimation.signature,
-          "The signature value is empty in the Estimation Response."
+          'The signature value is empty in the Estimation Response.'
         );
       } catch (e) {
         console.error(e);
@@ -225,14 +225,14 @@ describe("The SDK, when sending a native token with optimism network on the Main
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The submittion of the batch is not performed successfully."
+          'The submittion of the batch is not performed successfully.'
         );
       }
 
       try {
         assert.isNull(
           SubmissionResponse.transaction,
-          "The transaction value is not null in the Submit Batch Response."
+          'The transaction value is not null in the Submit Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -241,7 +241,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           SubmissionResponse.hash,
-          "The hash value is empty in the Submit Batch Response."
+          'The hash value is empty in the Submit Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -250,8 +250,8 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.strictEqual(
           SubmissionResponse.state,
-          "Queued",
-          "The status of the Submit Batch Response is not displayed correctly."
+          'Queued',
+          'The status of the Submit Batch Response is not displayed correctly.'
         );
       } catch (e) {
         console.error(e);
@@ -261,7 +261,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
         assert.strictEqual(
           SubmissionResponse.account,
           optimismSmartWalletAddress,
-          "The account address of the Submit Batch Response is not displayed correctly."
+          'The account address of the Submit Batch Response is not displayed correctly.'
         );
       } catch (e) {
         console.error(e);
@@ -270,7 +270,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNumber(
           SubmissionResponse.nonce,
-          "The nonce value is not number in the Submit Batch Response."
+          'The nonce value is not number in the Submit Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -279,7 +279,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           SubmissionResponse.to[0],
-          "The To Address value is empty in the Submit Batch Response."
+          'The To Address value is empty in the Submit Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -288,7 +288,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           SubmissionResponse.data[0],
-          "The data value is empty in the Submit Batch Response."
+          'The data value is empty in the Submit Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -297,7 +297,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           SubmissionResponse.senderSignature,
-          "The senderSignature value is empty in the Submit Batch Response."
+          'The senderSignature value is empty in the Submit Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -306,7 +306,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNumber(
           SubmissionResponse.estimatedGas,
-          "The Estimated Gas value is not number in the Submit Batch Response."
+          'The Estimated Gas value is not number in the Submit Batch Response.'
         );
         EstimatedGas_Submit = SubmissionResponse.estimatedGas;
       } catch (e) {
@@ -317,7 +317,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
         assert.strictEqual(
           EstimatedGas_Estimate,
           EstimatedGas_Submit,
-          "The Estimated Gas value is not displayed correctly."
+          'The Estimated Gas value is not displayed correctly.'
         );
       } catch (e) {
         console.error(e);
@@ -326,7 +326,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           SubmissionResponse.estimatedGasPrice._hex,
-          "The estimatedGasPrice value is empty in the Submit Batch Response."
+          'The estimatedGasPrice value is empty in the Submit Batch Response.'
         );
         EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
       } catch (e) {
@@ -337,7 +337,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
         assert.strictEqual(
           EstimatedGasPrice_Estimate,
           EstimatedGasPrice_Submit,
-          "The Estimated Gas Price value is not displayed correctly."
+          'The Estimated Gas Price value is not displayed correctly.'
         );
       } catch (e) {
         console.error(e);
@@ -346,7 +346,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNull(
           SubmissionResponse.feeToken,
-          "The feeToken value is not null in the Submit Batch Response."
+          'The feeToken value is not null in the Submit Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -355,7 +355,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           SubmissionResponse.feeAmount._hex,
-          "The feeAmount value is empty in the Submit Batch Response."
+          'The feeAmount value is empty in the Submit Batch Response.'
         );
         FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
       } catch (e) {
@@ -366,7 +366,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
         assert.strictEqual(
           FeeAmount_Estimate,
           FeeAmount_Submit,
-          "The Fee Amount value is not displayed correctly."
+          'The Fee Amount value is not displayed correctly.'
         );
       } catch (e) {
         console.error(e);
@@ -375,7 +375,7 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNotEmpty(
           SubmissionResponse.feeData,
-          "The feeData value is empty in the Submit Batch Response."
+          'The feeData value is empty in the Submit Batch Response.'
         );
       } catch (e) {
         console.error(e);
@@ -384,105 +384,105 @@ describe("The SDK, when sending a native token with optimism network on the Main
       try {
         assert.isNull(
           SubmissionResponse.delayedUntil,
-          "The delayedUntil value is not null in the Submit Batch Response."
+          'The delayedUntil value is not null in the Submit Batch Response.'
         );
       } catch (e) {
         console.error(e);
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE OPTIMISM NETWORK"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE OPTIMISM NETWORK'
       );
     }
   });
 
-  it("REGRESSION: Perform the send native token with invalid to address on the optimism network", async () => {
+  it('REGRESSION: Perform the send native token with invalid to address on the optimism network', async () => {
     if (runTest) {
       // Adding transaction to a batch with invalid To Address
       try {
         try {
           await optimismMainNetSdk.batchExecuteAccountTransaction({
-            to: "0x0fd7508903376dab743a02743cadfdc2d92fceb", // Invalid To Address
-            value: "1000000000000",
+            to: '0x0fd7508903376dab743a02743cadfdc2d92fceb', // Invalid To Address
+            value: '1000000000000',
           });
           assert.fail(
-            "The batch execution completed with incorrect To Address."
+            'The batch execution completed with incorrect To Address.'
           );
         } catch (e) {
-          if (e.errors[0].constraints.isAddress == "to must be an address") {
+          if (e.errors[0].constraints.isAddress == 'to must be an address') {
             console.log(
-              "The validation for To Address is displayed as expected while batch execution."
+              'The validation for To Address is displayed as expected while batch execution.'
             );
           } else {
             console.error(e);
             assert.fail(
-              "The expected validation is not displayed when entered the invalid To Address while performing batch execution."
+              'The expected validation is not displayed when entered the invalid To Address while performing batch execution.'
             );
           }
         }
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The expected validation is not displayed when entered the invalid To Address while performing batch execution."
+          'The expected validation is not displayed when entered the invalid To Address while performing batch execution.'
         );
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITH INVALID TO ADDRESS ON THE OPTIMISM NETWORK"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITH INVALID TO ADDRESS ON THE OPTIMISM NETWORK'
       );
     }
   });
 
-  it("REGRESSION: Perform the send native token with invalid value on the optimism network", async () => {
+  it('REGRESSION: Perform the send native token with invalid value on the optimism network', async () => {
     if (runTest) {
       // Adding transaction to a batch with invalid Value
       try {
         try {
           await optimismMainNetSdk.batchExecuteAccountTransaction({
-            to: "0x0fd7508903376dab743a02743cadfdc2d92fceb8",
-            value: "0.001", // Invalid Value
+            to: '0x0fd7508903376dab743a02743cadfdc2d92fceb8',
+            value: '0.001', // Invalid Value
           });
-          assert.fail("The batch execution colmpleyed with incorrect Value.");
+          assert.fail('The batch execution colmpleyed with incorrect Value.');
         } catch (e) {
           if (
             e.errors[0].constraints.IsBigNumberish ==
-            "value must be big numberish"
+            'value must be big numberish'
           ) {
             console.log(
-              "The validation for Value is displayed as expected while the batch execution."
+              'The validation for Value is displayed as expected while the batch execution.'
             );
           } else {
             console.error(e);
             assert.fail(
-              "The expected validation is not displayed when entered the invalid Value while performing batch execution."
+              'The expected validation is not displayed when entered the invalid Value while performing batch execution.'
             );
           }
         }
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The expected validation is not displayed when entered the invalid Value while performing batch execution."
+          'The expected validation is not displayed when entered the invalid Value while performing batch execution.'
         );
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITH INVALID VALUE ON THE OPTIMISM NETWORK"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITH INVALID VALUE ON THE OPTIMISM NETWORK'
       );
     }
   });
 
-  it("REGRESSION: Perform the send native token with exceeded value. on the optimism network", async () => {
+  it('REGRESSION: Perform the send native token with exceeded value. on the optimism network', async () => {
     if (runTest) {
       // Adding transaction to a batch with Value as more than the actual Value of the wallet balance
       try {
         await optimismMainNetSdk.batchExecuteAccountTransaction({
-          to: "0x0fd7508903376dab743a02743cadfdc2d92fceb8",
-          value: "100000000000000000000000", // Exceeded Value
+          to: '0x0fd7508903376dab743a02743cadfdc2d92fceb8',
+          value: '100000000000000000000000', // Exceeded Value
         });
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The exceeded Value is not required in the wallet balance for the batch execution."
+          'The exceeded Value is not required in the wallet balance for the batch execution.'
         );
       }
 
@@ -491,82 +491,82 @@ describe("The SDK, when sending a native token with optimism network on the Main
         try {
           await optimismMainNetSdk.estimateGatewayBatch();
         } catch (e) {
-          if (e.errors[0].constraints.reverted == "Transaction reverted") {
+          if (e.errors[0].constraints.reverted == 'Transaction reverted') {
             console.log(
-              "The validation for exceeded Value is displayed as expected while the batch execution."
+              'The validation for exceeded Value is displayed as expected while the batch execution.'
             );
           } else {
             console.error(e);
             assert.fail(
-              "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
+              'The expected validation is not displayed when entered the exceeded Value while performing batch execution.'
             );
           }
         }
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The expected validation is not displayed when entered the exceeded Value while performing batch execution."
+          'The expected validation is not displayed when entered the exceeded Value while performing batch execution.'
         );
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITH EXCEEDED VALUE ON THE OPTIMISM NETWORK"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITH EXCEEDED VALUE ON THE OPTIMISM NETWORK'
       );
     }
   });
 
-  it("REGRESSION: Perform the send native token on the same address on the optimism network", async () => {
+  it('REGRESSION: Perform the send native token on the same address on the optimism network', async () => {
     if (runTest) {
       // Adding transaction to a batch on the same address
       try {
         try {
           await optimismMainNetSdk.batchExecuteAccountTransaction({
-            to: "0x666E17ad27fB620D7519477f3b33d809775d65Fe", // Send Native Token on Same Address
-            value: "1000000000000",
+            to: '0x666E17ad27fB620D7519477f3b33d809775d65Fe', // Send Native Token on Same Address
+            value: '1000000000000',
           });
           assert.fail(
-            "Addition of the transaction to batch on the same address is performed."
+            'Addition of the transaction to batch on the same address is performed.'
           );
         } catch (e) {
           if (
             e.message ==
-            "Destination address should not be the same as sender address"
+            'Destination address should not be the same as sender address'
           ) {
             console.log(
-              "The validation is displayed while entering the duplicate sender address."
+              'The validation is displayed while entering the duplicate sender address.'
             );
           } else {
             console.error(e);
             assert.fail(
-              "The validation is not displayed while entering the duplicate sender address."
+              'The validation is not displayed while entering the duplicate sender address.'
             );
           }
         }
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The validation is not displayed while entering the duplicate sender address."
+          'The validation is not displayed while entering the duplicate sender address.'
         );
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE SAME ADDRESS ON THE OPTIMISM NETWORK"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN ON THE SAME ADDRESS ON THE OPTIMISM NETWORK'
       );
     }
   });
 
-  it("REGRESSION: Perform the send native token without estimation of the batch on the optimism network", async () => {
+  it('REGRESSION: Perform the send native token without estimation of the batch on the optimism network', async () => {
     if (runTest) {
       // Adding transaction to a batch without estimation of the batch
       try {
         await optimismMainNetSdk.batchExecuteAccountTransaction({
-          to: "0x0fd7508903376dab743a02743cadfdc2d92fceb8",
-          value: "1000000000000",
+          to: '0x0fd7508903376dab743a02743cadfdc2d92fceb8',
+          value: '1000000000000',
         });
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The addition of transaction in the batch is not performed successfully."
+          'The addition of transaction in the batch is not performed successfully.'
         );
       }
 
@@ -577,27 +577,27 @@ describe("The SDK, when sending a native token with optimism network on the Main
             guarded: false,
           });
           assert.fail(
-            "Status of the batch is submitted without Estimation of batch."
+            'Status of the batch is submitted without Estimation of batch.'
           );
         } catch (e) {
-          if (e.message == "Can not submit not estimated batch") {
+          if (e.message == 'Can not submit not estimated batch') {
             console.log(
-              "The validation is displayed when submiting the batch without estimation."
+              'The validation is displayed when submiting the batch without estimation.'
             );
           } else {
             console.error(e);
             assert.fail(
-              "The submition of batch is completed without estimation."
+              'The submition of batch is completed without estimation.'
             );
           }
         }
       } catch (e) {
         console.error(e);
-        assert.fail("The submition of batch is completed without estimation.");
+        assert.fail('The submition of batch is completed without estimation.');
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITHOUT ESTIMATION OF THE BATCH ON THE OPTIMISM NETWORK"
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SEND NATIVE TOKEN WITHOUT ESTIMATION OF THE BATCH ON THE OPTIMISM NETWORK'
       );
     }
   });
