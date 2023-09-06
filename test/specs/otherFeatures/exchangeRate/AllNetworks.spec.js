@@ -2,6 +2,7 @@ import { EnvNames, NetworkNames, Sdk } from 'etherspot';
 import { assert } from 'chai';
 import axios from 'axios';
 import Helper from '../../../utils/Helper.js';
+import data from '../../../data/testData.json' assert { type: 'json' };
 
 import * as dotenv from 'dotenv';
 dotenv.config(); // init dotenv
@@ -61,7 +62,7 @@ describe('Compare the Token Rates of the Etherspot and Coingecko Services', () =
 
         assert.strictEqual(
           mainNetSdk.state.accountAddress,
-          '0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f',
+          data.eoaAddress,
           'The EOA Address is not calculated correctly.'
         );
       } catch (e) {
@@ -76,7 +77,7 @@ describe('Compare the Token Rates of the Etherspot and Coingecko Services', () =
 
         assert.strictEqual(
           smartWalletAddress,
-          '0x666E17ad27fB620D7519477f3b33d809775d65Fe',
+          data.sender,
           'The smart wallet address is not calculated correctly.'
         );
       } catch (e) {

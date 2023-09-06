@@ -5,19 +5,20 @@ import { assert } from 'chai';
 import { EnvNames, NetworkNames, Sdk } from 'etherspot';
 import { BigNumber, utils } from 'ethers';
 import Helper from '../../../utils/Helper.js';
+import data from '../../../data/testData.json' assert { type: 'json' };
 
 let optimismMainNetSdk;
 let optimismSmartWalletAddress;
 let optimismSmartWalletOutput;
 let optimismNativeAddress = null;
-let optimismUsdcAddress = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607';
-let optimismUsdtAddress = '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58';
-let toAddress = '0x71Bec2309cC6BDD5F1D73474688A6154c28Db4B5';
-let value = '1000000000000'; // 18 decimal
+const shortTimeout = 2000;
 let runTest;
 
 describe('Get the transaction history on the MainNet', () => {
   beforeEach('Checking the sufficient wallet balance', async () => {
+    // wait for sync
+    Helper.wait(shortTimeout);
+
     // initialize the sdk
     try {
       optimismMainNetSdk = new Sdk(process.env.PRIVATE_KEY, {
@@ -27,7 +28,7 @@ describe('Get the transaction history on the MainNet', () => {
 
       assert.strictEqual(
         optimismMainNetSdk.state.accountAddress,
-        '0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f',
+        data.eoaAddress,
         'The EOA Address is not calculated correctly.'
       );
     } catch (e) {
@@ -43,7 +44,7 @@ describe('Get the transaction history on the MainNet', () => {
 
       assert.strictEqual(
         optimismSmartWalletAddress,
-        '0x666E17ad27fB620D7519477f3b33d809775d65Fe',
+        data.sender,
         'The smart wallet address is not calculated correctly.'
       );
     } catch (e) {
@@ -58,27 +59,25 @@ describe('Get the transaction history on the MainNet', () => {
     let native_final;
     let usdc_final;
     let usdt_final;
-    let minimum_token_balance = 0.0001;
-    let minimum_native_balance = 0.0001;
 
     for (let i = 0; i < output.items.length; i++) {
       let tokenAddress = output.items[i].token;
       if (tokenAddress === optimismNativeAddress) {
         native_balance = output.items[i].balance;
         native_final = utils.formatUnits(native_balance, 18);
-      } else if (tokenAddress === optimismUsdcAddress) {
+      } else if (tokenAddress === data.optimismUsdcAddress) {
         usdc_balance = output.items[i].balance;
         usdc_final = utils.formatUnits(usdc_balance, 6);
-      } else if (tokenAddress === optimismUsdtAddress) {
+      } else if (tokenAddress === data.optimismUsdtAddress) {
         usdt_balance = output.items[i].balance;
         usdt_final = utils.formatUnits(usdt_balance, 6);
       }
     }
 
     if (
-      native_final > minimum_native_balance &&
-      usdc_final > minimum_token_balance &&
-      usdt_final > minimum_token_balance
+      native_final > data.minimum_native_balance &&
+      usdc_final > data.minimum_token_balance &&
+      usdt_final > data.minimum_token_balance
     ) {
       runTest = true;
     } else {
@@ -96,8 +95,8 @@ describe('Get the transaction history on the MainNet', () => {
       try {
         AddTransactionToBatchOutput =
           await optimismMainNetSdk.batchExecuteAccountTransaction({
-            to: toAddress,
-            value: value,
+            to: data.recipient,
+            value: data.value_18dec,
           });
 
         try {
@@ -403,7 +402,7 @@ describe('Get the transaction history on the MainNet', () => {
             break;
           }
 
-          Helper.wait(2000);
+          Helper.wait(shortTimeout);
         } catch (e) {
           console.error(e);
         }
@@ -1647,7 +1646,7 @@ describe('Get the transaction history on the MainNet', () => {
       // Fetching a single transaction
       try {
         let output = await optimismMainNetSdk.getTransaction({
-          hash: '0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8318ccf39eDc930d1ceA551df', // Incorrect Transaction Hash
+          hash: data.incorrect_hash, // Incorrect Transaction Hash
         });
 
         if (output == null) {
@@ -1679,7 +1678,7 @@ describe('Get the transaction history on the MainNet', () => {
       try {
         try {
           await optimismMainNetSdk.getTransaction({
-            hash: '0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8z18ccf39eDc930d1ceA551df', // Incorrect Transaction Hash
+            hash: data.invalid_hash, // Invalid Transaction Hash
           });
           assert.fail(
             'The transaction history is fetched with hash which not having 32 size hex.'
