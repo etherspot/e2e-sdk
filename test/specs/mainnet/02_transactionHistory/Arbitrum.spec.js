@@ -5,19 +5,20 @@ import { assert } from 'chai';
 import { EnvNames, NetworkNames, Sdk } from 'etherspot';
 import { BigNumber, utils } from 'ethers';
 import Helper from '../../../utils/Helper.js';
+import data from '../../../data/testData.json' assert { type: 'json' };
 
 let arbitrumMainNetSdk;
 let arbitrumSmartWalletAddress;
 let arbitrumSmartWalletOutput;
 let arbitrumNativeAddress = null;
-let arbitrumUsdcAddress = '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8';
-let arbitrumUsdtAddress = '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9';
-let toAddress = '0x71Bec2309cC6BDD5F1D73474688A6154c28Db4B5';
-let value = '1000000000000'; // 18 decimal
+const shortTimeout = 2000;
 let runTest;
 
 describe('Get the transaction history with arbitrum network on the MainNet', () => {
   beforeEach('Checking the sufficient wallet balance', async () => {
+    // wait for sync
+    Helper.wait(shortTimeout);
+
     // initialize the sdk
     try {
       arbitrumMainNetSdk = new Sdk(process.env.PRIVATE_KEY, {
@@ -27,7 +28,7 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
 
       assert.strictEqual(
         arbitrumMainNetSdk.state.accountAddress,
-        '0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f',
+        data.eoaAddress,
         'The EOA Address is not calculated correctly.'
       );
     } catch (e) {
@@ -43,7 +44,7 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
 
       assert.strictEqual(
         arbitrumSmartWalletAddress,
-        '0x666E17ad27fB620D7519477f3b33d809775d65Fe',
+        data.sender,
         'The smart wallet address is not calculated correctly.'
       );
     } catch (e) {
@@ -58,27 +59,25 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
     let native_final;
     let usdc_final;
     let usdt_final;
-    let minimum_token_balance = 0.0001;
-    let minimum_native_balance = 0.0001;
 
     for (let i = 0; i < output.items.length; i++) {
       let tokenAddress = output.items[i].token;
       if (tokenAddress === arbitrumNativeAddress) {
         native_balance = output.items[i].balance;
         native_final = utils.formatUnits(native_balance, 18);
-      } else if (tokenAddress === arbitrumUsdcAddress) {
+      } else if (tokenAddress === data.arbitrumUsdcAddress) {
         usdc_balance = output.items[i].balance;
         usdc_final = utils.formatUnits(usdc_balance, 6);
-      } else if (tokenAddress === arbitrumUsdtAddress) {
+      } else if (tokenAddress === data.arbitrumUsdtAddress) {
         usdt_balance = output.items[i].balance;
         usdt_final = utils.formatUnits(usdt_balance, 6);
       }
     }
 
     if (
-      native_final > minimum_native_balance &&
-      usdc_final > minimum_token_balance &&
-      usdt_final > minimum_token_balance
+      native_final > data.minimum_native_balance &&
+      usdc_final > data.minimum_token_balance &&
+      usdt_final > data.minimum_token_balance
     ) {
       runTest = true;
     } else {
@@ -96,8 +95,8 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
       try {
         AddTransactionToBatchOutput =
           await arbitrumMainNetSdk.batchExecuteAccountTransaction({
-            to: toAddress,
-            value: value,
+            to: data.recipient,
+            value: data.value_18dec,
           });
 
         try {
@@ -403,7 +402,7 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
             break;
           }
 
-          Helper.wait(2000);
+          Helper.wait(shortTimeout);
         } catch (e) {
           console.error(e);
         }
@@ -1647,7 +1646,7 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
       // Fetching a single transaction
       try {
         let output = await arbitrumMainNetSdk.getTransaction({
-          hash: '0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8318ccf39eDc930d1ceA551df', // Incorrect Transaction Hash
+          hash: data.incorrect_hash, // Incorrect Transaction Hash
         });
 
         if (output == null) {
@@ -1679,7 +1678,7 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
       try {
         try {
           await arbitrumMainNetSdk.getTransaction({
-            hash: '0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8z18ccf39eDc930d1ceA551df', // Incorrect Transaction Hash
+            hash: data.invalid_hash, // Invalid Transaction Hash
           });
           assert.fail(
             'The transaction history is fetched with hash which not having 32 size hex.'

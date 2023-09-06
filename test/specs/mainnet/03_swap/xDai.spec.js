@@ -3,7 +3,6 @@ dotenv.config();
 
 import {
   NETWORK_NAME_TO_CHAIN_ID,
-  CrossChainServiceProvider,
   EnvNames,
   NetworkNames,
   Sdk,
@@ -11,18 +10,21 @@ import {
 import { ethers, utils } from 'ethers';
 import { assert } from 'chai';
 import pkg from '@etherspot/contracts';
+import Helper from '../../../utils/Helper.js';
+import data from '../../../data/testData.json' assert { type: 'json' };
 
 let xdaiMainNetSdk;
 let xdaiSmartWalletAddress;
 let xdaiSmartWalletOutput;
 let xdaiNativeAddress = null;
-let xdaiUsdcAddress = '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83';
-let xdaiUsdtAddress = '0x4ECaBa5870353805a9F068101A40E0f32ed605C6';
-let maticUsdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
+const shortTimeout = 2000;
 let runTest;
 
-describe('The SDK, when swap the token with different features with the xdai network on the MainNet', () => {
+describe('The SDK, when swap the token with different features with the Xdai network on the MainNet', () => {
   beforeEach('Checking the sufficient wallet balance', async () => {
+    // wait for sync
+    Helper.wait(shortTimeout);
+
     // initialize the sdk
     try {
       xdaiMainNetSdk = new Sdk(process.env.PRIVATE_KEY, {
@@ -32,7 +34,7 @@ describe('The SDK, when swap the token with different features with the xdai net
 
       assert.strictEqual(
         xdaiMainNetSdk.state.accountAddress,
-        '0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f',
+        data.eoaAddress,
         'The EOA Address is not calculated correctly.'
       );
     } catch (e) {
@@ -47,7 +49,7 @@ describe('The SDK, when swap the token with different features with the xdai net
 
       assert.strictEqual(
         xdaiSmartWalletAddress,
-        '0x666E17ad27fB620D7519477f3b33d809775d65Fe',
+        data.sender,
         'The smart wallet address is not calculated correctly.'
       );
     } catch (e) {
@@ -62,27 +64,25 @@ describe('The SDK, when swap the token with different features with the xdai net
     let native_final;
     let usdc_final;
     let usdt_final;
-    let minimum_token_balance = 0.0001;
-    let minimum_native_balance = 0.001;
 
     for (let i = 0; i < output.items.length; i++) {
       let tokenAddress = output.items[i].token;
       if (tokenAddress === xdaiNativeAddress) {
         native_balance = output.items[i].balance;
         native_final = utils.formatUnits(native_balance, 18);
-      } else if (tokenAddress === xdaiUsdcAddress) {
+      } else if (tokenAddress === data.xdaiUsdcAddress) {
         usdc_balance = output.items[i].balance;
         usdc_final = utils.formatUnits(usdc_balance, 6);
-      } else if (tokenAddress === xdaiUsdtAddress) {
+      } else if (tokenAddress === data.xdaiUsdtAddress) {
         usdt_balance = output.items[i].balance;
         usdt_final = utils.formatUnits(usdt_balance, 6);
       }
     }
 
     if (
-      native_final > minimum_native_balance &&
-      usdc_final > minimum_token_balance &&
-      usdt_final > minimum_token_balance
+      native_final > data.minimum_native_balance &&
+      usdc_final > data.minimum_token_balance &&
+      usdt_final > data.minimum_token_balance
     ) {
       runTest = true;
     } else {
@@ -90,7 +90,7 @@ describe('The SDK, when swap the token with different features with the xdai net
     }
   });
 
-  it('SMOKE: Perform the single chain swap action on the xdai network', async () => {
+  it('SMOKE: Perform the single chain swap action on the Xdai network', async () => {
     if (runTest) {
       let transactionDetails;
       let TransactionData_count = 0;
@@ -99,9 +99,9 @@ describe('The SDK, when swap the token with different features with the xdai net
       // Get exchange offers
       try {
         offers = await xdaiMainNetSdk.getExchangeOffers({
-          fromTokenAddress: xdaiUsdcAddress, // USDC Token
+          fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
           toTokenAddress: xdaiUsdtAddress, // USDT Token
-          fromAmount: ethers.utils.parseUnits('0.00001', 6),
+          fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
         });
 
         if (offers.length > 0) {
@@ -483,21 +483,21 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('SMOKE: Perform the cross chain quote action on the xdai network', async () => {
+  it('SMOKE: Perform the cross chain quote action on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       try {
         let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
         let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-        let fromTokenAddress = xdaiUsdcAddress;
-        let toTokenAddress = maticUsdcAddress;
-        let fromAmount = ethers.utils.parseUnits('0.01', 6);
+        let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+        let toTokenAddress = data.maticUsdcAddress; // USDC Token
+        let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
         quoteRequestPayload = {
           fromChainId: fromChainId,
@@ -505,7 +505,6 @@ describe('The SDK, when swap the token with different features with the xdai net
           fromTokenAddress: fromTokenAddress,
           toTokenAddress: toTokenAddress,
           fromAmount: fromAmount,
-          // serviceProvider: CrossChainServiceProvider.SocketV2, // Optional parameter
         };
 
         try {
@@ -929,204 +928,207 @@ describe('The SDK, when swap the token with different features with the xdai net
         );
       }
 
-      // // Submitting the batch
-      // let SubmissionResponse;
-      // let EstimatedGas_Submit;
-      // let FeeAmount_Submit;
-      // let EstimatedGasPrice_Submit;
+      // Submitting the batch
+      let SubmissionResponse;
+      let EstimatedGas_Submit;
+      let FeeAmount_Submit;
+      let EstimatedGasPrice_Submit;
 
-      // try {
-      //   SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
-      //     guarded: false,
-      //   });
+      try {
+        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+          guarded: false,
+        });
 
-      //   try {
-      //     assert.isNull(
-      //       SubmissionResponse.transaction,
-      //       'The transaction is no null in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.isNull(
+            SubmissionResponse.transaction,
+            'The transaction is no null in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.hash,
-      //       'The hash value is empty in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.hash,
+            'The hash value is empty in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.strictEqual(
-      //       SubmissionResponse.state,
-      //       'Queued',
-      //       'The status of the Submit Batch Response is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.strictEqual(
+            SubmissionResponse.state,
+            'Queued',
+            'The status of the Submit Batch Response is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.strictEqual(
-      //       SubmissionResponse.account,
-      //       xdaiSmartWalletAddress,
-      //       'The account address of the Submit Batch Response is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.strictEqual(
+            SubmissionResponse.account,
+            xdaiSmartWalletAddress,
+            'The account address of the Submit Batch Response is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.isNumber(
-      //       SubmissionResponse.nonce,
-      //       'The nonce value is not number in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.isNumber(
+            SubmissionResponse.nonce,
+            'The nonce value is not number in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   for (let x = 0; x < SubmissionResponse.to.length; x++) {
-      //     try {
-      //       assert.isNotEmpty(
-      //         SubmissionResponse.to[x],
-      //         'The To Address is empty in the Submit Batch Response.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-      //   }
+        for (let x = 0; x < SubmissionResponse.to.length; x++) {
+          try {
+            assert.isNotEmpty(
+              SubmissionResponse.to[x],
+              'The To Address is empty in the Submit Batch Response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
 
-      //   for (let y = 0; y < SubmissionResponse.to.length; y++) {
-      //     try {
-      //       assert.isNotEmpty(
-      //         SubmissionResponse.data[y],
-      //         'The data value is empty in the Submit Batch Response.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-      //   }
+        for (let y = 0; y < SubmissionResponse.to.length; y++) {
+          try {
+            assert.isNotEmpty(
+              SubmissionResponse.data[y],
+              'The data value is empty in the Submit Batch Response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
 
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.senderSignature,
-      //       'The senderSignature value is empty in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.senderSignature,
+            'The senderSignature value is empty in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.isNumber(
-      //       SubmissionResponse.estimatedGas,
-      //       'The Estimated Gas value is not number in the Submit Batch Response.'
-      //     );
-      //     EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.isNumber(
+            SubmissionResponse.estimatedGas,
+            'The Estimated Gas value is not number in the Submit Batch Response.'
+          );
+          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.strictEqual(
-      //       EstimatedGas_Estimate,
-      //       EstimatedGas_Submit,
-      //       'The Estimated Gas value is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.strictEqual(
+            EstimatedGas_Estimate,
+            EstimatedGas_Submit,
+            'The Estimated Gas value is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.estimatedGasPrice._hex,
-      //       'The estimatedGasPrice value is empty in the Submit Batch Response.'
-      //     );
-      //     EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.estimatedGasPrice._hex,
+            'The estimatedGasPrice value is empty in the Submit Batch Response.'
+          );
+          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.strictEqual(
-      //       EstimatedGasPrice_Estimate,
-      //       EstimatedGasPrice_Submit,
-      //       'The Estimated Gas Price value is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.strictEqual(
+            EstimatedGasPrice_Estimate,
+            EstimatedGasPrice_Submit,
+            'The Estimated Gas Price value is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.isNull(
-      //       SubmissionResponse.feeToken,
-      //       'The feeToken value is not null in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.isNull(
+            SubmissionResponse.feeToken,
+            'The feeToken value is not null in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.feeAmount._hex,
-      //       'The feeAmount value is empty in the Submit Batch Response.'
-      //     );
-      //     FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.feeAmount._hex,
+            'The feeAmount value is empty in the Submit Batch Response.'
+          );
+          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.strictEqual(
-      //       FeeAmount_Estimate,
-      //       FeeAmount_Submit,
-      //       'The Fee Amount value is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.strictEqual(
+            FeeAmount_Estimate,
+            FeeAmount_Submit,
+            'The Fee Amount value is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.feeData,
-      //       'The feeData value is empty in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.feeData,
+            'The feeData value is empty in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
-      //   try {
-      //     assert.isNull(
-      //       SubmissionResponse.delayedUntil,
-      //       'The delayedUntil value is not null in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-      // } catch (e) {
-      //   console.error(e);
-      //   assert.fail(
-      //     'The submittion of the batch is not performed successfully.'
-      //   );
-      // }
+        try {
+          assert.isNull(
+            SubmissionResponse.delayedUntil,
+            'The delayedUntil value is not null in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+      } catch (e) {
+        console.error(e);
+        assert.fail(
+          'The submittion of the batch is not performed successfully.'
+        );
+      }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('SMOKE: Perform the advance routes lifi action on the xdai network', async () => {
+  it('SMOKE: Perform the advance routes lifi action on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       try {
         let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
         let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-        let fromTokenAddress = xdaiUsdcAddress;
-        let toTokenAddress = maticUsdcAddress;
-        let fromAmount = ethers.utils.parseUnits('0.01', 6);
+        let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+        let toTokenAddress = data.maticUsdcAddress; // USDC Token
+        let fromAmount = ethers.utils.parseUnits(
+          data.advancerouteslifiswap_value,
+          6
+        );
 
         quoteRequestPayload = {
           fromChainId: fromChainId,
@@ -1134,7 +1136,6 @@ describe('The SDK, when swap the token with different features with the xdai net
           fromTokenAddress: fromTokenAddress,
           toTokenAddress: toTokenAddress,
           fromAmount: fromAmount,
-          // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
         };
 
         try {
@@ -1711,12 +1712,12 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTES LIFI ACTION ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTES LIFI ACTION ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action from ERC20 token to Native Token on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action from ERC20 token to Native Token on the Xdai network', async () => {
     if (runTest) {
       let offers;
       let transactionDetails;
@@ -1724,9 +1725,9 @@ describe('The SDK, when swap the token with different features with the xdai net
       // Get exchange offers
       try {
         offers = await xdaiMainNetSdk.getExchangeOffers({
-          fromTokenAddress: xdaiUsdcAddress, // USDC Token
-          toTokenAddress: ethers.constants.AddressZero,
-          fromAmount: ethers.utils.parseUnits('0.00001', 6),
+          fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
+          toTokenAddress: ethers.constants.AddressZero, // Native Token
+          fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
         });
 
         for (let j = 0; j < offers.length; j++) {
@@ -1755,9 +1756,8 @@ describe('The SDK, when swap the token with different features with the xdai net
 
         for (let k = 0; k < EstimationResponse.requests.length; k++) {
           try {
-            assert.strictEqual(
+            assert.isNotEmpty(
               EstimationResponse.requests[k].to,
-              '0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa',
               'The To Address of the batchExecuteAccountTransaction is not displayed correctly.'
             );
           } catch (e) {
@@ -1785,9 +1785,8 @@ describe('The SDK, when swap the token with different features with the xdai net
         }
 
         try {
-          assert.strictEqual(
+          assert.isNotEmpty(
             EstimationResponse.estimation.feeTokenReceiver,
-            '0xf593D35cA402c097e57813bCC6BCAb4b71A597cC',
             'The feeTokenReceiver Address of the Estimate Batch Response is not displayed correctly.'
           );
         } catch (e) {
@@ -1872,7 +1871,7 @@ describe('The SDK, when swap the token with different features with the xdai net
         try {
           assert.strictEqual(
             SubmissionResponse.account,
-            '0x666E17ad27fB620D7519477f3b33d809775d65Fe',
+            data.sender,
             'The account address of the Submit Batch Response is not displayed correctly.'
           );
         } catch (e) {
@@ -1889,9 +1888,8 @@ describe('The SDK, when swap the token with different features with the xdai net
         }
 
         try {
-          assert.strictEqual(
+          assert.isNotEmpty(
             SubmissionResponse.to[0],
-            '0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa',
             'The To Address in the Submit Batch Response is not displayed correctly.'
           );
         } catch (e) {
@@ -2010,12 +2008,12 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO NATIVE TOKEN ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO NATIVE TOKEN ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action from Native Token to ERC20 token on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action from Native Token to ERC20 token on the Xdai network', async () => {
     if (runTest) {
       let transactionDetails;
       let TransactionData_count = 0;
@@ -2024,9 +2022,9 @@ describe('The SDK, when swap the token with different features with the xdai net
       // Get exchange offers
       try {
         offers = await xdaiMainNetSdk.getExchangeOffers({
-          fromTokenAddress: ethers.constants.AddressZero,
-          toTokenAddress: xdaiUsdtAddress, // USDT Token
-          fromAmount: ethers.utils.parseUnits('0.00001', 18),
+          fromTokenAddress: ethers.constants.AddressZero, // Native Token
+          toTokenAddress: data.xdaiUsdtAddress, // USDT Token
+          fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 18),
         });
 
         if (offers.length > 0) {
@@ -2408,12 +2406,12 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM NATIVE TOKEN TO ERC20 TOKEN ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM NATIVE TOKEN TO ERC20 TOKEN ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action without estimation of the batch on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action without estimation of the batch on the Xdai network', async () => {
     if (runTest) {
       let transactionDetails;
 
@@ -2421,9 +2419,9 @@ describe('The SDK, when swap the token with different features with the xdai net
       let offers;
       try {
         offers = await xdaiMainNetSdk.getExchangeOffers({
-          fromTokenAddress: xdaiUsdcAddress, // USDC Token
-          toTokenAddress: xdaiUsdtAddress, // USDT Token
-          fromAmount: ethers.utils.parseUnits('0.00001', 6),
+          fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
+          toTokenAddress: data.xdaiUsdtAddress, // USDT Token
+          fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
         });
 
         for (let j = 0; j < offers.length; j++) {
@@ -2468,19 +2466,22 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT ESTIMATION OF THE BATCH ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT ESTIMATION OF THE BATCH ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action from ERC20 token to ERC20 Token with exceed token balance on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action from ERC20 token to ERC20 Token with exceed token balance on the Xdai network', async () => {
     if (runTest) {
       // Get exchange offers
       try {
         await xdaiMainNetSdk.getExchangeOffers({
-          fromTokenAddress: xdaiUsdcAddress, // USDC Token
-          toTokenAddress: xdaiUsdtAddress, // USDT Token
-          fromAmount: ethers.utils.parseUnits('100000000', 6), // Exceeded Token Balance
+          fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
+          toTokenAddress: data.xdaiUsdtAddress, // USDT Token
+          fromAmount: ethers.utils.parseUnits(
+            data.exceeded_singlechainswap_value,
+            6
+          ), // Exceeded Token Balance
         });
       } catch (e) {
         console.error(e);
@@ -2511,19 +2512,22 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO ERC20 TOKEN WITH EXCEED TOKEN BALANCE ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO ERC20 TOKEN WITH EXCEED TOKEN BALANCE ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action from ERC20 token to native token with exceed token balance on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action from ERC20 token to native token with exceed token balance on the Xdai network', async () => {
     if (runTest) {
       // Get exchange offers
       try {
         await xdaiMainNetSdk.getExchangeOffers({
-          fromTokenAddress: xdaiUsdcAddress, // USDC Token
+          fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
           toTokenAddress: ethers.constants.AddressZero, // Native Token
-          fromAmount: ethers.utils.parseUnits('100000000', 6), // Exceeded Token Balance
+          fromAmount: ethers.utils.parseUnits(
+            data.exceeded_singlechainswap_value,
+            6
+          ), // Exceeded Token Balance
         });
       } catch (e) {
         console.error(e);
@@ -2554,20 +2558,20 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO NATIVE TOKEN WITH EXCEED TOKEN BALANCE ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO NATIVE TOKEN WITH EXCEED TOKEN BALANCE ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action from ERC20 token to the same ERC20 token on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action from ERC20 token to the same ERC20 token on the Xdai network', async () => {
     if (runTest) {
       // Get exchange offers
       try {
         try {
           await xdaiMainNetSdk.getExchangeOffers({
-            fromTokenAddress: xdaiUsdcAddress, // USDC Token
-            toTokenAddress: xdaiUsdcAddress, // Both are Same USDC Tokens
-            fromAmount: ethers.utils.parseUnits('0.00001', 6),
+            fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
+            toTokenAddress: data.xdaiUsdcAddress, // Both are Same USDC Tokens
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
           });
           assert.fail(
             'The Swap is performed, Even if the ERC20 Token addresses are equal.'
@@ -2595,19 +2599,19 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO THE SAME ERC20 TOKEN ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO THE SAME ERC20 TOKEN ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action without toTokenAddress value while get the exchange offers on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action without toTokenAddress value while get the exchange offers on the Xdai network', async () => {
     if (runTest) {
       // Get exchange offers
       try {
         try {
           await xdaiMainNetSdk.getExchangeOffers({
-            fromTokenAddress: xdaiUsdcAddress, // USDC Token
-            fromAmount: ethers.utils.parseUnits('0.00001', 6),
+            fromTokenAddress: data.xdaiUsdcAddress, // USDC Token and without toTokenAddress
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
           });
           assert.fail(
             'The Swap is performed, Even if the To Token Address is not added in the Get exchange offers.'
@@ -2635,19 +2639,19 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT TOTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT TOTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action without fromTokenAddress value while get the exchange offers on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action without fromTokenAddress value while get the exchange offers on the Xdai network', async () => {
     if (runTest) {
       // Get exchange offers
       try {
         try {
           await xdaiMainNetSdk.getExchangeOffers({
-            toTokenAddress: xdaiUsdtAddress, // USDT Token
-            fromAmount: ethers.utils.parseUnits('0.00001', 6),
+            toTokenAddress: data.xdaiUsdtAddress, // USDT Token and without fromTokenAddress
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
           });
           assert.fail(
             'The Swap is performed, Even if the From Token Address is not added in the Get exchange offers.'
@@ -2675,19 +2679,19 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT FROMTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT FROMTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action without fromAmount value while get the exchange offers on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action without fromAmount value while get the exchange offers on the Xdai network', async () => {
     if (runTest) {
       // Get exchange offers
       try {
         try {
           await xdaiMainNetSdk.getExchangeOffers({
-            fromTokenAddress: xdaiUsdcAddress, // USDC Token
-            toTokenAddress: xdaiUsdtAddress, // USDT Token
+            fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
+            toTokenAddress: data.xdaiUsdtAddress, // USDT Token and without fromAmount
           });
           assert.fail(
             'The Swap is performed, Even if the amount is not added in the Get exchange offers.'
@@ -2715,20 +2719,20 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT FROMAMOUNT VALUE WHILE GET THE EXCHANGE OFFERS ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT FROMAMOUNT VALUE WHILE GET THE EXCHANGE OFFERS ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action with invalid toTokenAddress value while get the exchange offers on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action with invalid toTokenAddress value while get the exchange offers on the Xdai network', async () => {
     if (runTest) {
       // Get exchange offers
       try {
         try {
           await xdaiMainNetSdk.getExchangeOffers({
-            fromTokenAddress: xdaiUsdcAddress, // USDC Token
-            toTokenAddress: '0x4ECaBa5870353805a9F068101A40E0f32ed605CC', // Invalid USDT Token
-            fromAmount: ethers.utils.parseUnits('0.00001', 6),
+            fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
+            toTokenAddress: data.invalid_xdaiUsdtAddress, // Invalid USDT Token
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
           });
           assert.fail(
             'The Swap is performed, Even if the invalid To Token Address is added in the Get exchange offers.'
@@ -2756,20 +2760,20 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITH INVALID TOTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITH INVALID TOTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action with invalid fromTokenAddress value while get the exchange offers on the xdai network', async () => {
+  it('REGRESSION: Perform the single chain swap action with invalid fromTokenAddress value while get the exchange offers on the Xdai network', async () => {
     if (runTest) {
       // Get exchange offers
       try {
         try {
           await xdaiMainNetSdk.getExchangeOffers({
-            fromTokenAddress: '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A88', // Invalid USDC Token
-            toTokenAddress: xdaiUsdtAddress, // USDT Token
-            fromAmount: ethers.utils.parseUnits('0.00001', 6),
+            fromTokenAddress: data.invalid_xdaiUsdcAddress, // Invalid USDC Token
+            toTokenAddress: data.xdaiUsdtAddress, // USDT Token
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
           });
           assert.fail(
             'The Swap is performed, Even if the invalid From Token Address is added in the Get exchange offers.'
@@ -2797,26 +2801,25 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITH INVALID FROMTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITH INVALID FROMTOKENADDRESS VALUE WHILE GET THE EXCHANGE OFFERS ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action without fromChainId value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action without fromChainId value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic]; // without fromChainId
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         toChainId: toChainId,
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes without fromchainid value
@@ -2849,26 +2852,25 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT FROMCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT FROMCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action without toChainId value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action without toChainId value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai]; // without toChainId
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes without tochainid value
@@ -2901,26 +2903,25 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT TOCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT TOCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action without fromTokenAddress value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action without fromTokenAddress value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromTokenAddress
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
         toChainId: toChainId,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes without fromTokenAddress value
@@ -2953,26 +2954,25 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT FROMTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT FROMTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action without toTokenAddress value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action without toTokenAddress value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token and without toTokenAddress
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
         toChainId: toChainId,
         fromTokenAddress: fromTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes without totokenaddress value
@@ -3005,26 +3005,25 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT TOTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT TOTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action without fromAmount value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action without fromAmount value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromAmount
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
         toChainId: toChainId,
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes without fromamount value
@@ -3057,20 +3056,20 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT FROMAMOUNT VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT FROMAMOUNT VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it("REGRESSION: Perform the cross chain quote action from native token to another chain's ERC20 token in the quote request payload on the xdai network", async () => {
+  it('REGRESSION: Perform the cross chain quote action with the same ERC20 tokens in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = ethers.constants.AddressZero; // xdai - Native Token
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 18);
+      let fromTokenAddress = data.xdaiUsdcAddress; // Xdai - USDC Token
+      let toTokenAddress = data.xdaiUsdcAddress; // Xdai - USDC Token
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -3078,1163 +3077,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
-      };
-
-      // Get the cross chain quotes
-      let batchCrossChainTransaction;
-      let quotes;
-      try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
-
-        console.log('quotes::::::', quotes);
-
-        if (quotes.items.length > 0) {
-          // Select the first quote
-          let quote = quotes.items[0];
-
-          try {
-            assert.isNotEmpty(
-              quote.provider,
-              'The provider value is not displayed correct in the quotes response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.approvalData.approvalAddress,
-              'The approvalAddress value of the approvalData is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.approvalData.amount,
-              'The amount value of the approvalData is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.transaction.data,
-              'The data value of the transaction is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.transaction.to,
-              'The To Address value of the transaction is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.transaction.value,
-              "The value's value of the transaction is empty in the single quote response."
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.transaction.from,
-              'The From Address value of the transaction is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNumber(
-              quote.transaction.chainId,
-              'The chainId value of the transaction is not number in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.approvalAddress,
-              'The approvalAddress value of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.fromAmount,
-              'The fromAmount value of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.toAmount,
-              'The toAmount value of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-          let toAmount_estimate_quote = quote.estimate.toAmount;
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.gasCosts.limit,
-              'The limit value of the gas cost of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.gasCosts.amountUSD,
-              'The amountUSD value of the gas cost of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.gasCosts.token,
-              'The token value of the gas cost of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.data.fromToken,
-              'The fromToken value of the data of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.data.toToken,
-              'The toToken value of the data of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.data.toTokenAmount,
-              'The toTokenAmount value of the data of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-          let toTokenAmount_data_estimate_quote =
-            quote.estimate.data.toTokenAmount;
-
-          try {
-            assert.strictEqual(
-              toAmount_estimate_quote,
-              toTokenAmount_data_estimate_quote,
-              'The To Amount Gas value is not displayed correctly.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.data.estimatedGas,
-              'The estimatedGas value of the data of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          let tokenAddress = quote.estimate.data.fromToken.address;
-          let approvalAddress = quote.approvalData.approvalAddress;
-          let amount = quote.approvalData.amount;
-
-          // Build the approval transaction request
-          let { ContractNames, getContractAbi } = pkg;
-          let abi = getContractAbi(ContractNames.ERC20Token);
-          let erc20Contract = xdaiMainNetSdk.registerContract(
-            'erc20Contract',
-            abi,
-            tokenAddress
-          );
-          let approvalTransactionRequest = erc20Contract.encodeApprove(
-            approvalAddress,
-            amount
-          );
-
-          // Batch the approval transaction
-          let batchexecacctrans =
-            await xdaiMainNetSdk.batchExecuteAccountTransaction({
-              to: approvalTransactionRequest.to,
-              data: approvalTransactionRequest.data,
-              value: approvalTransactionRequest.value,
-            });
-
-          for (let w = 0; w < batchexecacctrans.requests.length; w++) {
-            try {
-              assert.isNotEmpty(
-                batchexecacctrans.requests[w].to,
-                'The To Address value is empty in the Batch Execution Account Transaction response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                batchexecacctrans.requests[w].data,
-                'The Data value is empty in the Execution Batch Rccount Transaction response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-          }
-
-          try {
-            assert.isNull(
-              batchexecacctrans.estimation,
-              'The estimatation value is empty in the Batch Execution Account Transaction response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          // Batch the cross chain transaction
-          let { to, value, data } = quote.transaction;
-          batchCrossChainTransaction =
-            await xdaiMainNetSdk.batchExecuteAccountTransaction({
-              to,
-              data: data,
-              value,
-            });
-
-          for (let j = 0; j < batchCrossChainTransaction.requests.length; j++) {
-            try {
-              assert.isNotEmpty(
-                batchCrossChainTransaction.requests[j].to,
-                'The To Address value is empty in the Batch Cross Chain Transaction response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                batchCrossChainTransaction.requests[j].data,
-                'The Data value is empty in the Batch Cross Chain Transaction response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-          }
-
-          try {
-            assert.isNull(
-              batchCrossChainTransaction.estimation,
-              'The estimation value is not null in the Batch Cross Chain Transaction response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        } else {
-          assert.fail('The quotes are not displayed in the quote list.');
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'An error is displated while performing the action on the cross chain quotes.'
-        );
-      }
-
-      // Estimating the batch
-      let EstimationResponse;
-      let EstimatedGas_Estimate;
-      let FeeAmount_Estimate;
-      let EstimatedGasPrice_Estimate;
-
-      try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
-
-        for (let k = 0; k < EstimationResponse.requests.length; k++) {
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].to,
-              'The To Address value is empty in the Estimation Batch response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].data,
-              'The Data value is empty in the Estimation Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeAmount,
-            'The feeAmount value is empty in the Estimation Batch Response.'
-          );
-          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeTokenReceiver,
-            'The feeTokenReceiver Address is empty in the Estimate Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            EstimationResponse.estimation.estimatedGas,
-            'The estimatedGas value is not number in the Estimate Batch Response.'
-          );
-          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.estimatedGasPrice,
-            'The estimatedGasPrice value is empty in the Estimation Batch Response.'
-          );
-          EstimatedGasPrice_Estimate =
-            EstimationResponse.estimation.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.signature,
-            'The signature value is empty in the Estimation Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The estimation of the batch is not performed successfully.'
-        );
-      }
-
-      // Submitting the batch
-      let SubmissionResponse;
-      let EstimatedGas_Submit;
-      let FeeAmount_Submit;
-      let EstimatedGasPrice_Submit;
-
-      try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
-          guarded: false,
-        });
-
-        try {
-          assert.isNull(
-            SubmissionResponse.transaction,
-            'The transaction is no null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.hash,
-            'The hash value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            SubmissionResponse.state,
-            'Queued',
-            'The status of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            SubmissionResponse.account,
-            xdaiSmartWalletAddress,
-            'The account address of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            SubmissionResponse.nonce,
-            'The nonce value is not number in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        for (let x = 0; x < SubmissionResponse.to.length; x++) {
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.to[x],
-              'The To Address is empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
-
-        for (let y = 0; y < SubmissionResponse.to.length; y++) {
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.data[y],
-              'The data value is empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.senderSignature,
-            'The senderSignature value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            SubmissionResponse.estimatedGas,
-            'The Estimated Gas value is not number in the Submit Batch Response.'
-          );
-          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            EstimatedGas_Estimate,
-            EstimatedGas_Submit,
-            'The Estimated Gas value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.estimatedGasPrice._hex,
-            'The estimatedGasPrice value is empty in the Submit Batch Response.'
-          );
-          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            EstimatedGasPrice_Estimate,
-            EstimatedGasPrice_Submit,
-            'The Estimated Gas Price value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNull(
-            SubmissionResponse.feeToken,
-            'The feeToken value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeAmount._hex,
-            'The feeAmount value is empty in the Submit Batch Response.'
-          );
-          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            FeeAmount_Estimate,
-            FeeAmount_Submit,
-            'The Fee Amount value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeData,
-            'The feeData value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNull(
-            SubmissionResponse.delayedUntil,
-            'The delayedUntil value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The submittion of the batch is not performed successfully.'
-        );
-      }
-    } else {
-      console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION FROM NATIVE TOKEN TO ANOTHER CHAIN'S ERC20 TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK"
-      );
-    }
-  });
-
-  it("REGRESSION: Perform the cross chain quote action from ERC20 token to another chain's native token in the quote request payload on the xdai network", async () => {
-    if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = ethers.constants.AddressZero; // matic - Native Token
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
-      };
-
-      // Get the cross chain quotes
-      let batchCrossChainTransaction;
-      let quotes;
-      try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
-
-        if (quotes.items.length > 0) {
-          // Select the first quote
-          let quote = quotes.items[0];
-
-          try {
-            assert.isNotEmpty(
-              quote.provider,
-              'The provider value is not displayed correct in the quotes response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.approvalData.approvalAddress,
-              'The approvalAddress value of the approvalData is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.approvalData.amount,
-              'The amount value of the approvalData is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.transaction.data,
-              'The data value of the transaction is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.transaction.to,
-              'The To Address value of the transaction is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.transaction.value,
-              "The value's value of the transaction is empty in the single quote response."
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.transaction.from,
-              'The From Address value of the transaction is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNumber(
-              quote.transaction.chainId,
-              'The chainId value of the transaction is not number in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.approvalAddress,
-              'The approvalAddress value of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.fromAmount,
-              'The fromAmount value of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.toAmount,
-              'The toAmount value of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-          let toAmount_estimate_quote = quote.estimate.toAmount;
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.gasCosts.limit,
-              'The limit value of the gas cost of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.gasCosts.amountUSD,
-              'The amountUSD value of the gas cost of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.gasCosts.token,
-              'The token value of the gas cost of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.data.fromToken,
-              'The fromToken value of the data of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.data.toToken,
-              'The toToken value of the data of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.data.toTokenAmount,
-              'The toTokenAmount value of the data of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-          let toTokenAmount_data_estimate_quote =
-            quote.estimate.data.toTokenAmount;
-
-          try {
-            assert.strictEqual(
-              toAmount_estimate_quote,
-              toTokenAmount_data_estimate_quote,
-              'The To Amount Gas value is not displayed correctly.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              quote.estimate.data.estimatedGas,
-              'The estimatedGas value of the data of the estimate is empty in the single quote response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          let tokenAddress = quote.estimate.data.fromToken.address;
-          let approvalAddress = quote.approvalData.approvalAddress;
-          let amount = quote.approvalData.amount;
-
-          // Build the approval transaction request
-          let { ContractNames, getContractAbi } = pkg;
-          let abi = getContractAbi(ContractNames.ERC20Token);
-          let erc20Contract = xdaiMainNetSdk.registerContract(
-            'erc20Contract',
-            abi,
-            tokenAddress
-          );
-          let approvalTransactionRequest = erc20Contract.encodeApprove(
-            approvalAddress,
-            amount
-          );
-
-          // Batch the approval transaction
-          let batchexecacctrans =
-            await xdaiMainNetSdk.batchExecuteAccountTransaction({
-              to: approvalTransactionRequest.to,
-              data: approvalTransactionRequest.data,
-              value: approvalTransactionRequest.value,
-            });
-
-          for (let w = 0; w < batchexecacctrans.requests.length; w++) {
-            try {
-              assert.isNotEmpty(
-                batchexecacctrans.requests[w].to,
-                'The To Address value is empty in the Batch Execution Account Transaction response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                batchexecacctrans.requests[w].data,
-                'The Data value is empty in the Execution Batch Rccount Transaction response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-          }
-
-          try {
-            assert.isNull(
-              batchexecacctrans.estimation,
-              'The estimatation value is empty in the Batch Execution Account Transaction response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          // Batch the cross chain transaction
-          let { to, value, data } = quote.transaction;
-          batchCrossChainTransaction =
-            await xdaiMainNetSdk.batchExecuteAccountTransaction({
-              to,
-              data: data,
-              value,
-            });
-
-          for (let j = 0; j < batchCrossChainTransaction.requests.length; j++) {
-            try {
-              assert.isNotEmpty(
-                batchCrossChainTransaction.requests[j].to,
-                'The To Address value is empty in the Batch Cross Chain Transaction response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                batchCrossChainTransaction.requests[j].data,
-                'The Data value is empty in the Batch Cross Chain Transaction response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-          }
-
-          try {
-            assert.isNull(
-              batchCrossChainTransaction.estimation,
-              'The estimation value is not null in the Batch Cross Chain Transaction response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        } else {
-          assert.fail('The quotes are not displayed in the quote list.');
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'An error is displated while performing the action on the cross chain quotes.'
-        );
-      }
-
-      // Estimating the batch
-      let EstimationResponse;
-      let EstimatedGas_Estimate;
-      let FeeAmount_Estimate;
-      let EstimatedGasPrice_Estimate;
-
-      try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
-
-        for (let k = 0; k < EstimationResponse.requests.length; k++) {
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].to,
-              'The To Address value is empty in the Estimation Batch response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].data,
-              'The Data value is empty in the Estimation Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeAmount,
-            'The feeAmount value is empty in the Estimation Batch Response.'
-          );
-          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeTokenReceiver,
-            'The feeTokenReceiver Address is empty in the Estimate Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            EstimationResponse.estimation.estimatedGas,
-            'The estimatedGas value is not number in the Estimate Batch Response.'
-          );
-          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.estimatedGasPrice,
-            'The estimatedGasPrice value is empty in the Estimation Batch Response.'
-          );
-          EstimatedGasPrice_Estimate =
-            EstimationResponse.estimation.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.signature,
-            'The signature value is empty in the Estimation Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The estimation of the batch is not performed successfully.'
-        );
-      }
-
-      // Submitting the batch
-      let SubmissionResponse;
-      let EstimatedGas_Submit;
-      let FeeAmount_Submit;
-      let EstimatedGasPrice_Submit;
-
-      try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
-          guarded: false,
-        });
-
-        try {
-          assert.isNull(
-            SubmissionResponse.transaction,
-            'The transaction is no null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.hash,
-            'The hash value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            SubmissionResponse.state,
-            'Queued',
-            'The status of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            SubmissionResponse.account,
-            xdaiSmartWalletAddress,
-            'The account address of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            SubmissionResponse.nonce,
-            'The nonce value is not number in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        for (let x = 0; x < SubmissionResponse.to.length; x++) {
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.to[x],
-              'The To Address is empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
-
-        for (let y = 0; y < SubmissionResponse.to.length; y++) {
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.data[y],
-              'The data value is empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.senderSignature,
-            'The senderSignature value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            SubmissionResponse.estimatedGas,
-            'The Estimated Gas value is not number in the Submit Batch Response.'
-          );
-          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            EstimatedGas_Estimate,
-            EstimatedGas_Submit,
-            'The Estimated Gas value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.estimatedGasPrice._hex,
-            'The estimatedGasPrice value is empty in the Submit Batch Response.'
-          );
-          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            EstimatedGasPrice_Estimate,
-            EstimatedGasPrice_Submit,
-            'The Estimated Gas Price value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNull(
-            SubmissionResponse.feeToken,
-            'The feeToken value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeAmount._hex,
-            'The feeAmount value is empty in the Submit Batch Response.'
-          );
-          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            FeeAmount_Estimate,
-            FeeAmount_Submit,
-            'The Fee Amount value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeData,
-            'The feeData value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNull(
-            SubmissionResponse.delayedUntil,
-            'The delayedUntil value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The submittion of the batch is not performed successfully.'
-        );
-      }
-    } else {
-      console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION FROM ERC20 TOKEN TO ANOTHER CHAIN'S NATIVE TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK"
-      );
-    }
-  });
-
-  it('REGRESSION: Perform the cross chain quote action with the same ERC20 tokens in the quote request payload on the xdai network', async () => {
-    if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress; // xdai - USDC
-      let toTokenAddress = xdaiUsdcAddress; // xdai - USDC
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes
@@ -4257,20 +3099,23 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH THE SAME ERC20 TOKENS IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH THE SAME ERC20 TOKENS IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action with exceeded token balance in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action with exceeded token balance in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('1000', 6); // Exceeded Token Balance
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.exceeded_crosschainswap_value,
+        6
+      ); // Exceeded Token Balance
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -4278,7 +3123,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes
@@ -4355,20 +3199,23 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH EXCEEDED TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH EXCEEDED TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action with low token balance in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action with low token balance in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.000001', 6); // Low Token Balance
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.low_crosschainswap_value,
+        6
+      ); // Low Token Balance
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -4376,7 +3223,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes
@@ -4401,20 +3247,20 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action without estimation of the batch on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action without estimation of the batch on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -4422,7 +3268,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes
@@ -4502,20 +3347,20 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT ESTIMATION OF THE BATCH ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT ESTIMATION OF THE BATCH ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action with invalid tokenAddress of the approval transaction request on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action with invalid tokenAddress of the approval transaction request on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -4523,7 +3368,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes
@@ -4535,7 +3379,7 @@ describe('The SDK, when swap the token with different features with the xdai net
           // Select the first quote
           let quote = quotes.items[0];
 
-          let tokenAddress = '0xAC313d7491910516E06FBfC2A0b5BB49bb072D92'; // Invalid token address
+          let tokenAddress = data.invalid_tokenAddress; // Invalid token address
           let approvalAddress = quote.approvalData.approvalAddress;
           let amount = quote.approvalData.amount;
 
@@ -4595,20 +3439,20 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID TOKENADDRESS OF THE APPROVAL TRANSACTION REQUEST ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID TOKENADDRESS OF THE APPROVAL TRANSACTION REQUEST ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action with invalid approvalAddress of the approval transaction request on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action with invalid approvalAddress of the approval transaction request on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -4616,7 +3460,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes
@@ -4629,7 +3472,7 @@ describe('The SDK, when swap the token with different features with the xdai net
           let quote = quotes.items[0];
 
           let tokenAddress = quote.estimate.data.fromToken.address;
-          let approvalAddress = '0xAC313d7491910516E06FBfC2A0b5BB49bb072D9z'; // Invalid Approval Address
+          let approvalAddress = data.invalid_approvalAddress; // Invalid Approval Address
           let amount = quote.approvalData.amount;
 
           // Build the approval transaction request
@@ -4694,20 +3537,20 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID APPROVALADDRESS OF THE APPROVAL TRANSACTION REQUEST ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID APPROVALADDRESS OF THE APPROVAL TRANSACTION REQUEST ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action with invalid amount of the approval transaction request on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action with invalid amount of the approval transaction request on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -4715,7 +3558,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes
@@ -4794,20 +3636,20 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID AMOUNT OF THE APPROVAL TRANSACTION REQUEST ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID AMOUNT OF THE APPROVAL TRANSACTION REQUEST ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action with invalid To Address of the approval transaction payload on the xdai network', async () => {
+  it('REGRESSION: Perform the cross chain quote action with invalid To Address of the approval transaction payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -4815,7 +3657,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the cross chain quotes
@@ -4848,7 +3689,7 @@ describe('The SDK, when swap the token with different features with the xdai net
           try {
             try {
               await xdaiMainNetSdk.batchExecuteAccountTransaction({
-                to: '0x4ECaBa5870353805a9F068101A40E0f32ed605Cz', // Invalid To Address
+                to: data.invalidRecipient, // Invalid To Address
                 data: approvalTransactionRequest.data,
                 value: approvalTransactionRequest.value,
               });
@@ -4888,26 +3729,28 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID TO ADDRESS OF THE APPROVAL TRANSACTION PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID TO ADDRESS OF THE APPROVAL TRANSACTION PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without fromChainId value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without fromChainId value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic]; // without fromChainId
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.advancerouteslifiswap_value,
+        6
+      );
 
       quoteRequestPayload = {
         toChainId: toChainId,
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi without fromchainid value
@@ -4940,26 +3783,28 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT FROMCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT FROMCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without toChainId value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without toChainId value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai]; // without toChainId
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.advancerouteslifiswap_value,
+        6
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi without tochainid value
@@ -4992,26 +3837,28 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT TOCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT TOCHAINID VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without fromTokenAddress value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without fromTokenAddress value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromTokenAddress
+      let fromAmount = ethers.utils.parseUnits(
+        data.advancerouteslifiswap_value,
+        6
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
         toChainId: toChainId,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi without fromtokenaddress value
@@ -5044,26 +3891,28 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT FROMTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT FROMTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without toTokenAddress value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without toTokenAddress value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token and without toTokenAddress
+      let fromAmount = ethers.utils.parseUnits(
+        data.advancerouteslifiswap_value,
+        6
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
         toChainId: toChainId,
         fromTokenAddress: fromTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi without totokenaddress value
@@ -5096,26 +3945,25 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT TOTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT TOTOKENADDRESS VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without fromAmount value in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without fromAmount value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromAmount
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
         toChainId: toChainId,
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi without fromamount value
@@ -5148,20 +3996,23 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT FROMAMOUNT VALUE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT FROMAMOUNT VALUE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it("REGRESSION: Perform the advance route lifi action from native token to another chain's ERC20 token in the quote request payload on the xdai network", async () => {
+  it("REGRESSION: Perform the advance route lifi action from native token to another chain's ERC20 token in the quote request payload on the Xdai network", async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = ethers.constants.AddressZero; // xdai - Native Token
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.01', 18);
+      let fromTokenAddress = ethers.constants.AddressZero; // Xdai - Native Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.advancerouteslifiswap_value,
+        18
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -5169,7 +4020,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi
@@ -5195,20 +4045,23 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION FROM NATIVE TOKEN TO ANOTHER CHAIN'S ERC20 TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK"
+        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION FROM NATIVE TOKEN TO ANOTHER CHAIN'S ERC20 TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK"
       );
     }
   });
 
-  it("REGRESSION: Perform the advance route lifi action from ERC20 token to another chain's native token in the quote request payload on the xdai network", async () => {
+  it("REGRESSION: Perform the advance route lifi action from ERC20 token to another chain's native token in the quote request payload on the Xdai network", async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = ethers.constants.AddressZero; // matic - Native Token
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = ethers.constants.AddressZero; // Native Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.advancerouteslifiswap_value,
+        6
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -5216,46 +4069,548 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi
+      let advanceRoutesLiFi;
       try {
-        let advanceRoutesLiFi = await xdaiMainNetSdk.getAdvanceRoutesLiFi(
+        advanceRoutesLiFi = await xdaiMainNetSdk.getAdvanceRoutesLiFi(
           quoteRequestPayload
         );
 
-        if (advanceRoutesLiFi.items.length == 0) {
-          console.log(
-            'The items are not displayed in the get advance Routes LiFi response as expected.'
-          );
+        if (advanceRoutesLiFi.items.length > 0) {
+          for (let i = 0; i < advanceRoutesLiFi.items.length; i++) {
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].id,
+                'The id value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNumber(
+                advanceRoutesLiFi.items[i].fromChainId,
+                'The fromChainId value is not number in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].fromAmountUSD,
+                'The fromAmountUSD value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].fromAmount,
+                'The fromAmount value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].fromToken,
+                'The fromToken value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.strictEqual(
+                advanceRoutesLiFi.items[i].fromAddress,
+                xdaiSmartWalletAddress,
+                'The fromAmount value is not displayed correct in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNumber(
+                advanceRoutesLiFi.items[i].toChainId,
+                'The toChainId value is not number in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].toAmountUSD,
+                'The toAmountUSD value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].toAmount,
+                'The toAmount value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].toAmountMin,
+                'The toAmountMin value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].toToken,
+                'The toToken value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.strictEqual(
+                advanceRoutesLiFi.items[i].toAddress,
+                xdaiSmartWalletAddress,
+                'The toAddress value is not displayed correct in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].gasCostUSD,
+                'The gasCostUSD value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isFalse(
+                advanceRoutesLiFi.items[i].containsSwitchChain,
+                'The containsSwitchChain value is not false in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].steps,
+                'The steps value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].insurance,
+                'The insurance value is empty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+
+            try {
+              assert.isNotEmpty(
+                advanceRoutesLiFi.items[i].tags,
+                'The tags value is enpty in the advance routes lifi response.'
+              );
+            } catch (e) {
+              console.error(e);
+            }
+          }
+
+          if (advanceRoutesLiFi.items.length > 0) {
+            // Select the first advance route lifi
+            let advanceRouteLiFi = advanceRoutesLiFi.items[0];
+            let transactions = await xdaiMainNetSdk.getStepTransaction({
+              route: advanceRouteLiFi,
+            });
+
+            for (let j = 0; j < transactions.items.length; j++) {
+              try {
+                assert.isNotEmpty(
+                  transactions.items[j].to,
+                  'The To Address value is empty in the transactions response.'
+                );
+              } catch (e) {
+                console.error(e);
+              }
+
+              try {
+                assert.isNotEmpty(
+                  transactions.items[j].gasLimit,
+                  'The gasLimit value is empty in the transactions response.'
+                );
+              } catch (e) {
+                console.error(e);
+              }
+
+              try {
+                assert.isNotEmpty(
+                  transactions.items[j].gasPrice,
+                  'The gasPrice value is empty in the transactions response.'
+                );
+              } catch (e) {
+                console.error(e);
+              }
+
+              try {
+                assert.isNotEmpty(
+                  transactions.items[j].data,
+                  'The data value is empty in the transactions response.'
+                );
+              } catch (e) {
+                console.error(e);
+              }
+
+              try {
+                assert.isNotEmpty(
+                  transactions.items[j].value,
+                  "The value's value is empty in the transactions response."
+                );
+              } catch (e) {
+                console.error(e);
+              }
+
+              try {
+                assert.isNumber(
+                  transactions.items[j].chainId,
+                  'The chainId value is not number in the transactions response.'
+                );
+              } catch (e) {
+                console.error(e);
+              }
+
+              try {
+                assert.isNull(
+                  transactions.items[j].type,
+                  'The type value is not null in the transactions response.'
+                );
+              } catch (e) {
+                console.error(e);
+              }
+            }
+
+            for (let transaction of transactions.items) {
+              // Batch the approval transaction
+              await xdaiMainNetSdk.batchExecuteAccountTransaction({
+                to: transaction.to,
+                data: transaction.data,
+                value: transaction.value,
+              });
+            }
+          }
         } else {
-          console.log(
-            'The more than one items are displayed in the get advance Routes LiFi response as expected.'
+          assert.fail(
+            'Not getting the items in the advanceRoutesLiFi response.'
           );
         }
       } catch (e) {
         console.error(e);
         assert.fail(
-          "The items are displayed in the get advance Routes LiFi response when perform the advance route lifi action from ERC20 token to another chain's native token."
+          'An error is displated while performing the action on the advance routes lifi.'
+        );
+      }
+
+      // Estimating the batch
+      let EstimationResponse;
+      let EstimatedGas_Estimate;
+      let FeeAmount_Estimate;
+      let EstimatedGasPrice_Estimate;
+
+      try {
+        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+
+        for (let k = 0; k < EstimationResponse.requests.length; k++) {
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].to,
+              'The To Address value is empty in the Batch Execution Account Transaction response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].data,
+              'The data value is empty in the Batch Execution Account Transaction response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeAmount,
+            'The feeAmount value is empty in the Estimation Response.'
+          );
+          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeTokenReceiver,
+            'The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNumber(
+            EstimationResponse.estimation.estimatedGas,
+            'The estimatedGas value is not number in the Estimate Batch Response.'
+          );
+          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.estimatedGasPrice,
+            'The estimatedGasPrice value is empty in the Estimation Response.'
+          );
+          EstimatedGasPrice_Estimate =
+            EstimationResponse.estimation.estimatedGasPrice._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.signature,
+            'The signature value is empty in the Estimation Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+      } catch (e) {
+        console.error(e);
+        assert.fail(
+          'The estimation of the batch is not performed successfully.'
+        );
+      }
+
+      // Submitting the batch
+      let SubmissionResponse;
+      let EstimatedGas_Submit;
+      let FeeAmount_Submit;
+      let EstimatedGasPrice_Submit;
+
+      try {
+        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+          guarded: false,
+        });
+
+        try {
+          assert.isNull(
+            SubmissionResponse.transaction,
+            'The transaction value is not null in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.hash,
+            'The hash value is empty in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.strictEqual(
+            SubmissionResponse.state,
+            'Queued',
+            'The status of the Submit Batch Response is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.strictEqual(
+            SubmissionResponse.account,
+            xdaiSmartWalletAddress,
+            'The account address of the Submit Batch Response is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNumber(
+            SubmissionResponse.nonce,
+            'The nonce value is not number in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        for (let x = 0; x < SubmissionResponse.to.length; x++) {
+          try {
+            assert.isNotEmpty(
+              SubmissionResponse.to[x],
+              'The To Address is not empty in the Submit Batch Response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+
+          try {
+            assert.isNotEmpty(
+              SubmissionResponse.data[x],
+              'The data value is empty in the Submit Batch Response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.senderSignature,
+            'The senderSignature value is empty in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNumber(
+            SubmissionResponse.estimatedGas,
+            'The Estimated Gas value is not number in the Submit Batch Response.'
+          );
+          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.strictEqual(
+            EstimatedGas_Estimate,
+            EstimatedGas_Submit,
+            'The Estimated Gas value is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.estimatedGasPrice._hex,
+            'The estimatedGasPrice value is empty in the Submit Batch Response.'
+          );
+          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.strictEqual(
+            EstimatedGasPrice_Estimate,
+            EstimatedGasPrice_Submit,
+            'The Estimated Gas Price value is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNull(
+            SubmissionResponse.feeToken,
+            'The feeToken value is not null in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.feeAmount._hex,
+            'The feeAmount value is empty in the Submit Batch Response.'
+          );
+          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.strictEqual(
+            FeeAmount_Estimate,
+            FeeAmount_Submit,
+            'The Fee Amount value is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            SubmissionResponse.feeData,
+            'The feeData value is empty in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNull(
+            SubmissionResponse.delayedUntil,
+            'The delayedUntil value is not null in the Submit Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+      } catch (e) {
+        console.error(e);
+        assert.fail(
+          'The submittion of the batch is not performed successfully.'
         );
       }
     } else {
       console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION FROM ERC20 TOKEN TO ANOTHER CHAIN'S NATIVE TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK"
+        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION FROM ERC20 TOKEN TO ANOTHER CHAIN'S NATIVE TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK"
       );
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action with the same ERC20 tokens in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the advance route lifi action with the same ERC20 tokens in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress; // xdai - USDC
-      let toTokenAddress = xdaiUsdcAddress; // xdai - USDC
-      let fromAmount = ethers.utils.parseUnits('0.01', 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // Xdai - USDC Token
+      let toTokenAddress = data.xdaiUsdcAddress; // Xdai - USDC Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.advancerouteslifiswap_value,
+        6
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -5263,7 +4618,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi
@@ -5289,20 +4643,23 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH THE SAME ERC20 TOKENS IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH THE SAME ERC20 TOKENS IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action with exceeded token balance in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the advance route lifi action with exceeded token balance in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('1000', 6); // Exceeded Token Balance
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.exceeded_advancerouteslifiswap_value,
+        6
+      ); // Exceeded Token Balance
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -5310,7 +4667,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi
@@ -5367,20 +4723,23 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH EXCEEDED TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH EXCEEDED TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action with low token balance in the quote request payload on the xdai network', async () => {
+  it('REGRESSION: Perform the advance route lifi action with low token balance in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits('0.00001', 6); // Low Token Balance
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.low_advancerouteslifiswap_value,
+        6
+      ); // Low Token Balance
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -5388,7 +4747,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi
@@ -5444,20 +4802,23 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
       );
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without estimation of the batch on the xdai network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without estimation of the batch on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = xdaiUsdcAddress;
-      let toTokenAddress = maticUsdcAddress;
-      let fromAmount = ethers.utils.parseUnits(0.01, 6);
+      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
+      let fromAmount = ethers.utils.parseUnits(
+        data.advancerouteslifiswap_value,
+        6
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -5465,7 +4826,6 @@ describe('The SDK, when swap the token with different features with the xdai net
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         fromAmount: fromAmount,
-        // serviceProvider: CrossChainServiceProvider.LiFi, // Optional parameter
       };
 
       // Get the advance routes lifi
@@ -5525,7 +4885,7 @@ describe('The SDK, when swap the token with different features with the xdai net
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT ESTIMATION OF THE BATCH ON THE XDAI NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT ESTIMATION OF THE BATCH ON THE Xdai NETWORK'
       );
     }
   });

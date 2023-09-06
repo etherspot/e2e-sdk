@@ -4,19 +4,21 @@ dotenv.config(); // init dotenv
 import { assert } from 'chai';
 import { EnvNames, NetworkNames, Sdk } from 'etherspot';
 import { utils } from 'ethers';
+import Helper from '../../../utils/Helper.js';
+import data from '../../../data/testData.json' assert { type: 'json' };
 
 let arbitrumMainNetSdk;
 let arbitrumSmartWalletAddress;
 let arbitrumSmartWalletOutput;
 let arbitrumNativeAddress = null;
-let arbitrumUsdcAddress = '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8';
-let arbitrumUsdtAddress = '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9';
-let toAddress = '0x71Bec2309cC6BDD5F1D73474688A6154c28Db4B5';
-let value = '1000000000000'; // 18 decimal
+const shortTimeout = 2000;
 let runTest;
 
 describe('The SDK, when sending a native token with arbitrum network on the MainNet', () => {
   beforeEach('Checking the sufficient wallet balance', async () => {
+    // wait for sync
+    Helper.wait(shortTimeout);
+
     // initialize the sdk
     try {
       arbitrumMainNetSdk = new Sdk(process.env.PRIVATE_KEY, {
@@ -26,7 +28,7 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
 
       assert.strictEqual(
         arbitrumMainNetSdk.state.accountAddress,
-        '0xa5494Ed2eB09F37b4b0526a8e4789565c226C84f',
+        data.eoaAddress,
         'The EOA Address is not calculated correctly.'
       );
     } catch (e) {
@@ -42,7 +44,7 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
 
       assert.strictEqual(
         arbitrumSmartWalletAddress,
-        '0x666E17ad27fB620D7519477f3b33d809775d65Fe',
+        data.sender,
         'The smart wallet address is not calculated correctly.'
       );
     } catch (e) {
@@ -57,27 +59,25 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
     let native_final;
     let usdc_final;
     let usdt_final;
-    let minimum_token_balance = 0.0001;
-    let minimum_native_balance = 0.0001;
 
     for (let i = 0; i < output.items.length; i++) {
       let tokenAddress = output.items[i].token;
       if (tokenAddress === arbitrumNativeAddress) {
         native_balance = output.items[i].balance;
         native_final = utils.formatUnits(native_balance, 18);
-      } else if (tokenAddress === arbitrumUsdcAddress) {
+      } else if (tokenAddress === data.arbitrumUsdcAddress) {
         usdc_balance = output.items[i].balance;
         usdc_final = utils.formatUnits(usdc_balance, 6);
-      } else if (tokenAddress === arbitrumUsdtAddress) {
+      } else if (tokenAddress === data.arbitrumUsdtAddress) {
         usdt_balance = output.items[i].balance;
         usdt_final = utils.formatUnits(usdt_balance, 6);
       }
     }
 
     if (
-      native_final > minimum_native_balance &&
-      usdc_final > minimum_token_balance &&
-      usdt_final > minimum_token_balance
+      native_final > data.minimum_native_balance &&
+      usdc_final > data.minimum_token_balance &&
+      usdt_final > data.minimum_token_balance
     ) {
       runTest = true;
     } else {
@@ -93,8 +93,8 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
       try {
         AddTransactionToBatchOutput =
           await arbitrumMainNetSdk.batchExecuteAccountTransaction({
-            to: toAddress,
-            value: value,
+            to: data.recipient,
+            value: data.value_18dec,
           });
       } catch (e) {
         console.error(e);
@@ -166,7 +166,7 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
       try {
         assert.isNotEmpty(
           EstimationResponse.estimation.feeTokenReceiver,
-          toAddress,
+          data.recipient,
           'The feeTokenReceiver Address of the Batch Estimation Response is not displayed correctly.'
         );
       } catch (e) {
@@ -403,8 +403,8 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
       try {
         try {
           await arbitrumMainNetSdk.batchExecuteAccountTransaction({
-            to: '0x0fd7508903376dab743a02743cadfdc2d92fceb', // Invalid To Address
-            value: '1000000000000',
+            to: data.invalidRecipient, // Invalid To Address
+            value: data.value_18dec,
           });
           assert.fail(
             'The batch execution completed with incorrect To Address.'
@@ -440,8 +440,8 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
       try {
         try {
           await arbitrumMainNetSdk.batchExecuteAccountTransaction({
-            to: '0x0fd7508903376dab743a02743cadfdc2d92fceb8',
-            value: '0.001', // Invalid Value
+            to: data.recipient,
+            value: data.invalid_value_18dec, // Invalid Value
           });
           assert.fail('The batch execution colmpleyed with incorrect Value.');
         } catch (e) {
@@ -477,8 +477,8 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
       // Adding transaction to a batch with Value as more than the actual Value of the wallet balance
       try {
         await arbitrumMainNetSdk.batchExecuteAccountTransaction({
-          to: '0x0fd7508903376dab743a02743cadfdc2d92fceb8',
-          value: '100000000000000000000000', // Exceeded Value
+          to: data.recipient,
+          value: data.exceeded_value_18dec, // Exceeded Value
         });
       } catch (e) {
         console.error(e);
@@ -522,8 +522,8 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
       try {
         try {
           await arbitrumMainNetSdk.batchExecuteAccountTransaction({
-            to: '0x666E17ad27fB620D7519477f3b33d809775d65Fe', // Send Native Token on Same Address
-            value: '1000000000000',
+            to: data.sender, // Send Native Token on Same Address
+            value: data.value_18dec,
           });
           assert.fail(
             'Addition of the transaction to batch on the same address is performed.'
@@ -561,8 +561,8 @@ describe('The SDK, when sending a native token with arbitrum network on the Main
       // Adding transaction to a batch without estimation of the batch
       try {
         await arbitrumMainNetSdk.batchExecuteAccountTransaction({
-          to: '0x0fd7508903376dab743a02743cadfdc2d92fceb8',
-          value: '1000000000000',
+          to: data.recipient,
+          value: data.value_18dec,
         });
       } catch (e) {
         console.error(e);
