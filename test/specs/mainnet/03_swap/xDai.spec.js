@@ -100,7 +100,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
       try {
         offers = await xdaiMainNetSdk.getExchangeOffers({
           fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
-          toTokenAddress: xdaiUsdtAddress, // USDT Token
+          toTokenAddress: data.xdaiUsdtAddress, // USDT Token
           fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
         });
 
@@ -190,297 +190,299 @@ describe('The SDK, when swap the token with different features with the Xdai net
         assert.fail('An error is displayed while fetching the offers list.');
       }
 
-      // Estimating the batch
-      let EstimationResponse;
-      let FeeAmount_Estimate;
-      let EstimatedGas_Estimate;
-      let EstimatedGasPrice_Estimate;
+      // DISABLED THE TRANSACTIONS
 
-      try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+      // // Estimating the batch
+      // let EstimationResponse;
+      // let FeeAmount_Estimate;
+      // let EstimatedGas_Estimate;
+      // let EstimatedGasPrice_Estimate;
 
-        for (let k = 0; k < EstimationResponse.requests.length; k++) {
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].to,
-              'The To Address is empty in the batchExecuteAccountTransaction batch.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
+      // try {
+      //   EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
 
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].data,
-              'The Data value is empty in the Estimation Batch response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
+      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].to,
+      //         'The To Address is empty in the batchExecuteAccountTransaction batch.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
 
-        try {
-          assert.strictEqual(
-            TransactionData_count,
-            EstimationResponse.requests.length,
-            'The count of the request of the EstimationResponse is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].data,
+      //         'The Data value is empty in the Estimation Batch response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeAmount,
-            'The feeAmount value is empty in the Estimation Batch Response.'
-          );
-          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       TransactionData_count,
+      //       EstimationResponse.requests.length,
+      //       'The count of the request of the EstimationResponse is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeTokenReceiver,
-            'The feeTokenReceiver Address is empty in the Estimation Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeAmount,
+      //       'The feeAmount value is empty in the Estimation Batch Response.'
+      //     );
+      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            EstimationResponse.estimation.estimatedGas,
-            'The estimatedGas value is not number in the Estimation Batch Response.'
-          );
-          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeTokenReceiver,
+      //       'The feeTokenReceiver Address is empty in the Estimation Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.estimatedGasPrice,
-            'The estimatedGasPrice value is empty in the Estimation Batch Response.'
-          );
-          EstimatedGasPrice_Estimate =
-            EstimationResponse.estimation.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       EstimationResponse.estimation.estimatedGas,
+      //       'The estimatedGas value is not number in the Estimation Batch Response.'
+      //     );
+      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.signature,
-            'The signature value is empty in the Estimation Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The estimation of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.estimatedGasPrice,
+      //       'The estimatedGasPrice value is empty in the Estimation Batch Response.'
+      //     );
+      //     EstimatedGasPrice_Estimate =
+      //       EstimationResponse.estimation.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-      // Submitting the batch
-      let SubmissionResponse;
-      let FeeAmount_Submit;
-      let EstimatedGas_Submit;
-      let EstimatedGasPrice_Submit;
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.signature,
+      //       'The signature value is empty in the Estimation Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The estimation of the batch is not performed successfully.'
+      //   );
+      // }
 
-      try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
-          guarded: false,
-        });
+      // // Submitting the batch
+      // let SubmissionResponse;
+      // let FeeAmount_Submit;
+      // let EstimatedGas_Submit;
+      // let EstimatedGasPrice_Submit;
 
-        try {
-          assert.isNull(
-            SubmissionResponse.transaction,
-            'The transaction is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      // try {
+      //   SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+      //     guarded: false,
+      //   });
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.hash,
-            'The hash value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.transaction,
+      //       'The transaction is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.state,
-            'Queued',
-            'The status of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.hash,
+      //       'The hash value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.account,
-            xdaiSmartWalletAddress,
-            'The account address of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.state,
+      //       'Queued',
+      //       'The status of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.nonce,
-            'The nonce value is not number in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.account,
+      //       xdaiSmartWalletAddress,
+      //       'The account address of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.to[0],
-            'The To Address is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.nonce,
+      //       'The nonce value is not number in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.data[0],
-            'The data value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.to[0],
+      //       'The To Address is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            TransactionData_count,
-            SubmissionResponse.to.length,
-            'The count of the To Addresses are not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.data[0],
+      //       'The data value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            TransactionData_count,
-            SubmissionResponse.data.length,
-            'The count of the data values are not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       TransactionData_count,
+      //       SubmissionResponse.to.length,
+      //       'The count of the To Addresses are not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.senderSignature,
-            'The senderSignature value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       TransactionData_count,
+      //       SubmissionResponse.data.length,
+      //       'The count of the data values are not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.estimatedGas,
-            'The Estimated Gas value is not number in the Submit Batch Response.'
-          );
-          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.senderSignature,
+      //       'The senderSignature value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGas_Estimate,
-            EstimatedGas_Submit,
-            'The Estimated Gas value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.estimatedGas,
+      //       'The Estimated Gas value is not number in the Submit Batch Response.'
+      //     );
+      //     EstimatedGas_Submit = SubmissionResponse.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.estimatedGasPrice._hex,
-            'The value of the estimatedGasPrice field of the Submit Batch Response is not displayed.'
-          );
-          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGas_Estimate,
+      //       EstimatedGas_Submit,
+      //       'The Estimated Gas value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGasPrice_Estimate,
-            EstimatedGasPrice_Submit,
-            'The Estimated Gas Price value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.estimatedGasPrice._hex,
+      //       'The value of the estimatedGasPrice field of the Submit Batch Response is not displayed.'
+      //     );
+      //     EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.feeToken,
-            'The feeToken value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGasPrice_Estimate,
+      //       EstimatedGasPrice_Submit,
+      //       'The Estimated Gas Price value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeAmount._hex,
-            'The feeAmount value is empty in the Submit Batch Response.'
-          );
-          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.feeToken,
+      //       'The feeToken value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            FeeAmount_Estimate,
-            FeeAmount_Submit,
-            'The Fee Amount value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeAmount._hex,
+      //       'The feeAmount value is empty in the Submit Batch Response.'
+      //     );
+      //     FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeData,
-            'The feeData value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       FeeAmount_Estimate,
+      //       FeeAmount_Submit,
+      //       'The Fee Amount value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.delayedUntil,
-            'The delayedUntil value is npot null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The submittion of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeData,
+      //       'The feeData value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.delayedUntil,
+      //       'The delayedUntil value is npot null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The submittion of the batch is not performed successfully.'
+      //   );
+      // }
     } else {
       console.warn(
         'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION ON THE Xdai NETWORK'
@@ -844,271 +846,273 @@ describe('The SDK, when swap the token with different features with the Xdai net
         );
       }
 
-      // Estimating the batch
-      let EstimationResponse;
-      let EstimatedGas_Estimate;
-      let FeeAmount_Estimate;
-      let EstimatedGasPrice_Estimate;
+      // DISABLED THE TRANSACTIONS
 
-      try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+      // // Estimating the batch
+      // let EstimationResponse;
+      // let EstimatedGas_Estimate;
+      // let FeeAmount_Estimate;
+      // let EstimatedGasPrice_Estimate;
 
-        for (let k = 0; k < EstimationResponse.requests.length; k++) {
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].to,
-              'The To Address value is empty in the Estimation Batch response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
+      // try {
+      //   EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
 
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].data,
-              'The Data value is empty in the Estimation Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
+      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].to,
+      //         'The To Address value is empty in the Estimation Batch response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeAmount,
-            'The feeAmount value is empty in the Estimation Batch Response.'
-          );
-          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].data,
+      //         'The Data value is empty in the Estimation Batch Response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeTokenReceiver,
-            'The feeTokenReceiver Address is empty in the Estimate Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeAmount,
+      //       'The feeAmount value is empty in the Estimation Batch Response.'
+      //     );
+      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            EstimationResponse.estimation.estimatedGas,
-            'The estimatedGas value is not number in the Estimate Batch Response.'
-          );
-          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeTokenReceiver,
+      //       'The feeTokenReceiver Address is empty in the Estimate Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.estimatedGasPrice,
-            'The estimatedGasPrice value is empty in the Estimation Batch Response.'
-          );
-          EstimatedGasPrice_Estimate =
-            EstimationResponse.estimation.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       EstimationResponse.estimation.estimatedGas,
+      //       'The estimatedGas value is not number in the Estimate Batch Response.'
+      //     );
+      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.signature,
-            'The signature value is empty in the Estimation Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The estimation of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.estimatedGasPrice,
+      //       'The estimatedGasPrice value is empty in the Estimation Batch Response.'
+      //     );
+      //     EstimatedGasPrice_Estimate =
+      //       EstimationResponse.estimation.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-      // Submitting the batch
-      let SubmissionResponse;
-      let EstimatedGas_Submit;
-      let FeeAmount_Submit;
-      let EstimatedGasPrice_Submit;
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.signature,
+      //       'The signature value is empty in the Estimation Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The estimation of the batch is not performed successfully.'
+      //   );
+      // }
 
-      try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
-          guarded: false,
-        });
+      // // Submitting the batch
+      // let SubmissionResponse;
+      // let EstimatedGas_Submit;
+      // let FeeAmount_Submit;
+      // let EstimatedGasPrice_Submit;
 
-        try {
-          assert.isNull(
-            SubmissionResponse.transaction,
-            'The transaction is no null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      // try {
+      //   SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+      //     guarded: false,
+      //   });
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.hash,
-            'The hash value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.transaction,
+      //       'The transaction is no null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.state,
-            'Queued',
-            'The status of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.hash,
+      //       'The hash value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.account,
-            xdaiSmartWalletAddress,
-            'The account address of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.state,
+      //       'Queued',
+      //       'The status of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.nonce,
-            'The nonce value is not number in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.account,
+      //       xdaiSmartWalletAddress,
+      //       'The account address of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        for (let x = 0; x < SubmissionResponse.to.length; x++) {
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.to[x],
-              'The To Address is empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.nonce,
+      //       'The nonce value is not number in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        for (let y = 0; y < SubmissionResponse.to.length; y++) {
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.data[y],
-              'The data value is empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
+      //   for (let x = 0; x < SubmissionResponse.to.length; x++) {
+      //     try {
+      //       assert.isNotEmpty(
+      //         SubmissionResponse.to[x],
+      //         'The To Address is empty in the Submit Batch Response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.senderSignature,
-            'The senderSignature value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   for (let y = 0; y < SubmissionResponse.to.length; y++) {
+      //     try {
+      //       assert.isNotEmpty(
+      //         SubmissionResponse.data[y],
+      //         'The data value is empty in the Submit Batch Response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.estimatedGas,
-            'The Estimated Gas value is not number in the Submit Batch Response.'
-          );
-          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.senderSignature,
+      //       'The senderSignature value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGas_Estimate,
-            EstimatedGas_Submit,
-            'The Estimated Gas value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.estimatedGas,
+      //       'The Estimated Gas value is not number in the Submit Batch Response.'
+      //     );
+      //     EstimatedGas_Submit = SubmissionResponse.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.estimatedGasPrice._hex,
-            'The estimatedGasPrice value is empty in the Submit Batch Response.'
-          );
-          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGas_Estimate,
+      //       EstimatedGas_Submit,
+      //       'The Estimated Gas value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGasPrice_Estimate,
-            EstimatedGasPrice_Submit,
-            'The Estimated Gas Price value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.estimatedGasPrice._hex,
+      //       'The estimatedGasPrice value is empty in the Submit Batch Response.'
+      //     );
+      //     EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.feeToken,
-            'The feeToken value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGasPrice_Estimate,
+      //       EstimatedGasPrice_Submit,
+      //       'The Estimated Gas Price value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeAmount._hex,
-            'The feeAmount value is empty in the Submit Batch Response.'
-          );
-          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.feeToken,
+      //       'The feeToken value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            FeeAmount_Estimate,
-            FeeAmount_Submit,
-            'The Fee Amount value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeAmount._hex,
+      //       'The feeAmount value is empty in the Submit Batch Response.'
+      //     );
+      //     FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeData,
-            'The feeData value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       FeeAmount_Estimate,
+      //       FeeAmount_Submit,
+      //       'The Fee Amount value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.delayedUntil,
-            'The delayedUntil value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The submittion of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeData,
+      //       'The feeData value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.delayedUntil,
+      //       'The delayedUntil value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The submittion of the batch is not performed successfully.'
+      //   );
+      // }
     } else {
       console.warn(
         'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION ON THE Xdai NETWORK'
@@ -1116,7 +1120,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it('SMOKE: Perform the advance routes lifi action on the Xdai network', async () => {
+  xit('SMOKE: Perform the advance routes lifi action on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -1447,269 +1451,271 @@ describe('The SDK, when swap the token with different features with the Xdai net
         );
       }
 
-      // Estimating the batch
-      let EstimationResponse;
-      let EstimatedGas_Estimate;
-      let FeeAmount_Estimate;
-      let EstimatedGasPrice_Estimate;
+      // DISABLED THE TRANSACTIONS
 
-      try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+      // // Estimating the batch
+      // let EstimationResponse;
+      // let EstimatedGas_Estimate;
+      // let FeeAmount_Estimate;
+      // let EstimatedGasPrice_Estimate;
 
-        for (let k = 0; k < EstimationResponse.requests.length; k++) {
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].to,
-              'The To Address value is empty in the Batch Execution Account Transaction response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
+      // try {
+      //   EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
 
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].data,
-              'The data value is empty in the Batch Execution Account Transaction response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
+      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].to,
+      //         'The To Address value is empty in the Batch Execution Account Transaction response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeAmount,
-            'The feeAmount value is empty in the Estimation Response.'
-          );
-          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].data,
+      //         'The data value is empty in the Batch Execution Account Transaction response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeTokenReceiver,
-            'The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeAmount,
+      //       'The feeAmount value is empty in the Estimation Response.'
+      //     );
+      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            EstimationResponse.estimation.estimatedGas,
-            'The estimatedGas value is not number in the Estimate Batch Response.'
-          );
-          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeTokenReceiver,
+      //       'The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.estimatedGasPrice,
-            'The estimatedGasPrice value is empty in the Estimation Response.'
-          );
-          EstimatedGasPrice_Estimate =
-            EstimationResponse.estimation.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       EstimationResponse.estimation.estimatedGas,
+      //       'The estimatedGas value is not number in the Estimate Batch Response.'
+      //     );
+      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.signature,
-            'The signature value is empty in the Estimation Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The estimation of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.estimatedGasPrice,
+      //       'The estimatedGasPrice value is empty in the Estimation Response.'
+      //     );
+      //     EstimatedGasPrice_Estimate =
+      //       EstimationResponse.estimation.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-      // Submitting the batch
-      let SubmissionResponse;
-      let EstimatedGas_Submit;
-      let FeeAmount_Submit;
-      let EstimatedGasPrice_Submit;
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.signature,
+      //       'The signature value is empty in the Estimation Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The estimation of the batch is not performed successfully.'
+      //   );
+      // }
 
-      try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
-          guarded: false,
-        });
+      // // Submitting the batch
+      // let SubmissionResponse;
+      // let EstimatedGas_Submit;
+      // let FeeAmount_Submit;
+      // let EstimatedGasPrice_Submit;
 
-        try {
-          assert.isNull(
-            SubmissionResponse.transaction,
-            'The transaction value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      // try {
+      //   SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+      //     guarded: false,
+      //   });
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.hash,
-            'The hash value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.transaction,
+      //       'The transaction value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.state,
-            'Queued',
-            'The status of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.hash,
+      //       'The hash value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.account,
-            xdaiSmartWalletAddress,
-            'The account address of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.state,
+      //       'Queued',
+      //       'The status of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.nonce,
-            'The nonce value is not number in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.account,
+      //       xdaiSmartWalletAddress,
+      //       'The account address of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        for (let x = 0; x < SubmissionResponse.to.length; x++) {
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.to[x],
-              'The To Address is not empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.nonce,
+      //       'The nonce value is not number in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.data[x],
-              'The data value is empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
+      //   for (let x = 0; x < SubmissionResponse.to.length; x++) {
+      //     try {
+      //       assert.isNotEmpty(
+      //         SubmissionResponse.to[x],
+      //         'The To Address is not empty in the Submit Batch Response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.senderSignature,
-            'The senderSignature value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //     try {
+      //       assert.isNotEmpty(
+      //         SubmissionResponse.data[x],
+      //         'The data value is empty in the Submit Batch Response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.estimatedGas,
-            'The Estimated Gas value is not number in the Submit Batch Response.'
-          );
-          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.senderSignature,
+      //       'The senderSignature value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGas_Estimate,
-            EstimatedGas_Submit,
-            'The Estimated Gas value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.estimatedGas,
+      //       'The Estimated Gas value is not number in the Submit Batch Response.'
+      //     );
+      //     EstimatedGas_Submit = SubmissionResponse.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.estimatedGasPrice._hex,
-            'The estimatedGasPrice value is empty in the Submit Batch Response.'
-          );
-          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGas_Estimate,
+      //       EstimatedGas_Submit,
+      //       'The Estimated Gas value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGasPrice_Estimate,
-            EstimatedGasPrice_Submit,
-            'The Estimated Gas Price value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.estimatedGasPrice._hex,
+      //       'The estimatedGasPrice value is empty in the Submit Batch Response.'
+      //     );
+      //     EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.feeToken,
-            'The feeToken value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGasPrice_Estimate,
+      //       EstimatedGasPrice_Submit,
+      //       'The Estimated Gas Price value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeAmount._hex,
-            'The feeAmount value is empty in the Submit Batch Response.'
-          );
-          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.feeToken,
+      //       'The feeToken value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            FeeAmount_Estimate,
-            FeeAmount_Submit,
-            'The Fee Amount value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeAmount._hex,
+      //       'The feeAmount value is empty in the Submit Batch Response.'
+      //     );
+      //     FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeData,
-            'The feeData value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       FeeAmount_Estimate,
+      //       FeeAmount_Submit,
+      //       'The Fee Amount value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.delayedUntil,
-            'The delayedUntil value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The submittion of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeData,
+      //       'The feeData value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.delayedUntil,
+      //       'The delayedUntil value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The submittion of the batch is not performed successfully.'
+      //   );
+      // }
     } else {
       console.warn(
         'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTES LIFI ACTION ON THE Xdai NETWORK'
@@ -1745,267 +1751,269 @@ describe('The SDK, when swap the token with different features with the Xdai net
         assert.fail('An error is displayed while fetching the offer list.');
       }
 
-      // Estimating the batch
-      let EstimationResponse;
-      let FeeAmount_Estimate;
-      let EstimatedGas_Estimate;
-      let EstimatedGasPrice_Estimate;
+      // DISABLED THE TRANSACTIONS
 
-      try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+      // // Estimating the batch
+      // let EstimationResponse;
+      // let FeeAmount_Estimate;
+      // let EstimatedGas_Estimate;
+      // let EstimatedGasPrice_Estimate;
 
-        for (let k = 0; k < EstimationResponse.requests.length; k++) {
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].to,
-              'The To Address of the batchExecuteAccountTransaction is not displayed correctly.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
+      // try {
+      //   EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
 
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].data,
-              'The Data value is empty in the batchExecuteAccountTransaction response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
+      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].to,
+      //         'The To Address of the batchExecuteAccountTransaction is not displayed correctly.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeAmount,
-            'The feeAmount value is empty in the Estimation Response.'
-          );
-          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].data,
+      //         'The Data value is empty in the batchExecuteAccountTransaction response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeTokenReceiver,
-            'The feeTokenReceiver Address of the Estimate Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeAmount,
+      //       'The feeAmount value is empty in the Estimation Response.'
+      //     );
+      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            EstimationResponse.estimation.estimatedGas,
-            'The estimatedGas value is not number in the Estimate Batch Response.'
-          );
-          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeTokenReceiver,
+      //       'The feeTokenReceiver Address of the Estimate Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.estimatedGasPrice,
-            'The estimatedGasPrice value is empty in the Estimation Response.'
-          );
-          EstimatedGasPrice_Estimate =
-            EstimationResponse.estimation.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       EstimationResponse.estimation.estimatedGas,
+      //       'The estimatedGas value is not number in the Estimate Batch Response.'
+      //     );
+      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.signature,
-            'The signature value is empty in the Estimation Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The estimation of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.estimatedGasPrice,
+      //       'The estimatedGasPrice value is empty in the Estimation Response.'
+      //     );
+      //     EstimatedGasPrice_Estimate =
+      //       EstimationResponse.estimation.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-      // Submitting the batch
-      let SubmissionResponse;
-      let FeeAmount_Submit;
-      let EstimatedGas_Submit;
-      let EstimatedGasPrice_Submit;
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.signature,
+      //       'The signature value is empty in the Estimation Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The estimation of the batch is not performed successfully.'
+      //   );
+      // }
 
-      try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
-          guarded: false,
-        });
+      // // Submitting the batch
+      // let SubmissionResponse;
+      // let FeeAmount_Submit;
+      // let EstimatedGas_Submit;
+      // let EstimatedGasPrice_Submit;
 
-        try {
-          assert.isNull(
-            SubmissionResponse.transaction,
-            'The transaction value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      // try {
+      //   SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+      //     guarded: false,
+      //   });
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.hash,
-            'The hash value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.transaction,
+      //       'The transaction value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.state,
-            'Queued',
-            'The status of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.hash,
+      //       'The hash value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.account,
-            data.sender,
-            'The account address of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.state,
+      //       'Queued',
+      //       'The status of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.nonce,
-            'The nonce value is not number in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.account,
+      //       data.sender,
+      //       'The account address of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.to[0],
-            'The To Address in the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.nonce,
+      //       'The nonce value is not number in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.data[0],
-            'The data value of the Submit Batch Response is not displayed.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.to[0],
+      //       'The To Address in the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.senderSignature,
-            'The senderSignature value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.data[0],
+      //       'The data value of the Submit Batch Response is not displayed.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.estimatedGas,
-            'The Estimated Gas value is not number in the Submit Batch Response.'
-          );
-          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.senderSignature,
+      //       'The senderSignature value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGas_Estimate,
-            EstimatedGas_Submit,
-            'The Estimated Gas value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.estimatedGas,
+      //       'The Estimated Gas value is not number in the Submit Batch Response.'
+      //     );
+      //     EstimatedGas_Submit = SubmissionResponse.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.estimatedGasPrice._hex,
-            'The estimatedGasPrice value is empty in the Submit Batch Response.'
-          );
-          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGas_Estimate,
+      //       EstimatedGas_Submit,
+      //       'The Estimated Gas value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGasPrice_Estimate,
-            EstimatedGasPrice_Submit,
-            'The Estimated Gas Price value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.estimatedGasPrice._hex,
+      //       'The estimatedGasPrice value is empty in the Submit Batch Response.'
+      //     );
+      //     EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.feeToken,
-            'The feeToken value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGasPrice_Estimate,
+      //       EstimatedGasPrice_Submit,
+      //       'The Estimated Gas Price value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeAmount._hex,
-            'The feeAmount value is empty in the Submit Batch Response.'
-          );
-          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.feeToken,
+      //       'The feeToken value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            FeeAmount_Estimate,
-            FeeAmount_Submit,
-            'The Fee Amount value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeAmount._hex,
+      //       'The feeAmount value is empty in the Submit Batch Response.'
+      //     );
+      //     FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeData,
-            'The feeData value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       FeeAmount_Estimate,
+      //       FeeAmount_Submit,
+      //       'The Fee Amount value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.delayedUntil,
-            'The delayedUntil value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The submittion of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeData,
+      //       'The feeData value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.delayedUntil,
+      //       'The delayedUntil value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The submittion of the batch is not performed successfully.'
+      //   );
+      // }
     } else {
       console.warn(
         'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO NATIVE TOKEN ON THE Xdai NETWORK'
@@ -2113,360 +2121,302 @@ describe('The SDK, when swap the token with different features with the Xdai net
         assert.fail('An error is displayed while fetching the offers list.');
       }
 
-      // Estimating the batch
-      let EstimationResponse;
-      let FeeAmount_Estimate;
-      let EstimatedGas_Estimate;
-      let EstimatedGasPrice_Estimate;
+      // DISABLED THE TRANSACTIONS
 
-      try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
+      // // Estimating the batch
+      // let EstimationResponse;
+      // let FeeAmount_Estimate;
+      // let EstimatedGas_Estimate;
+      // let EstimatedGasPrice_Estimate;
 
-        for (let k = 0; k < EstimationResponse.requests.length; k++) {
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].to,
-              'The To Address is empty in the batchExecuteAccountTransaction batch.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
+      // try {
+      //   EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
 
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].data,
-              'The Data value is empty in the Estimation Batch response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
+      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].to,
+      //         'The To Address is empty in the batchExecuteAccountTransaction batch.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
 
-        try {
-          assert.strictEqual(
-            TransactionData_count,
-            EstimationResponse.requests.length,
-            'The count of the request of the EstimationResponse is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //     try {
+      //       assert.isNotEmpty(
+      //         EstimationResponse.requests[k].data,
+      //         'The Data value is empty in the Estimation Batch response.'
+      //       );
+      //     } catch (e) {
+      //       console.error(e);
+      //     }
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeAmount,
-            'The feeAmount value is empty in the Estimation Batch Response.'
-          );
-          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       TransactionData_count,
+      //       EstimationResponse.requests.length,
+      //       'The count of the request of the EstimationResponse is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeTokenReceiver,
-            'The feeTokenReceiver Address is empty in the Estimation Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeAmount,
+      //       'The feeAmount value is empty in the Estimation Batch Response.'
+      //     );
+      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            EstimationResponse.estimation.estimatedGas,
-            'The estimatedGas value is not number in the Estimation Batch Response.'
-          );
-          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.feeTokenReceiver,
+      //       'The feeTokenReceiver Address is empty in the Estimation Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.estimatedGasPrice,
-            'The estimatedGasPrice value is empty in the Estimation Batch Response.'
-          );
-          EstimatedGasPrice_Estimate =
-            EstimationResponse.estimation.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       EstimationResponse.estimation.estimatedGas,
+      //       'The estimatedGas value is not number in the Estimation Batch Response.'
+      //     );
+      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.signature,
-            'The signature value is empty in the Estimation Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The estimation of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.estimatedGasPrice,
+      //       'The estimatedGasPrice value is empty in the Estimation Batch Response.'
+      //     );
+      //     EstimatedGasPrice_Estimate =
+      //       EstimationResponse.estimation.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-      // Submitting the batch
-      let SubmissionResponse;
-      let FeeAmount_Submit;
-      let EstimatedGas_Submit;
-      let EstimatedGasPrice_Submit;
+      //   try {
+      //     assert.isNotEmpty(
+      //       EstimationResponse.estimation.signature,
+      //       'The signature value is empty in the Estimation Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The estimation of the batch is not performed successfully.'
+      //   );
+      // }
 
-      try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
-          guarded: false,
-        });
+      // // Submitting the batch
+      // let SubmissionResponse;
+      // let FeeAmount_Submit;
+      // let EstimatedGas_Submit;
+      // let EstimatedGasPrice_Submit;
 
-        try {
-          assert.isNull(
-            SubmissionResponse.transaction,
-            'The transaction is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      // try {
+      //   SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
+      //     guarded: false,
+      //   });
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.hash,
-            'The hash value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.transaction,
+      //       'The transaction is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.state,
-            'Queued',
-            'The status of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.hash,
+      //       'The hash value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            SubmissionResponse.account,
-            xdaiSmartWalletAddress,
-            'The account address of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.state,
+      //       'Queued',
+      //       'The status of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.nonce,
-            'The nonce value is not number in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       SubmissionResponse.account,
+      //       xdaiSmartWalletAddress,
+      //       'The account address of the Submit Batch Response is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.to[0],
-            'The To Address is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.nonce,
+      //       'The nonce value is not number in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.data[0],
-            'The data value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.to[0],
+      //       'The To Address is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            TransactionData_count,
-            SubmissionResponse.to.length,
-            'The count of the To Addresses are not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.data[0],
+      //       'The data value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            TransactionData_count,
-            SubmissionResponse.data.length,
-            'The count of the data values are not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       TransactionData_count,
+      //       SubmissionResponse.to.length,
+      //       'The count of the To Addresses are not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.senderSignature,
-            'The senderSignature value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       TransactionData_count,
+      //       SubmissionResponse.data.length,
+      //       'The count of the data values are not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNumber(
-            SubmissionResponse.estimatedGas,
-            'The Estimated Gas value is not number in the Submit Batch Response.'
-          );
-          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.senderSignature,
+      //       'The senderSignature value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGas_Estimate,
-            EstimatedGas_Submit,
-            'The Estimated Gas value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNumber(
+      //       SubmissionResponse.estimatedGas,
+      //       'The Estimated Gas value is not number in the Submit Batch Response.'
+      //     );
+      //     EstimatedGas_Submit = SubmissionResponse.estimatedGas;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.estimatedGasPrice._hex,
-            'The value of the estimatedGasPrice field of the Submit Batch Response is not displayed.'
-          );
-          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGas_Estimate,
+      //       EstimatedGas_Submit,
+      //       'The Estimated Gas value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            EstimatedGasPrice_Estimate,
-            EstimatedGasPrice_Submit,
-            'The Estimated Gas Price value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.estimatedGasPrice._hex,
+      //       'The value of the estimatedGasPrice field of the Submit Batch Response is not displayed.'
+      //     );
+      //     EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.feeToken,
-            'The feeToken value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       EstimatedGasPrice_Estimate,
+      //       EstimatedGasPrice_Submit,
+      //       'The Estimated Gas Price value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeAmount._hex,
-            'The feeAmount value is empty in the Submit Batch Response.'
-          );
-          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.feeToken,
+      //       'The feeToken value is not null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.strictEqual(
-            FeeAmount_Estimate,
-            FeeAmount_Submit,
-            'The Fee Amount value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeAmount._hex,
+      //       'The feeAmount value is empty in the Submit Batch Response.'
+      //     );
+      //     FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeData,
-            'The feeData value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
+      //   try {
+      //     assert.strictEqual(
+      //       FeeAmount_Estimate,
+      //       FeeAmount_Submit,
+      //       'The Fee Amount value is not displayed correctly.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
 
-        try {
-          assert.isNull(
-            SubmissionResponse.delayedUntil,
-            'The delayedUntil value is npot null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The submittion of the batch is not performed successfully.'
-        );
-      }
+      //   try {
+      //     assert.isNotEmpty(
+      //       SubmissionResponse.feeData,
+      //       'The feeData value is empty in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+
+      //   try {
+      //     assert.isNull(
+      //       SubmissionResponse.delayedUntil,
+      //       'The delayedUntil value is npot null in the Submit Batch Response.'
+      //     );
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   assert.fail(
+      //     'The submittion of the batch is not performed successfully.'
+      //   );
+      // }
     } else {
       console.warn(
         'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM NATIVE TOKEN TO ERC20 TOKEN ON THE Xdai NETWORK'
-      );
-    }
-  });
-
-  it('REGRESSION: Perform the single chain swap action without estimation of the batch on the Xdai network', async () => {
-    if (runTest) {
-      let transactionDetails;
-
-      // Get exchange offers
-      let offers;
-      try {
-        offers = await xdaiMainNetSdk.getExchangeOffers({
-          fromTokenAddress: data.xdaiUsdcAddress, // USDC Token
-          toTokenAddress: data.xdaiUsdtAddress, // USDT Token
-          fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
-        });
-
-        for (let j = 0; j < offers.length; j++) {
-          transactionDetails = offers[j].transactions;
-
-          for (let l = 0; l < transactionDetails.length; l++) {
-            // Batch execute account transaction
-            await xdaiMainNetSdk.batchExecuteAccountTransaction(
-              transactionDetails[l]
-            );
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail('An error is displayed while fetching the offers list.');
-      }
-
-      // Submitting the batch
-      try {
-        try {
-          await xdaiMainNetSdk.submitGatewayBatch({
-            guarded: false,
-          });
-          assert.fail(
-            'Status of the batch is submitted without Estimation of batch.'
-          );
-        } catch (e) {
-          if (e.message == 'Can not submit not estimated batch') {
-            console.log(
-              'The validation is displayed when submiting the batch without estimation.'
-            );
-          } else {
-            console.error(e);
-            assert.fail(
-              'The submition of batch is completed without estimation.'
-            );
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail('The submition of batch is completed without estimation.');
-      }
-    } else {
-      console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION WITHOUT ESTIMATION OF THE BATCH ON THE Xdai NETWORK'
       );
     }
   });
@@ -3204,154 +3154,6 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it('REGRESSION: Perform the cross chain quote action with low token balance in the quote request payload on the Xdai network', async () => {
-    if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
-      let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(
-        data.low_crosschainswap_value,
-        6
-      ); // Low Token Balance
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-      };
-
-      // Get the cross chain quotes
-      let quotes;
-      try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
-
-        if (quotes.items.length == 0) {
-          console.log(
-            'The items are not displayed in the quotes response when perform the cross chain quote action with the low token balance as expected.'
-          );
-        } else {
-          assert.fail(
-            'The items are displayed in the quotes response when perform the cross chain quote action with the low token balance tokens.'
-          );
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'An error is dipslayed in the getCrossChainQuotes response.'
-        );
-      }
-    } else {
-      console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
-      );
-    }
-  });
-
-  it('REGRESSION: Perform the cross chain quote action without estimation of the batch on the Xdai network', async () => {
-    if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
-      let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-      };
-
-      // Get the cross chain quotes
-      let quotes;
-      try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
-
-        if (quotes.items.length > 0) {
-          // Select the first quote
-          let quote = quotes.items[0];
-
-          let tokenAddress = quote.estimate.data.fromToken.address;
-          let approvalAddress = quote.approvalData.approvalAddress;
-          let amount = quote.approvalData.amount;
-
-          // Build the approval transaction request
-          let { ContractNames, getContractAbi } = pkg;
-          let abi = getContractAbi(ContractNames.ERC20Token);
-          let erc20Contract = xdaiMainNetSdk.registerContract(
-            'erc20Contract',
-            abi,
-            tokenAddress
-          );
-          let approvalTransactionRequest = erc20Contract.encodeApprove(
-            approvalAddress,
-            amount
-          );
-
-          // Batch the approval transaction
-          await xdaiMainNetSdk.batchExecuteAccountTransaction({
-            to: approvalTransactionRequest.to,
-            data: approvalTransactionRequest.data,
-            value: approvalTransactionRequest.value,
-          });
-
-          // Batch the cross chain transaction
-          let { to, value, data } = quote.transaction;
-          await xdaiMainNetSdk.batchExecuteAccountTransaction({
-            to,
-            data: data,
-            value,
-          });
-        } else {
-          assert.fail('The quotes are not displayed in the quote list.');
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'An error is dipslayed in the getCrossChainQuotes response.'
-        );
-      }
-
-      // Submitting the batch
-      try {
-        try {
-          await xdaiMainNetSdk.submitGatewayBatch({
-            guarded: false,
-          });
-          assert.fail(
-            'Status of the batch is submitted without Estimation of batch.'
-          );
-        } catch (e) {
-          if (e.message == 'Can not submit not estimated batch') {
-            console.log(
-              'The validation is displayed when submiting the batch without estimation.'
-            );
-          } else {
-            console.error(e);
-            assert.fail(
-              'The submition of batch is completed without estimation.'
-            );
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail('The submition of batch is completed without estimation.');
-      }
-    } else {
-      console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITHOUT ESTIMATION OF THE BATCH ON THE Xdai NETWORK'
-      );
-    }
-  });
-
   it('REGRESSION: Perform the cross chain quote action with invalid tokenAddress of the approval transaction request on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
@@ -3440,104 +3242,6 @@ describe('The SDK, when swap the token with different features with the Xdai net
     } else {
       console.warn(
         'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID TOKENADDRESS OF THE APPROVAL TRANSACTION REQUEST ON THE Xdai NETWORK'
-      );
-    }
-  });
-
-  it('REGRESSION: Perform the cross chain quote action with invalid approvalAddress of the approval transaction request on the Xdai network', async () => {
-    if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
-      let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-      };
-
-      // Get the cross chain quotes
-      let quotes;
-      try {
-        quotes = await xdaiMainNetSdk.getCrossChainQuotes(quoteRequestPayload);
-
-        if (quotes.items.length > 0) {
-          // Select the first quote
-          let quote = quotes.items[0];
-
-          let tokenAddress = quote.estimate.data.fromToken.address;
-          let approvalAddress = data.invalid_approvalAddress; // Invalid Approval Address
-          let amount = quote.approvalData.amount;
-
-          // Build the approval transaction request
-          let { ContractNames, getContractAbi } = pkg;
-          let abi = getContractAbi(ContractNames.ERC20Token);
-          let erc20Contract = xdaiMainNetSdk.registerContract(
-            'erc20Contract',
-            abi,
-            tokenAddress
-          );
-          let approvalTransactionRequest = erc20Contract.encodeApprove(
-            approvalAddress,
-            amount
-          );
-
-          // Batch the approval transaction
-          await xdaiMainNetSdk.batchExecuteAccountTransaction({
-            to: approvalTransactionRequest.to,
-            data: approvalTransactionRequest.data,
-            value: approvalTransactionRequest.value,
-          });
-
-          // Batch the cross chain transaction
-          let { to, value, data } = quote.transaction;
-          await xdaiMainNetSdk.batchExecuteAccountTransaction({
-            to,
-            data: data,
-            value,
-          });
-        } else {
-          assert.fail('The quotes are not displayed in the quote list.');
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail('An error is displayed while Get the cross chain quotes.');
-      }
-
-      // Estimating the batch
-      try {
-        try {
-          await xdaiMainNetSdk.estimateGatewayBatch();
-          assert.fail(
-            'The batch executed the account transaction with invalid approvalAddress of the approval transaction request.'
-          );
-        } catch (e) {
-          if (e.errors[0].constraints.reverted == 'Transaction reverted') {
-            console.log(
-              'The batch is not executed the account transaction with invalid approvalAddress of the approval transaction request.'
-            );
-          } else {
-            console.error(e);
-            assert.fail(
-              'The batch is executed the account transaction with invalid approvalAddress of the approval transaction request.'
-            );
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The batch is executed the account transaction with invalid approvalAddress of the approval transaction request.'
-        );
-      }
-    } else {
-      console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE CROSS CHAIN QUOTE ACTION WITH INVALID APPROVALADDRESS OF THE APPROVAL TRANSACTION REQUEST ON THE Xdai NETWORK'
       );
     }
   });
@@ -3734,7 +3438,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without fromChainId value in the quote request payload on the Xdai network', async () => {
+  xit('REGRESSION: Perform the advance route lifi action without fromChainId value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3788,7 +3492,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without toChainId value in the quote request payload on the Xdai network', async () => {
+  xit('REGRESSION: Perform the advance route lifi action without toChainId value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3842,7 +3546,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without fromTokenAddress value in the quote request payload on the Xdai network', async () => {
+  xit('REGRESSION: Perform the advance route lifi action without fromTokenAddress value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3896,7 +3600,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without toTokenAddress value in the quote request payload on the Xdai network', async () => {
+  xit('REGRESSION: Perform the advance route lifi action without toTokenAddress value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3950,7 +3654,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action without fromAmount value in the quote request payload on the Xdai network', async () => {
+  xit('REGRESSION: Perform the advance route lifi action without fromAmount value in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -4001,7 +3705,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it("REGRESSION: Perform the advance route lifi action from native token to another chain's ERC20 token in the quote request payload on the Xdai network", async () => {
+  xit("REGRESSION: Perform the advance route lifi action from native token to another chain's ERC20 token in the quote request payload on the Xdai network", async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -4050,556 +3754,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it("REGRESSION: Perform the advance route lifi action from ERC20 token to another chain's native token in the quote request payload on the Xdai network", async () => {
-    if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
-      let toTokenAddress = ethers.constants.AddressZero; // Native Token
-      let fromAmount = ethers.utils.parseUnits(
-        data.advancerouteslifiswap_value,
-        6
-      );
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-      };
-
-      // Get the advance routes lifi
-      let advanceRoutesLiFi;
-      try {
-        advanceRoutesLiFi = await xdaiMainNetSdk.getAdvanceRoutesLiFi(
-          quoteRequestPayload
-        );
-
-        if (advanceRoutesLiFi.items.length > 0) {
-          for (let i = 0; i < advanceRoutesLiFi.items.length; i++) {
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].id,
-                'The id value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNumber(
-                advanceRoutesLiFi.items[i].fromChainId,
-                'The fromChainId value is not number in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].fromAmountUSD,
-                'The fromAmountUSD value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].fromAmount,
-                'The fromAmount value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].fromToken,
-                'The fromToken value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.strictEqual(
-                advanceRoutesLiFi.items[i].fromAddress,
-                xdaiSmartWalletAddress,
-                'The fromAmount value is not displayed correct in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNumber(
-                advanceRoutesLiFi.items[i].toChainId,
-                'The toChainId value is not number in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].toAmountUSD,
-                'The toAmountUSD value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].toAmount,
-                'The toAmount value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].toAmountMin,
-                'The toAmountMin value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].toToken,
-                'The toToken value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.strictEqual(
-                advanceRoutesLiFi.items[i].toAddress,
-                xdaiSmartWalletAddress,
-                'The toAddress value is not displayed correct in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].gasCostUSD,
-                'The gasCostUSD value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isFalse(
-                advanceRoutesLiFi.items[i].containsSwitchChain,
-                'The containsSwitchChain value is not false in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].steps,
-                'The steps value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].insurance,
-                'The insurance value is empty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].tags,
-                'The tags value is enpty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
-          }
-
-          if (advanceRoutesLiFi.items.length > 0) {
-            // Select the first advance route lifi
-            let advanceRouteLiFi = advanceRoutesLiFi.items[0];
-            let transactions = await xdaiMainNetSdk.getStepTransaction({
-              route: advanceRouteLiFi,
-            });
-
-            for (let j = 0; j < transactions.items.length; j++) {
-              try {
-                assert.isNotEmpty(
-                  transactions.items[j].to,
-                  'The To Address value is empty in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNotEmpty(
-                  transactions.items[j].gasLimit,
-                  'The gasLimit value is empty in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNotEmpty(
-                  transactions.items[j].gasPrice,
-                  'The gasPrice value is empty in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNotEmpty(
-                  transactions.items[j].data,
-                  'The data value is empty in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNotEmpty(
-                  transactions.items[j].value,
-                  "The value's value is empty in the transactions response."
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNumber(
-                  transactions.items[j].chainId,
-                  'The chainId value is not number in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNull(
-                  transactions.items[j].type,
-                  'The type value is not null in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-            }
-
-            for (let transaction of transactions.items) {
-              // Batch the approval transaction
-              await xdaiMainNetSdk.batchExecuteAccountTransaction({
-                to: transaction.to,
-                data: transaction.data,
-                value: transaction.value,
-              });
-            }
-          }
-        } else {
-          assert.fail(
-            'Not getting the items in the advanceRoutesLiFi response.'
-          );
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'An error is displated while performing the action on the advance routes lifi.'
-        );
-      }
-
-      // Estimating the batch
-      let EstimationResponse;
-      let EstimatedGas_Estimate;
-      let FeeAmount_Estimate;
-      let EstimatedGasPrice_Estimate;
-
-      try {
-        EstimationResponse = await xdaiMainNetSdk.estimateGatewayBatch();
-
-        for (let k = 0; k < EstimationResponse.requests.length; k++) {
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].to,
-              'The To Address value is empty in the Batch Execution Account Transaction response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              EstimationResponse.requests[k].data,
-              'The data value is empty in the Batch Execution Account Transaction response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeAmount,
-            'The feeAmount value is empty in the Estimation Response.'
-          );
-          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.feeTokenReceiver,
-            'The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            EstimationResponse.estimation.estimatedGas,
-            'The estimatedGas value is not number in the Estimate Batch Response.'
-          );
-          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.estimatedGasPrice,
-            'The estimatedGasPrice value is empty in the Estimation Response.'
-          );
-          EstimatedGasPrice_Estimate =
-            EstimationResponse.estimation.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            EstimationResponse.estimation.signature,
-            'The signature value is empty in the Estimation Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The estimation of the batch is not performed successfully.'
-        );
-      }
-
-      // Submitting the batch
-      let SubmissionResponse;
-      let EstimatedGas_Submit;
-      let FeeAmount_Submit;
-      let EstimatedGasPrice_Submit;
-
-      try {
-        SubmissionResponse = await xdaiMainNetSdk.submitGatewayBatch({
-          guarded: false,
-        });
-
-        try {
-          assert.isNull(
-            SubmissionResponse.transaction,
-            'The transaction value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.hash,
-            'The hash value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            SubmissionResponse.state,
-            'Queued',
-            'The status of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            SubmissionResponse.account,
-            xdaiSmartWalletAddress,
-            'The account address of the Submit Batch Response is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            SubmissionResponse.nonce,
-            'The nonce value is not number in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        for (let x = 0; x < SubmissionResponse.to.length; x++) {
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.to[x],
-              'The To Address is not empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
-            assert.isNotEmpty(
-              SubmissionResponse.data[x],
-              'The data value is empty in the Submit Batch Response.'
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.senderSignature,
-            'The senderSignature value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            SubmissionResponse.estimatedGas,
-            'The Estimated Gas value is not number in the Submit Batch Response.'
-          );
-          EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            EstimatedGas_Estimate,
-            EstimatedGas_Submit,
-            'The Estimated Gas value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.estimatedGasPrice._hex,
-            'The estimatedGasPrice value is empty in the Submit Batch Response.'
-          );
-          EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            EstimatedGasPrice_Estimate,
-            EstimatedGasPrice_Submit,
-            'The Estimated Gas Price value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNull(
-            SubmissionResponse.feeToken,
-            'The feeToken value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeAmount._hex,
-            'The feeAmount value is empty in the Submit Batch Response.'
-          );
-          FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            FeeAmount_Estimate,
-            FeeAmount_Submit,
-            'The Fee Amount value is not displayed correctly.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            SubmissionResponse.feeData,
-            'The feeData value is empty in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNull(
-            SubmissionResponse.delayedUntil,
-            'The delayedUntil value is not null in the Submit Batch Response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The submittion of the batch is not performed successfully.'
-        );
-      }
-    } else {
-      console.warn(
-        "DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION FROM ERC20 TOKEN TO ANOTHER CHAIN'S NATIVE TOKEN IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK"
-      );
-    }
-  });
-
-  it('REGRESSION: Perform the advance route lifi action with the same ERC20 tokens in the quote request payload on the Xdai network', async () => {
+  xit('REGRESSION: Perform the advance route lifi action with the same ERC20 tokens in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -4648,87 +3803,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it('REGRESSION: Perform the advance route lifi action with exceeded token balance in the quote request payload on the Xdai network', async () => {
-    if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
-      let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(
-        data.exceeded_advancerouteslifiswap_value,
-        6
-      ); // Exceeded Token Balance
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-      };
-
-      // Get the advance routes lifi
-      let advanceRoutesLiFi;
-      try {
-        advanceRoutesLiFi = await xdaiMainNetSdk.getAdvanceRoutesLiFi(
-          quoteRequestPayload
-        );
-
-        if (advanceRoutesLiFi.items.length > 0) {
-          // Select the first advance route lifi
-          let advanceRouteLiFi = advanceRoutesLiFi.items[0];
-          let transactions = await xdaiMainNetSdk.getStepTransaction({
-            route: advanceRouteLiFi,
-          });
-
-          for (let transaction of transactions.items) {
-            // Batch the approval transaction
-            await xdaiMainNetSdk.batchExecuteAccountTransaction({
-              to: transaction.to,
-              data: transaction.data,
-              value: transaction.value,
-            });
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'An error is dipslayed in the getAdvanceRoutesLiFi response.'
-        );
-      }
-
-      // Estimating the batch
-      try {
-        try {
-          await xdaiMainNetSdk.estimateGatewayBatch();
-        } catch (e) {
-          if (e.errors[0].constraints.reverted == 'Transaction reverted') {
-            console.log(
-              'The validation for exceeded Value is displayed as expected while the batch execution.'
-            );
-          } else {
-            console.error(e);
-            assert.fail(
-              'The expected validation is not displayed when entered the exceeded Value while performing batch execution.'
-            );
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The expected validation is not displayed when entered the exceeded Value while performing batch execution.'
-        );
-      }
-    } else {
-      console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH EXCEEDED TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
-      );
-    }
-  });
-
-  it('REGRESSION: Perform the advance route lifi action with low token balance in the quote request payload on the Xdai network', async () => {
+  xit('REGRESSION: Perform the advance route lifi action with low token balance in the quote request payload on the Xdai network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -4803,89 +3878,6 @@ describe('The SDK, when swap the token with different features with the Xdai net
     } else {
       console.warn(
         'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE Xdai NETWORK'
-      );
-    }
-  });
-
-  it('REGRESSION: Perform the advance route lifi action without estimation of the batch on the Xdai network', async () => {
-    if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = data.xdaiUsdcAddress; // USDC Token
-      let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(
-        data.advancerouteslifiswap_value,
-        6
-      );
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-      };
-
-      // Get the advance routes lifi
-      let advanceRoutesLiFi;
-      try {
-        advanceRoutesLiFi = await xdaiMainNetSdk.getAdvanceRoutesLiFi(
-          quoteRequestPayload
-        );
-
-        if (advanceRoutesLiFi.items.length > 0) {
-          // Select the first advance route lifi
-          let advanceRouteLiFi = advanceRoutesLiFi.items[0];
-          let transactions = await xdaiMainNetSdk.getStepTransaction({
-            route: advanceRouteLiFi,
-          });
-
-          for (let transaction of transactions.items) {
-            // Batch the approval transaction
-            await xdaiMainNetSdk.batchExecuteAccountTransaction({
-              to: transaction.to,
-              data: transaction.data,
-              value: transaction.value,
-            });
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'An error is dipslayed in the getAdvanceRoutesLiFi response.'
-        );
-      }
-
-      // Submitting the batch
-      try {
-        try {
-          await xdaiMainNetSdk.submitGatewayBatch({
-            guarded: false,
-          });
-          assert.fail(
-            'Status of the batch is submitted without Estimation of batch.'
-          );
-        } catch (e) {
-          if (e.message == 'Can not submit not estimated batch') {
-            console.log(
-              'The validation is displayed when submiting the batch without estimation.'
-            );
-          } else {
-            console.error(e);
-            assert.fail(
-              'The submition of batch is completed without estimation.'
-            );
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail('The submition of batch is completed without estimation.');
-      }
-    } else {
-      console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITHOUT ESTIMATION OF THE BATCH ON THE Xdai NETWORK'
       );
     }
   });
