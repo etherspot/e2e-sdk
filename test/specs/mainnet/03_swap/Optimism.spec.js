@@ -100,9 +100,12 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Get exchange offers
       try {
         offers = await optimismMainNetSdk.getExchangeOffers({
-          fromTokenAddress: data.optimismUsdcAddress, // USDC Token
-          toTokenAddress: data.optimismUsdtAddress, // USDT Token
-          fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
+          fromTokenAddress: data.optimismUsdtAddress, // USDC Token
+          toTokenAddress: data.optimismUsdcAddress, // USDT Token
+          fromAmount: ethers.utils.parseUnits(
+            data.singlechainswap_optimism_value,
+            6
+          ),
         });
 
         if (offers.length > 0) {
@@ -191,101 +194,101 @@ describe('The SDK, when swap the token with different features with the Optimism
         assert.fail('An error is displayed while fetching the offers list.');
       }
 
+      // Estimating the batch
+      let EstimationResponse;
+      let FeeAmount_Estimate;
+      let EstimatedGas_Estimate;
+      let EstimatedGasPrice_Estimate;
+
+      try {
+        EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
+
+        for (let k = 0; k < EstimationResponse.requests.length; k++) {
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].to,
+              'The To Address is empty in the batchExecuteAccountTransaction batch.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].data,
+              'The Data value is empty in the Estimation Batch response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        try {
+          assert.strictEqual(
+            TransactionData_count,
+            EstimationResponse.requests.length,
+            'The count of the request of the EstimationResponse is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeAmount,
+            'The feeAmount value is empty in the Estimation Batch Response.'
+          );
+          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeTokenReceiver,
+            'The feeTokenReceiver Address is empty in the Estimation Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNumber(
+            EstimationResponse.estimation.estimatedGas,
+            'The estimatedGas value is not number in the Estimation Batch Response.'
+          );
+          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.estimatedGasPrice,
+            'The estimatedGasPrice value is empty in the Estimation Batch Response.'
+          );
+          EstimatedGasPrice_Estimate =
+            EstimationResponse.estimation.estimatedGasPrice._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.signature,
+            'The signature value is empty in the Estimation Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+      } catch (e) {
+        console.error(e);
+        assert.fail(
+          'The estimation of the batch is not performed successfully.'
+        );
+      }
+
       // DISABLED THE TRANSACTIONS
-
-      // // Estimating the batch
-      // let EstimationResponse;
-      // let FeeAmount_Estimate;
-      // let EstimatedGas_Estimate;
-      // let EstimatedGasPrice_Estimate;
-
-      // try {
-      //   EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
-
-      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].to,
-      //         'The To Address is empty in the batchExecuteAccountTransaction batch.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].data,
-      //         'The Data value is empty in the Estimation Batch response.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-      //   }
-
-      //   try {
-      //     assert.strictEqual(
-      //       TransactionData_count,
-      //       EstimationResponse.requests.length,
-      //       'The count of the request of the EstimationResponse is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeAmount,
-      //       'The feeAmount value is empty in the Estimation Batch Response.'
-      //     );
-      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeTokenReceiver,
-      //       'The feeTokenReceiver Address is empty in the Estimation Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNumber(
-      //       EstimationResponse.estimation.estimatedGas,
-      //       'The estimatedGas value is not number in the Estimation Batch Response.'
-      //     );
-      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.estimatedGasPrice,
-      //       'The estimatedGasPrice value is empty in the Estimation Batch Response.'
-      //     );
-      //     EstimatedGasPrice_Estimate =
-      //       EstimationResponse.estimation.estimatedGasPrice._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.signature,
-      //       'The signature value is empty in the Estimation Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-      // } catch (e) {
-      //   console.error(e);
-      //   assert.fail(
-      //     'The estimation of the batch is not performed successfully.'
-      //   );
-      // }
 
       // // Submitting the batch
       // let SubmissionResponse;
@@ -497,9 +500,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       let quoteRequestPayload;
       try {
         let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-        let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+        let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
         let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-        let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+        let toTokenAddress = data.maticUsdcAddress; // USDC Token
         let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
         quoteRequestPayload = {
@@ -849,91 +852,91 @@ describe('The SDK, when swap the token with different features with the Optimism
         );
       }
 
+      // Estimating the batch
+      let EstimationResponse;
+      let EstimatedGas_Estimate;
+      let FeeAmount_Estimate;
+      let EstimatedGasPrice_Estimate;
+
+      try {
+        EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
+
+        for (let k = 0; k < EstimationResponse.requests.length; k++) {
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].to,
+              'The To Address value is empty in the Estimation Batch response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].data,
+              'The Data value is empty in the Estimation Batch Response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeAmount,
+            'The feeAmount value is empty in the Estimation Batch Response.'
+          );
+          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeTokenReceiver,
+            'The feeTokenReceiver Address is empty in the Estimate Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNumber(
+            EstimationResponse.estimation.estimatedGas,
+            'The estimatedGas value is not number in the Estimate Batch Response.'
+          );
+          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.estimatedGasPrice,
+            'The estimatedGasPrice value is empty in the Estimation Batch Response.'
+          );
+          EstimatedGasPrice_Estimate =
+            EstimationResponse.estimation.estimatedGasPrice._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.signature,
+            'The signature value is empty in the Estimation Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+      } catch (e) {
+        console.error(e);
+        assert.fail(
+          'The estimation of the batch is not performed successfully.'
+        );
+      }
+
       // DISABLED THE TRANSACTIONS
-
-      // // Estimating the batch
-      // let EstimationResponse;
-      // let EstimatedGas_Estimate;
-      // let FeeAmount_Estimate;
-      // let EstimatedGasPrice_Estimate;
-
-      // try {
-      //   EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
-
-      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].to,
-      //         'The To Address value is empty in the Estimation Batch response.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].data,
-      //         'The Data value is empty in the Estimation Batch Response.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeAmount,
-      //       'The feeAmount value is empty in the Estimation Batch Response.'
-      //     );
-      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeTokenReceiver,
-      //       'The feeTokenReceiver Address is empty in the Estimate Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNumber(
-      //       EstimationResponse.estimation.estimatedGas,
-      //       'The estimatedGas value is not number in the Estimate Batch Response.'
-      //     );
-      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.estimatedGasPrice,
-      //       'The estimatedGasPrice value is empty in the Estimation Batch Response.'
-      //     );
-      //     EstimatedGasPrice_Estimate =
-      //       EstimationResponse.estimation.estimatedGasPrice._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.signature,
-      //       'The signature value is empty in the Estimation Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-      // } catch (e) {
-      //   console.error(e);
-      //   assert.fail(
-      //     'The estimation of the batch is not performed successfully.'
-      //   );
-      // }
 
       // // Submitting the batch
       // let SubmissionResponse;
@@ -1129,9 +1132,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       let quoteRequestPayload;
       try {
         let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-        let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+        let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
         let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-        let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+        let toTokenAddress = data.maticUsdcAddress; // USDC Token
         let fromAmount = ethers.utils.parseUnits(
           data.advancerouteslifiswap_value,
           6
@@ -1454,91 +1457,91 @@ describe('The SDK, when swap the token with different features with the Optimism
         );
       }
 
+      // Estimating the batch
+      let EstimationResponse;
+      let EstimatedGas_Estimate;
+      let FeeAmount_Estimate;
+      let EstimatedGasPrice_Estimate;
+
+      try {
+        EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
+
+        for (let k = 0; k < EstimationResponse.requests.length; k++) {
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].to,
+              'The To Address value is empty in the Batch Execution Account Transaction response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].data,
+              'The data value is empty in the Batch Execution Account Transaction response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeAmount,
+            'The feeAmount value is empty in the Estimation Response.'
+          );
+          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeTokenReceiver,
+            'The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNumber(
+            EstimationResponse.estimation.estimatedGas,
+            'The estimatedGas value is not number in the Estimate Batch Response.'
+          );
+          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.estimatedGasPrice,
+            'The estimatedGasPrice value is empty in the Estimation Response.'
+          );
+          EstimatedGasPrice_Estimate =
+            EstimationResponse.estimation.estimatedGasPrice._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.signature,
+            'The signature value is empty in the Estimation Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+      } catch (e) {
+        console.error(e);
+        assert.fail(
+          'The estimation of the batch is not performed successfully.'
+        );
+      }
+
       // DISABLED THE TRANSACTIONS
-
-      // // Estimating the batch
-      // let EstimationResponse;
-      // let EstimatedGas_Estimate;
-      // let FeeAmount_Estimate;
-      // let EstimatedGasPrice_Estimate;
-
-      // try {
-      //   EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
-
-      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].to,
-      //         'The To Address value is empty in the Batch Execution Account Transaction response.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].data,
-      //         'The data value is empty in the Batch Execution Account Transaction response.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeAmount,
-      //       'The feeAmount value is empty in the Estimation Response.'
-      //     );
-      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeTokenReceiver,
-      //       'The feeTokenReceiver Address of the Estimate Batch Response is empty in the Batch Estimation Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNumber(
-      //       EstimationResponse.estimation.estimatedGas,
-      //       'The estimatedGas value is not number in the Estimate Batch Response.'
-      //     );
-      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.estimatedGasPrice,
-      //       'The estimatedGasPrice value is empty in the Estimation Response.'
-      //     );
-      //     EstimatedGasPrice_Estimate =
-      //       EstimationResponse.estimation.estimatedGasPrice._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.signature,
-      //       'The signature value is empty in the Estimation Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-      // } catch (e) {
-      //   console.error(e);
-      //   assert.fail(
-      //     'The estimation of the batch is not performed successfully.'
-      //   );
-      // }
 
       // // Submitting the batch
       // let SubmissionResponse;
@@ -1726,304 +1729,6 @@ describe('The SDK, when swap the token with different features with the Optimism
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action from ERC20 token to Native Token on the Optimism network', async () => {
-    if (runTest) {
-      let offers;
-      let transactionDetails;
-
-      // Get exchange offers
-      try {
-        offers = await optimismMainNetSdk.getExchangeOffers({
-          fromTokenAddress: data.optimismUsdcAddress, // USDC Token
-          toTokenAddress: ethers.constants.AddressZero, // Native Token
-          fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
-        });
-
-        for (let j = 0; j < offers.length; j++) {
-          transactionDetails = offers[j].transactions;
-
-          for (let i = 0; i < transactionDetails.length; i++) {
-            // BATCH EXECUTE ACCOUNT TRANSACTION
-            await optimismMainNetSdk.batchExecuteAccountTransaction(
-              transactionDetails[i]
-            );
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail('An error is displayed while fetching the offer list.');
-      }
-
-      // DISABLED THE TRANSACTIONS
-
-      // // Estimating the batch
-      // let EstimationResponse;
-      // let FeeAmount_Estimate;
-      // let EstimatedGas_Estimate;
-      // let EstimatedGasPrice_Estimate;
-
-      // try {
-      //   EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
-
-      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].to,
-      //         'The To Address of the batchExecuteAccountTransaction is not displayed correctly.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].data,
-      //         'The Data value is empty in the batchExecuteAccountTransaction response.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeAmount,
-      //       'The feeAmount value is empty in the Estimation Response.'
-      //     );
-      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeTokenReceiver,
-      //       'The feeTokenReceiver Address of the Estimate Batch Response is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNumber(
-      //       EstimationResponse.estimation.estimatedGas,
-      //       'The estimatedGas value is not number in the Estimate Batch Response.'
-      //     );
-      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.estimatedGasPrice,
-      //       'The estimatedGasPrice value is empty in the Estimation Response.'
-      //     );
-      //     EstimatedGasPrice_Estimate =
-      //       EstimationResponse.estimation.estimatedGasPrice._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.signature,
-      //       'The signature value is empty in the Estimation Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-      // } catch (e) {
-      //   console.error(e);
-      //   assert.fail(
-      //     'The estimation of the batch is not performed successfully.'
-      //   );
-      // }
-
-      // // Submitting the batch
-      // let SubmissionResponse;
-      // let FeeAmount_Submit;
-      // let EstimatedGas_Submit;
-      // let EstimatedGasPrice_Submit;
-
-      // try {
-      //   SubmissionResponse = await optimismMainNetSdk.submitGatewayBatch({
-      //     guarded: false,
-      //   });
-
-      //   try {
-      //     assert.isNull(
-      //       SubmissionResponse.transaction,
-      //       'The transaction value is not null in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.hash,
-      //       'The hash value is empty in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.strictEqual(
-      //       SubmissionResponse.state,
-      //       'Queued',
-      //       'The status of the Submit Batch Response is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.strictEqual(
-      //       SubmissionResponse.account,
-      //       data.sender,
-      //       'The account address of the Submit Batch Response is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNumber(
-      //       SubmissionResponse.nonce,
-      //       'The nonce value is not number in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.to[0],
-      //       'The To Address in the Submit Batch Response is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.data[0],
-      //       'The data value of the Submit Batch Response is not displayed.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.senderSignature,
-      //       'The senderSignature value is empty in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNumber(
-      //       SubmissionResponse.estimatedGas,
-      //       'The Estimated Gas value is not number in the Submit Batch Response.'
-      //     );
-      //     EstimatedGas_Submit = SubmissionResponse.estimatedGas;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.strictEqual(
-      //       EstimatedGas_Estimate,
-      //       EstimatedGas_Submit,
-      //       'The Estimated Gas value is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.estimatedGasPrice._hex,
-      //       'The estimatedGasPrice value is empty in the Submit Batch Response.'
-      //     );
-      //     EstimatedGasPrice_Submit = SubmissionResponse.estimatedGasPrice._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.strictEqual(
-      //       EstimatedGasPrice_Estimate,
-      //       EstimatedGasPrice_Submit,
-      //       'The Estimated Gas Price value is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNull(
-      //       SubmissionResponse.feeToken,
-      //       'The feeToken value is not null in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.feeAmount._hex,
-      //       'The feeAmount value is empty in the Submit Batch Response.'
-      //     );
-      //     FeeAmount_Submit = SubmissionResponse.feeAmount._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.strictEqual(
-      //       FeeAmount_Estimate,
-      //       FeeAmount_Submit,
-      //       'The Fee Amount value is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       SubmissionResponse.feeData,
-      //       'The feeData value is empty in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNull(
-      //       SubmissionResponse.delayedUntil,
-      //       'The delayedUntil value is not null in the Submit Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-      // } catch (e) {
-      //   console.error(e);
-      //   assert.fail(
-      //     'The submittion of the batch is not performed successfully.'
-      //   );
-      // }
-    } else {
-      console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO NATIVE TOKEN ON THE Optimism NETWORK'
-      );
-    }
-  });
-
   it('REGRESSION: Perform the single chain swap action from Native Token to ERC20 token on the Optimism network', async () => {
     if (runTest) {
       let transactionDetails;
@@ -2124,101 +1829,101 @@ describe('The SDK, when swap the token with different features with the Optimism
         assert.fail('An error is displayed while fetching the offers list.');
       }
 
+      // Estimating the batch
+      let EstimationResponse;
+      let FeeAmount_Estimate;
+      let EstimatedGas_Estimate;
+      let EstimatedGasPrice_Estimate;
+
+      try {
+        EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
+
+        for (let k = 0; k < EstimationResponse.requests.length; k++) {
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].to,
+              'The To Address is empty in the batchExecuteAccountTransaction batch.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+
+          try {
+            assert.isNotEmpty(
+              EstimationResponse.requests[k].data,
+              'The Data value is empty in the Estimation Batch response.'
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        try {
+          assert.strictEqual(
+            TransactionData_count,
+            EstimationResponse.requests.length,
+            'The count of the request of the EstimationResponse is not displayed correctly.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeAmount,
+            'The feeAmount value is empty in the Estimation Batch Response.'
+          );
+          FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.feeTokenReceiver,
+            'The feeTokenReceiver Address is empty in the Estimation Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNumber(
+            EstimationResponse.estimation.estimatedGas,
+            'The estimatedGas value is not number in the Estimation Batch Response.'
+          );
+          EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.estimatedGasPrice,
+            'The estimatedGasPrice value is empty in the Estimation Batch Response.'
+          );
+          EstimatedGasPrice_Estimate =
+            EstimationResponse.estimation.estimatedGasPrice._hex;
+        } catch (e) {
+          console.error(e);
+        }
+
+        try {
+          assert.isNotEmpty(
+            EstimationResponse.estimation.signature,
+            'The signature value is empty in the Estimation Batch Response.'
+          );
+        } catch (e) {
+          console.error(e);
+        }
+      } catch (e) {
+        console.error(e);
+        assert.fail(
+          'The estimation of the batch is not performed successfully.'
+        );
+      }
+
       // DISABLED THE TRANSACTIONS
-
-      // // Estimating the batch
-      // let EstimationResponse;
-      // let FeeAmount_Estimate;
-      // let EstimatedGas_Estimate;
-      // let EstimatedGasPrice_Estimate;
-
-      // try {
-      //   EstimationResponse = await optimismMainNetSdk.estimateGatewayBatch();
-
-      //   for (let k = 0; k < EstimationResponse.requests.length; k++) {
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].to,
-      //         'The To Address is empty in the batchExecuteAccountTransaction batch.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-
-      //     try {
-      //       assert.isNotEmpty(
-      //         EstimationResponse.requests[k].data,
-      //         'The Data value is empty in the Estimation Batch response.'
-      //       );
-      //     } catch (e) {
-      //       console.error(e);
-      //     }
-      //   }
-
-      //   try {
-      //     assert.strictEqual(
-      //       TransactionData_count,
-      //       EstimationResponse.requests.length,
-      //       'The count of the request of the EstimationResponse is not displayed correctly.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeAmount,
-      //       'The feeAmount value is empty in the Estimation Batch Response.'
-      //     );
-      //     FeeAmount_Estimate = EstimationResponse.estimation.feeAmount._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.feeTokenReceiver,
-      //       'The feeTokenReceiver Address is empty in the Estimation Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNumber(
-      //       EstimationResponse.estimation.estimatedGas,
-      //       'The estimatedGas value is not number in the Estimation Batch Response.'
-      //     );
-      //     EstimatedGas_Estimate = EstimationResponse.estimation.estimatedGas;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.estimatedGasPrice,
-      //       'The estimatedGasPrice value is empty in the Estimation Batch Response.'
-      //     );
-      //     EstimatedGasPrice_Estimate =
-      //       EstimationResponse.estimation.estimatedGasPrice._hex;
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-
-      //   try {
-      //     assert.isNotEmpty(
-      //       EstimationResponse.estimation.signature,
-      //       'The signature value is empty in the Estimation Batch Response.'
-      //     );
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-      // } catch (e) {
-      //   console.error(e);
-      //   assert.fail(
-      //     'The estimation of the batch is not performed successfully.'
-      //   );
-      // }
 
       // // Submitting the batch
       // let SubmissionResponse;
@@ -2470,52 +2175,6 @@ describe('The SDK, when swap the token with different features with the Optimism
     }
   });
 
-  it('REGRESSION: Perform the single chain swap action from ERC20 token to native token with exceed token balance on the Optimism network', async () => {
-    if (runTest) {
-      // Get exchange offers
-      try {
-        await optimismMainNetSdk.getExchangeOffers({
-          fromTokenAddress: data.optimismUsdcAddress, // USDC Token
-          toTokenAddress: ethers.constants.AddressZero, // Native Token
-          fromAmount: ethers.utils.parseUnits(
-            data.exceeded_singlechainswap_value,
-            6
-          ), // Exceeded Token Balance
-        });
-      } catch (e) {
-        console.error(e);
-        assert.fail('An error is displayed while fetching the offers list.');
-      }
-
-      // Estimating the batch
-      try {
-        try {
-          await optimismMainNetSdk.estimateGatewayBatch();
-        } catch (e) {
-          if (e.message == 'Can not estimate empty batch') {
-            console.log(
-              'The validation for exceeded Value is displayed as expected while the batch execution.'
-            );
-          } else {
-            console.error(e);
-            assert.fail(
-              'The expected validation is not displayed when entered the exceeded Value while performing batch execution.'
-            );
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        assert.fail(
-          'The expected validation is not displayed when entered the exceeded Value while performing batch execution.'
-        );
-      }
-    } else {
-      console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE SINGLE CHAIN SWAP ACTION FROM ERC20 TOKEN TO NATIVE TOKEN WITH EXCEED TOKEN BALANCE ON THE Optimism NETWORK'
-      );
-    }
-  });
-
   it('REGRESSION: Perform the single chain swap action from ERC20 token to the same ERC20 token on the Optimism network', async () => {
     if (runTest) {
       // Get exchange offers
@@ -2763,9 +2422,9 @@ describe('The SDK, when swap the token with different features with the Optimism
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai]; // without fromChainId
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic]; // without fromChainId
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
@@ -2816,7 +2475,7 @@ describe('The SDK, when swap the token with different features with the Optimism
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism]; // without toChainId
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
@@ -2866,8 +2525,8 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token and without fromTokenAddress
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromTokenAddress
       let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
@@ -2917,7 +2576,7 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token and without toTokenAddress
       let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
@@ -2968,9 +2627,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token and without fromAmount
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromAmount
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -3019,7 +2678,7 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // Optimism - USDC Token
       let toTokenAddress = data.optimismUsdcAddress; // Optimism - USDC Token
       let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
@@ -3062,9 +2721,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(
         data.exceeded_crosschainswap_value,
         6
@@ -3164,9 +2823,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
@@ -3258,9 +2917,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
@@ -3359,9 +3018,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
 
       quoteRequestPayload = {
@@ -3453,9 +3112,9 @@ describe('The SDK, when swap the token with different features with the Optimism
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai]; // without fromChainId
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic]; // without fromChainId
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
         6
@@ -3509,7 +3168,7 @@ describe('The SDK, when swap the token with different features with the Optimism
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism]; // without toChainId
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
         6
@@ -3562,8 +3221,8 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token and without fromTokenAddress
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromTokenAddress
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
         6
@@ -3616,7 +3275,7 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token and without toTokenAddress
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
@@ -3670,9 +3329,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token and without fromAmount
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromAmount
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -3721,9 +3380,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = ethers.constants.AddressZero; // Optimism - Native Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
         18
@@ -3770,7 +3429,7 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // Optimism - USDC Token
       let toTokenAddress = data.optimismUsdcAddress; // Optimism - USDC Token
       let fromAmount = ethers.utils.parseUnits(
@@ -3819,9 +3478,9 @@ describe('The SDK, when swap the token with different features with the Optimism
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Optimism];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.optimismUsdcAddress; // USDC Token
-      let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
+      let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(
         data.low_advancerouteslifiswap_value,
         6
