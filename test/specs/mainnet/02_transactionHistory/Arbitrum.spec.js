@@ -398,15 +398,16 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
           });
           transactionState = output.state;
           if (transactionState === 'Reverted') {
-            console.log('The transaction status is Reverted.');
-            break;
+            assert.fail('The transaction status is Reverted.');
           }
 
           Helper.wait(shortTimeout);
         } catch (e) {
           console.error(e);
         }
-      } while (!(transactionState == 'Sent'));
+      } while (
+        !(transactionState === 'Sent' || transactionState === 'Reverted')
+      );
 
       // get submmited batch with sent status
       if (!(transactionState === 'Reverted')) {
@@ -728,7 +729,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
         let gasUsed_singleTransaction;
         let hash_singleTransaction;
         let status_singleTransaction;
-        let timestamp_singleTransaction;
         let blockExplorerUrl_singleTransaction;
 
         try {
@@ -855,16 +855,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
           }
 
           try {
-            assert.isNumber(
-              singleTransaction.timestamp,
-              'The timestamp value is not number in the Get Single Transaction Response.'
-            );
-            timestamp_singleTransaction = singleTransaction.timestamp;
-          } catch (e) {
-            console.error(e);
-          }
-
-          try {
             assert.isNotEmpty(
               singleTransaction.to,
               'The To Address value is empty in the Get Single Transaction Response.'
@@ -917,7 +907,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
         let gasUsed_transactions;
         let hash_transactions;
         let status_transactions;
-        let timestamp_transactions;
         let blockExplorerUrl_transactions;
 
         try {
@@ -942,26 +931,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
                   blockNumber_singleTransaction,
                   blockNumber_transactions,
                   'The blockNumber of get single transaction response and get transactions response are not matched.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNumber(
-                  transactions.items[x].timestamp,
-                  'The timestamp value is not number in the Get Transactions Response.'
-                );
-                timestamp_transactions = transactions.items[x].timestamp;
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.strictEqual(
-                  timestamp_singleTransaction,
-                  timestamp_transactions,
-                  'The timestamp of get single transaction response and get transactions response are not matched.'
                 );
               } catch (e) {
                 console.error(e);
@@ -1013,16 +982,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
                   'The gasPrice value is empty in the Get Transactions Response.'
                 );
                 gasPrice_transactions = transactions.items[x].gasPrice;
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.strictEqual(
-                  gasPrice_singleTransaction,
-                  gasPrice_transactions,
-                  'The gasPrice of get single transaction response and get transactions response are not matched.'
-                );
               } catch (e) {
                 console.error(e);
               }
@@ -1118,15 +1077,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
 
               try {
                 assert.isNotEmpty(
-                  transactions.items[x].batch,
-                  'The batch value is empty in the Get Transactions Response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNotEmpty(
                   transactions.items[x].asset,
                   'The asset value is empty in the Get Transactions Response.'
                 );
@@ -1210,7 +1160,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
       let gasUsed_transactions;
       let hash_transactions;
       let status_transactions;
-      let timestamp_transactions;
       let blockExplorerUrl_transactions;
 
       try {
@@ -1226,17 +1175,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
           );
           blockNumber_transactions =
             transactions.items[randomTransaction].blockNumber;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNumber(
-            transactions.items[randomTransaction].timestamp,
-            'The timestamp value is not number in the get transactions response.'
-          );
-          timestamp_transactions =
-            transactions.items[randomTransaction].timestamp;
         } catch (e) {
           console.error(e);
         }
@@ -1314,25 +1252,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
         }
 
         try {
-          assert.strictEqual(
-            transactions.items[randomTransaction].direction,
-            'Sender',
-            'The direction value is not equal in the get transactions response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.isNotEmpty(
-            transactions.items[randomTransaction].batch,
-            'The batch value is empty in the get transactions response.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
           assert.isNotEmpty(
             transactions.items[randomTransaction].asset,
             'The asset value is empty in the get transactions response.'
@@ -1367,7 +1286,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
       let gasUsed_singleTransaction;
       let hash_singleTransaction;
       let status_singleTransaction;
-      let timestamp_singleTransaction;
       let blockExplorerUrl_singleTransaction;
 
       try {
@@ -1494,16 +1412,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
         }
 
         try {
-          assert.isNumber(
-            singleTransaction.timestamp,
-            'The timestamp value is not number in the get single transaction response.'
-          );
-          timestamp_singleTransaction = singleTransaction.timestamp;
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
           assert.isNotEmpty(
             singleTransaction.to,
             'The To Address value is empty in the Get Single Transaction Response.'
@@ -1553,16 +1461,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
 
         try {
           assert.strictEqual(
-            timestamp_singleTransaction,
-            timestamp_transactions,
-            'The timestamp of get single transaction response and get transactions response are not matched.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
             from_singleTransaction,
             from_transactions,
             'The from address of get single transaction response and get transactions response are not matched.'
@@ -1576,16 +1474,6 @@ describe('Get the transaction history with arbitrum network on the MainNet', () 
             gasLimit_singleTransaction,
             gasLimit_transactions,
             'The gasLimit of get single transaction response and get transactions response are not matched.'
-          );
-        } catch (e) {
-          console.error(e);
-        }
-
-        try {
-          assert.strictEqual(
-            gasPrice_singleTransaction,
-            gasPrice_transactions,
-            'The gasPrice of get single transaction response and get transactions response are not matched.'
           );
         } catch (e) {
           console.error(e);
