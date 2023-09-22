@@ -499,7 +499,10 @@ describe('The SDK, when swap the token with different features with the Matic ne
         let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
         let fromTokenAddress = data.maticUsdcAddress; // USDC Token
         let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
-        let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+        let fromAmount = ethers.utils.parseUnits(
+          data.crosschainswap_xdai_value,
+          6
+        );
 
         quoteRequestPayload = {
           fromChainId: fromChainId,
@@ -2818,7 +2821,10 @@ describe('The SDK, when swap the token with different features with the Matic ne
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let fromTokenAddress = data.maticUsdcAddress; // USDC Token
       let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(
+        data.crosschainswap_xdai_value,
+        6
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -2910,7 +2916,10 @@ describe('The SDK, when swap the token with different features with the Matic ne
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let fromTokenAddress = data.maticUsdcAddress; // USDC Token
       let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(
+        data.crosschainswap_xdai_value,
+        6
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -3009,7 +3018,10 @@ describe('The SDK, when swap the token with different features with the Matic ne
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
       let fromTokenAddress = data.maticUsdcAddress; // USDC Token
       let toTokenAddress = data.xdaiUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(
+        data.crosschainswap_xdai_value,
+        6
+      );
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
