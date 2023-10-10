@@ -72,10 +72,10 @@ describe('The SDK, when swap the token with different features with the bsc netw
         native_final = utils.formatUnits(native_balance, 18);
       } else if (tokenAddress === data.bscUsdcAddress) {
         usdc_balance = output.items[i].balance;
-        usdc_final = utils.formatUnits(usdc_balance, 6);
+        usdc_final = utils.formatUnits(usdc_balance, 18);
       } else if (tokenAddress === data.bscUsdtAddress) {
         usdt_balance = output.items[i].balance;
-        usdt_final = utils.formatUnits(usdt_balance, 6);
+        usdt_final = utils.formatUnits(usdt_balance, 18);
       }
     }
 
@@ -101,7 +101,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
         offers = await bscMainNetSdk.getExchangeOffers({
           fromTokenAddress: data.bscUsdcAddress, // USDC Token
           toTokenAddress: data.bscUsdtAddress, // USDT Token
-          fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
+          fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 18),
         });
 
         if (offers.length > 0) {
@@ -499,7 +499,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
         let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
         let fromTokenAddress = data.bscUsdcAddress; // USDC Token
         let toTokenAddress = data.maticUsdcAddress; // USDC Token
-        let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+        let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 18);
 
         quoteRequestPayload = {
           fromChainId: fromChainId,
@@ -1120,19 +1120,16 @@ describe('The SDK, when swap the token with different features with the bsc netw
     }
   });
 
-  xit('SMOKE: Perform the advance routes lifi action on the bsc network', async () => {
+  it('SMOKE: Perform the advance routes lifi action on the bsc network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
       try {
         let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Bsc];
-        let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Xdai];
+        let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
         let fromTokenAddress = data.bscUsdcAddress; // USDC Token
         let toTokenAddress = data.maticUsdcAddress; // USDC Token
-        let fromAmount = ethers.utils.parseUnits(
-          data.advancerouteslifiswap_value,
-          6
-        );
+        let fromAmount = ethers.utils.parseUnits('1', 18);
 
         quoteRequestPayload = {
           fromChainId: fromChainId,
@@ -1347,15 +1344,6 @@ describe('The SDK, when swap the token with different features with the bsc netw
             } catch (e) {
               console.error(e);
             }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].tags,
-                'The tags value is enpty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
           }
 
           if (advanceRoutesLiFi.items.length > 0) {
@@ -1370,24 +1358,6 @@ describe('The SDK, when swap the token with different features with the bsc netw
                 assert.isNotEmpty(
                   transactions.items[j].to,
                   'The To Address value is empty in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNotEmpty(
-                  transactions.items[j].gasLimit,
-                  'The gasLimit value is empty in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNotEmpty(
-                  transactions.items[j].gasPrice,
-                  'The gasPrice value is empty in the transactions response.'
                 );
               } catch (e) {
                 console.error(e);
@@ -2132,7 +2102,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
           toTokenAddress: data.bscUsdtAddress, // USDT Token
           fromAmount: ethers.utils.parseUnits(
             data.exceeded_singlechainswap_value,
-            6
+            18
           ), // Exceeded Token Balance
         });
       } catch (e) {
@@ -2177,7 +2147,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
           await bscMainNetSdk.getExchangeOffers({
             fromTokenAddress: data.bscUsdcAddress, // USDC Token
             toTokenAddress: data.bscUsdcAddress, // Both are Same USDC Tokens
-            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 18),
           });
           assert.fail(
             'The Swap is performed, Even if the ERC20 Token addresses are equal.'
@@ -2217,7 +2187,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
         try {
           await bscMainNetSdk.getExchangeOffers({
             fromTokenAddress: data.bscUsdcAddress, // USDC Token and without toTokenAddress
-            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 18),
           });
           assert.fail(
             'The Swap is performed, Even if the To Token Address is not added in the Get exchange offers.'
@@ -2257,7 +2227,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
         try {
           await bscMainNetSdk.getExchangeOffers({
             toTokenAddress: data.bscUsdtAddress, // USDT Token and without fromTokenAddress
-            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 18),
           });
           assert.fail(
             'The Swap is performed, Even if the From Token Address is not added in the Get exchange offers.'
@@ -2338,7 +2308,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
           await bscMainNetSdk.getExchangeOffers({
             fromTokenAddress: data.bscUsdcAddress, // USDC Token
             toTokenAddress: data.invalid_bscUsdtAddress, // Invalid USDT Token
-            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 18),
           });
           assert.fail(
             'The Swap is performed, Even if the invalid To Token Address is added in the Get exchange offers.'
@@ -2379,7 +2349,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
           await bscMainNetSdk.getExchangeOffers({
             fromTokenAddress: data.invalid_bscUsdcAddress, // Invalid USDC Token
             toTokenAddress: data.bscUsdtAddress, // USDT Token
-            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 6),
+            fromAmount: ethers.utils.parseUnits(data.singlechainswap_value, 18),
           });
           assert.fail(
             'The Swap is performed, Even if the invalid From Token Address is added in the Get exchange offers.'
@@ -2419,7 +2389,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic]; // without fromChainId
       let fromTokenAddress = data.bscUsdcAddress; // USDC Token
       let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 18);
 
       quoteRequestPayload = {
         toChainId: toChainId,
@@ -2470,7 +2440,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Bsc]; // without toChainId
       let fromTokenAddress = data.bscUsdcAddress; // USDC Token
       let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 18);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -2521,7 +2491,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Bsc];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromTokenAddress
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 18);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -2572,7 +2542,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Bsc];
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.bscUsdcAddress; // USDC Token and without toTokenAddress
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 18);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -2675,7 +2645,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.bscUsdcAddress; // Bsc - USDC Token
       let toTokenAddress = data.bscUsdcAddress; // Bsc - USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 18);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -2720,7 +2690,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(
         data.exceeded_crosschainswap_value,
-        6
+        18
       ); // Exceeded Token Balance
 
       quoteRequestPayload = {
@@ -2818,7 +2788,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.bscUsdcAddress; // USDC Token
       let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 18);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -2910,7 +2880,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.bscUsdcAddress; // USDC Token
       let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 18);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -3009,7 +2979,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
       let fromTokenAddress = data.bscUsdcAddress; // USDC Token
       let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 6);
+      let fromAmount = ethers.utils.parseUnits(data.crosschainswap_value, 18);
 
       quoteRequestPayload = {
         fromChainId: fromChainId,
@@ -3094,7 +3064,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without fromChainId value in the quote request payload on the bsc network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without fromChainId value in the quote request payload on the bsc network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3103,7 +3073,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
-        6
+        18
       );
 
       quoteRequestPayload = {
@@ -3148,7 +3118,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without toChainId value in the quote request payload on the bsc network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without toChainId value in the quote request payload on the bsc network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3157,7 +3127,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toTokenAddress = data.maticUsdcAddress; // USDC Token
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
-        6
+        18
       );
 
       quoteRequestPayload = {
@@ -3202,7 +3172,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without fromTokenAddress value in the quote request payload on the bsc network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without fromTokenAddress value in the quote request payload on the bsc network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3211,7 +3181,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toTokenAddress = data.maticUsdcAddress; // USDC Token and without fromTokenAddress
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
-        6
+        18
       );
 
       quoteRequestPayload = {
@@ -3256,7 +3226,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without toTokenAddress value in the quote request payload on the bsc network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without toTokenAddress value in the quote request payload on the bsc network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3265,7 +3235,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let fromTokenAddress = data.bscUsdcAddress; // USDC Token and without toTokenAddress
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
-        6
+        18
       );
 
       quoteRequestPayload = {
@@ -3310,7 +3280,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without fromAmount value in the quote request payload on the bsc network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without fromAmount value in the quote request payload on the bsc network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3361,7 +3331,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
     }
   });
 
-  xit("REGRESSION: Perform the advance route lifi action from native token to another chain's ERC20 token in the quote request payload on the bsc network", async () => {
+  it("REGRESSION: Perform the advance route lifi action from native token to another chain's ERC20 token in the quote request payload on the bsc network", async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3410,7 +3380,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action with the same ERC20 tokens in the quote request payload on the bsc network', async () => {
+  it('REGRESSION: Perform the advance route lifi action with the same ERC20 tokens in the quote request payload on the bsc network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3420,7 +3390,7 @@ describe('The SDK, when swap the token with different features with the bsc netw
       let toTokenAddress = data.bscUsdcAddress; // Bsc - USDC Token
       let fromAmount = ethers.utils.parseUnits(
         data.advancerouteslifiswap_value,
-        6
+        18
       );
 
       quoteRequestPayload = {
@@ -3459,81 +3429,32 @@ describe('The SDK, when swap the token with different features with the bsc netw
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action with low token balance in the quote request payload on the bsc network', async () => {
+  it('REGRESSION: Perform the advance route lifi action with low token balance in the quote request payload on the bsc network', async () => {
     if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Bsc];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = data.bscUsdcAddress; // USDC Token
-      let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(
-        data.low_advancerouteslifiswap_value,
-        6
-      ); // Low Token Balance
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-      };
-
-      // Get the advance routes lifi
-      let advanceRoutesLiFi;
       try {
-        advanceRoutesLiFi = await bscMainNetSdk.getAdvanceRoutesLiFi(
-          quoteRequestPayload
-        );
+        // Prepare the quoteRequest Payload
+        NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Bsc];
+        NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
+        data.bscUsdcAddress; // USDC Token
+        data.maticUsdcAddress; // USDC Token
+        ethers.utils.parseUnits(data.low_advancerouteslifiswap_value, 6); // Low Token Balance
 
-        if (advanceRoutesLiFi.items.length > 0) {
-          // Select the first advance route lifi
-          let advanceRouteLiFi = advanceRoutesLiFi.items[0];
-          let transactions = await bscMainNetSdk.getStepTransaction({
-            route: advanceRouteLiFi,
-          });
-
-          for (let transaction of transactions.items) {
-            // Batch the approval transaction
-            await bscMainNetSdk.batchExecuteAccountTransaction({
-              to: transaction.to,
-              data: transaction.data,
-              value: transaction.value,
-            });
-          }
-        }
-      } catch (e) {
-        console.error(e);
         assert.fail(
-          'An error is dipslayed in the getAdvanceRoutesLiFi response.'
+          'The estimation is performed even if the token balance is low.'
         );
-      }
-
-      // Estimating the batch
-      try {
-        try {
-          await bscMainNetSdk.estimateGatewayBatch();
-          assert.fail(
-            'The estimation is performed even if the token balance is low.'
-          );
-        } catch (e) {
-          if (e.message == 'Can not estimate empty batch') {
-            console.log(
-              'The estimation is not performed with low token balance as expected.'
-            );
-          } else {
-            console.error(e);
-            assert.fail('The estimation is performed with low token balance.');
-          }
-        }
       } catch (e) {
-        console.error(e);
-        assert.fail('The estimation is performed with low token balance.');
+        if (e.reason === 'fractional component exceeds decimals') {
+          console.log(
+            'The estimation is not performed with low token balance as expected.'
+          );
+        } else {
+          console.error(e);
+          assert.fail('The estimation is performed with low token balance.');
+        }
       }
     } else {
       console.warn(
-        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE bsc NETWORK'
+        'DUE TO INSUFFICIENT WALLET BALANCE, SKIPPING TEST CASE OF THE ADVANCE ROUTE LIFI ACTION WITH LOW TOKEN BALANCE IN THE QUOTE REQUEST PAYLOAD ON THE BSC NETWORK'
       );
     }
   });

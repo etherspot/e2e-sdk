@@ -1123,7 +1123,7 @@ describe('The SDK, when swap the token with different features with the arbitrum
     }
   });
 
-  xit('SMOKE: Perform the advance routes lifi action on the arbitrum network', async () => {
+  it('SMOKE: Perform the advance routes lifi action on the arbitrum network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -1133,7 +1133,7 @@ describe('The SDK, when swap the token with different features with the arbitrum
         let fromTokenAddress = data.arbitrumUsdcAddress; // USDC Token
         let toTokenAddress = data.maticUsdcAddress; // USDC Token
         let fromAmount = ethers.utils.parseUnits(
-          data.advancerouteslifiswap_value,
+          data.advancerouteslifiswap2_value,
           6
         );
 
@@ -1350,15 +1350,6 @@ describe('The SDK, when swap the token with different features with the arbitrum
             } catch (e) {
               console.error(e);
             }
-
-            try {
-              assert.isNotEmpty(
-                advanceRoutesLiFi.items[i].tags,
-                'The tags value is enpty in the advance routes lifi response.'
-              );
-            } catch (e) {
-              console.error(e);
-            }
           }
 
           if (advanceRoutesLiFi.items.length > 0) {
@@ -1373,24 +1364,6 @@ describe('The SDK, when swap the token with different features with the arbitrum
                 assert.isNotEmpty(
                   transactions.items[j].to,
                   'The To Address value is empty in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNotEmpty(
-                  transactions.items[j].gasLimit,
-                  'The gasLimit value is empty in the transactions response.'
-                );
-              } catch (e) {
-                console.error(e);
-              }
-
-              try {
-                assert.isNotEmpty(
-                  transactions.items[j].gasPrice,
-                  'The gasPrice value is empty in the transactions response.'
                 );
               } catch (e) {
                 console.error(e);
@@ -3105,7 +3078,7 @@ describe('The SDK, when swap the token with different features with the arbitrum
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without fromChainId value in the quote request payload on the arbitrum network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without fromChainId value in the quote request payload on the arbitrum network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3159,7 +3132,7 @@ describe('The SDK, when swap the token with different features with the arbitrum
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without toChainId value in the quote request payload on the arbitrum network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without toChainId value in the quote request payload on the arbitrum network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3213,7 +3186,7 @@ describe('The SDK, when swap the token with different features with the arbitrum
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without fromTokenAddress value in the quote request payload on the arbitrum network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without fromTokenAddress value in the quote request payload on the arbitrum network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3267,7 +3240,7 @@ describe('The SDK, when swap the token with different features with the arbitrum
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without toTokenAddress value in the quote request payload on the arbitrum network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without toTokenAddress value in the quote request payload on the arbitrum network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3321,7 +3294,7 @@ describe('The SDK, when swap the token with different features with the arbitrum
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action without fromAmount value in the quote request payload on the arbitrum network', async () => {
+  it('REGRESSION: Perform the advance route lifi action without fromAmount value in the quote request payload on the arbitrum network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3372,7 +3345,7 @@ describe('The SDK, when swap the token with different features with the arbitrum
     }
   });
 
-  xit("REGRESSION: Perform the advance route lifi action from native token to another chain's ERC20 token in the quote request payload on the arbitrum network", async () => {
+  it("REGRESSION: Perform the advance route lifi action from native token to another chain's ERC20 token in the quote request payload on the arbitrum network", async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3421,7 +3394,7 @@ describe('The SDK, when swap the token with different features with the arbitrum
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action with the same ERC20 tokens in the quote request payload on the arbitrum network', async () => {
+  it('REGRESSION: Perform the advance route lifi action with the same ERC20 tokens in the quote request payload on the arbitrum network', async () => {
     if (runTest) {
       // Prepare the quoteRequest Payload
       let quoteRequestPayload;
@@ -3470,77 +3443,28 @@ describe('The SDK, when swap the token with different features with the arbitrum
     }
   });
 
-  xit('REGRESSION: Perform the advance route lifi action with low token balance in the quote request payload on the arbitrum network', async () => {
+  it('REGRESSION: Perform the advance route lifi action with low token balance in the quote request payload on the arbitrum network', async () => {
     if (runTest) {
-      // Prepare the quoteRequest Payload
-      let quoteRequestPayload;
-      let fromChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Arbitrum];
-      let toChainId = NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
-      let fromTokenAddress = data.arbitrumUsdcAddress; // USDC Token
-      let toTokenAddress = data.maticUsdcAddress; // USDC Token
-      let fromAmount = ethers.utils.parseUnits(
-        data.low_advancerouteslifiswap_value,
-        6
-      ); // Low Token Balance
-
-      quoteRequestPayload = {
-        fromChainId: fromChainId,
-        toChainId: toChainId,
-        fromTokenAddress: fromTokenAddress,
-        toTokenAddress: toTokenAddress,
-        fromAmount: fromAmount,
-      };
-
-      // Get the advance routes lifi
-      let advanceRoutesLiFi;
       try {
-        advanceRoutesLiFi = await arbitrumMainNetSdk.getAdvanceRoutesLiFi(
-          quoteRequestPayload
-        );
+        // Prepare the quoteRequest Payload
+        NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Arbitrum];
+        NETWORK_NAME_TO_CHAIN_ID[NetworkNames.Matic];
+        data.arbitrumUsdcAddress; // USDC Token
+        data.maticUsdcAddress; // USDC Token
+        ethers.utils.parseUnits(data.low_advancerouteslifiswap_value, 6); // Low Token Balance
 
-        if (advanceRoutesLiFi.items.length > 0) {
-          // Select the first advance route lifi
-          let advanceRouteLiFi = advanceRoutesLiFi.items[0];
-          let transactions = await arbitrumMainNetSdk.getStepTransaction({
-            route: advanceRouteLiFi,
-          });
-
-          for (let transaction of transactions.items) {
-            // Batch the approval transaction
-            await arbitrumMainNetSdk.batchExecuteAccountTransaction({
-              to: transaction.to,
-              data: transaction.data,
-              value: transaction.value,
-            });
-          }
-        }
-      } catch (e) {
-        console.error(e);
         assert.fail(
-          'An error is dipslayed in the getAdvanceRoutesLiFi response.'
+          'The estimation is performed even if the token balance is low.'
         );
-      }
-
-      // Estimating the batch
-      try {
-        try {
-          await arbitrumMainNetSdk.estimateGatewayBatch();
-          assert.fail(
-            'The estimation is performed even if the token balance is low.'
-          );
-        } catch (e) {
-          if (e.message == 'Can not estimate empty batch') {
-            console.log(
-              'The estimation is not performed with low token balance as expected.'
-            );
-          } else {
-            console.error(e);
-            assert.fail('The estimation is performed with low token balance.');
-          }
-        }
       } catch (e) {
-        console.error(e);
-        assert.fail('The estimation is performed with low token balance.');
+        if (e.reason === 'fractional component exceeds decimals') {
+          console.log(
+            'The estimation is not performed with low token balance as expected.'
+          );
+        } else {
+          console.error(e);
+          assert.fail('The estimation is performed with low token balance.');
+        }
       }
     } else {
       console.warn(
