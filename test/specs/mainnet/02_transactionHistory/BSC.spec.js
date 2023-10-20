@@ -217,9 +217,7 @@ describe('Get the transaction history with bsc network on the MainNet', () => {
       let EstimatedGasPrice_Submit;
 
       try {
-        SubmissionResponse = await bscMainNetSdk.submitGatewayBatch({
-          guarded: false,
-        });
+        SubmissionResponse = await bscMainNetSdk.submitGatewayBatch();
         hashAddressBig = BigNumber.from(SubmissionResponse.hash)._hex;
 
         try {
