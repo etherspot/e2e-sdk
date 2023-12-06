@@ -46,5 +46,6 @@
   "incorrect_hash": "0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8318ccf39eDc930d1ceA551df",
   "invalid_hash": "0x3df9fe91b29f4b2bf1b148baf2f9E207e98137F8z18ccf39eDc930d1ceA551df",
   "invalid_tokenAddress": "0xAC313d7491910516E06FBfC2A0b5BB49bb072D92",
-  "invalid_approvalAddress": "0xAC313d7491910516E06FBfC2A0b5BB49bb072D9z"
+  "invalid_approvalAddress": "0xAC313d7491910516E06FBfC2A0b5BB49bb072D9z",
+  "retry": 5
 }
