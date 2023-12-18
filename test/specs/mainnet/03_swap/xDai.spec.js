@@ -1321,7 +1321,7 @@ describe('The SDK, when swap the token with different features with the Xdai net
     }
   });
 
-  it.only('REGRESSION: Perform the single chain swap action from Native Token to ERC20 token on the Xdai network', async function () {
+  it('REGRESSION: Perform the single chain swap action from Native Token to ERC20 token on the Xdai network', async function () {
     var test = this;
     if (runTest) {
       await customRetryAsync(async function () {
